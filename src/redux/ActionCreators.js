@@ -5,6 +5,83 @@ import { baseUrl } from '../shared/baseUrl';
 //reducers take action as one of the parameters, the current state of the application as another parameter and generates(returns) the next state
 //these actions supply information to reducers
 
+
+export const addPatient = (patient) => ({
+    type: ActionTypes.ADD_PATIENT,
+    payload: patient
+});
+
+export const addPatients = (patients) => ({
+    type: ActionTypes.ADD_PATIENTS,
+    payload: patients
+});
+
+export const patientsFailed = (errmess) => ({
+    type: ActionTypes.PATIENTS_FAILED,
+    payload: errmess
+});
+
+export const fetchPatients = () => (dispatch) => {
+    return fetch(baseUrl + 'patients')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(patients => dispatch(addPatients(patients)))
+        .catch(error => dispatch(patientsFailed(error.message)));
+}
+
+export const postPatient = (name) => (dispatch) => {
+
+    const newPatient = {
+        name: name
+    }
+    console.log('Patient ', newPatient);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'patients', {
+        method: 'POST',
+        body: JSON.stringify(newPatient),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addPatient(response)))
+    .catch(error => { console.log('Post patient ', error.message);
+        alert('Your patient could not be posted\nError: '+ error.message); })
+}
+
+
+
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
