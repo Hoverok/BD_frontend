@@ -11,68 +11,9 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
-
-function RenderDish({ dish, favorite, postFavorite }) {
-    return (
-        <div className="col-12 col-md-5 m-1">
-            <FadeTransform in
-                transformProps={{
-                    exitTransform: 'scale(0.5) translateY(-50%)'
-                }}>
-                <Card>
-                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-                    <CardImgOverlay>
-                        <Button outline color="primary" onClick={() => favorite ? console.log('Already favorite') : postFavorite(dish._id)}>
-                            {favorite ?
-                                <span className="fa fa-heart"></span>
-                                :
-                                <span className="fa fa-heart-o"></span>
-                            }
-                        </Button>
-                    </CardImgOverlay>
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
-            </FadeTransform>
-        </div>
-    );
-
-}
-
-function RenderComments({ comments, postComment, dishId }) {
-
-    if (comments != null)
-        return (
-            <div className="col-12 col-md-5 m-1">
-                <h4>Comments</h4>
-                <ul className="list-unstyled">
-                    <Stagger in>
-                        {comments.map((comment) => {
-                            return (
-                                <Fade in key={comment._id}>
-                                    <li>
-                                        <p>{comment.comment}</p>
-                                        <p>{comment.rating} stars</p>
-                                        <p>-- {comment.author.firstname} {comment.author.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.updatedAt)))}</p>
-                                    </li>
-                                </Fade>
-                            );
-                        })}
-                    </Stagger>
-                </ul>
-                <CommentForm dishId={dishId} postComment={postComment} />
-            </div>
-        );
-    else
-        return (
-            <div></div>
-        );
-}
-
 function RenderPatientInList({ patient, onClick }) {
     return (
+        <Link className= 'text-link' to={`/patients/${patient._id}`} >
         <Media tag="li">
             <Media left middle>
                 <Media object src={baseUrl + "images/pic.jpg"} alt={patient.name} />
@@ -83,25 +24,10 @@ function RenderPatientInList({ patient, onClick }) {
                 <p>{patient.name}</p>
             </Media>
         </Media>
+        </Link>
     );
 }
 
-
-function RenderLeader({ leader }) {
-    return (
-        <Media tag="li">
-            <Media left middle>
-                <Media object src={baseUrl + leader.image} alt={leader.name} />
-            </Media>
-            <Media body className="ml-5">
-                <Media heading>{leader.name}</Media>
-                <p>{leader.designation}</p>
-                <p>{leader.description}</p>
-            </Media>
-        </Media>
-    );
-
-}
 
 class CommentForm extends Component {
 

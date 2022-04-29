@@ -84,6 +84,20 @@ class Main extends Component {
       )
     }
 
+    const PatientWithId = ({ match }) => {
+      return (
+          <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
+            isLoading={this.props.dishes.isLoading}
+            errMess={this.props.dishes.errMess}
+            comments={this.props.comments.comments.filter((comment) => comment.dish === match.params.dishId)}
+            commentsErrMess={this.props.comments.errMess}
+            postComment={this.props.postComment}
+            favorite={this.props.favorites.favorites ? this.props.favorites.favorites.dishes.some((dish) => dish._id === match.params.dishId) : false}
+            postFavorite={this.props.postFavorite}
+          />
+      );
+    }
+
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {
         if (Array.isArray(this.props.favorites.favorites))
@@ -135,6 +149,7 @@ class Main extends Component {
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
               <Route path="/patients" component={PatientsPage} />
+              <Route path="/patients/:patientId" component={PatientWithId} />
               <Route path="/home" component={HomePage} />
               <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
