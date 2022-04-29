@@ -11,17 +11,17 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
-function RenderPatientInList({ patient, onClick }) {
+function RenderProgramInList({ program, onClick }) {
     return (
-        <Link className= 'text-link' to={`/patients/${patient._id}`} >
+        <Link className= 'text-link' to={`/programs/${program._id}`} >
         <Media tag="li">
             <Media left middle>
-                <Media object src={baseUrl + "images/pic.jpg"} alt={patient.name} />
+                <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
             </Media>
             <Media body className="ml-5">
-                <Media heading>{patient.name}</Media>
-                <p>{patient.name}</p>
-                <p>{patient.name}</p>
+                <Media heading>{program.name}</Media>
+                <p>{program.name}</p>
+                <p>{program.name}</p>
             </Media>
         </Media>
         </Link>
@@ -51,15 +51,15 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postPatient(values.name);
+        this.props.postProgram(values.name);
     }
 
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Registruoti sesiją</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Nauja programa</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Registruoti sesiją</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Naujos paciento programos registracija</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
@@ -83,22 +83,22 @@ class CommentForm extends Component {
 
 }
 
-const Patients = (props) => {
-    const patients = props.patients.patients.map((patient) => {
+const Programs = (props) => {
+    const programs = props.programs.programs.map((program) => {
         return (
-            <Fade in key={patient._id}>
+            <Fade in key={program._id}>
                 <div className="col-12 mt-2">
-                    <RenderPatientInList patient={patient} />
+                    <RenderProgramInList program={program} />
                 </div>
             </Fade>
         );
     });
 
-    if (props.patients.errMess) {
+    if (props.programs.errMess) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.patients.errMess}</h4>
+                    <h4>{props.programs.errMess}</h4>
                 </div>
             </div>
         );
@@ -109,19 +109,19 @@ const Patients = (props) => {
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/home'>Pagrindinis</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>Pacientai</BreadcrumbItem>
+                        <BreadcrumbItem active>Programos</BreadcrumbItem>
                     </Breadcrumb>
                 </div>
                 <div className="row">
-                    <CommentForm patients={props.patients} postPatient={props.postPatient} />
+                    <CommentForm programs={props.programs} postProgram={props.postProgram} />
                 </div>
                 <div className="row row-content">
                     <div className="col-12">
-                        <h2>Pacientai</h2>
+                        <h2>Pacientų programos</h2>
                     </div>
                     <div className="row">
                         <div className="col-12">
-                            {patients}
+                            {programs}
                         </div>
                     </div>
                 </div>
@@ -133,4 +133,4 @@ const Patients = (props) => {
         );
 }
 
-export default Patients;
+export default Programs;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Patients from './PatientsComponent';
+import Programs from './ProgramsComponent';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Menu from './MenuComponent';
@@ -11,7 +11,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postPatient, fetchPatients, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
+  postProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
@@ -19,7 +19,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const mapStateToProps = state => { //maps redux store state to props that become available in this component
   return {
-    patients: state.patients,
+    programs: state.programs,
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
@@ -30,8 +30,8 @@ const mapStateToProps = state => { //maps redux store state to props that become
 }
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
-  postPatient: (name) => dispatch(postPatient(name)),
-  fetchPatients: () => { dispatch(fetchPatients()) },
+  postProgram: (name) => dispatch(postProgram(name)),
+  fetchPrograms: () => { dispatch(fetchPrograms()) },
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
   fetchDishes: () => { dispatch(fetchDishes()) },
@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
 class Main extends Component {
 
   componentDidMount() { //when react mounts Main component into the view, dishes,comments, etc get fetched and loaded into the store and become availabe for the application
-    this.props.fetchPatients();
+    this.props.fetchPrograms();
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
@@ -74,17 +74,17 @@ class Main extends Component {
       );
     }
 
-    const PatientsPage = () => {
+    const ProgramsPage = () => {
       return (
-        <Patients
-          patients={this.props.patients}
-          //patientsErrMess={this.props.patients.errMess}
-          postPatient={this.props.postPatient}
+        <Programs
+          programs={this.props.programs}
+          //programsErrMess={this.props.programs.errMess}
+          postProgram={this.props.postProgram}
         />
       )
     }
 
-    const PatientWithId = ({ match }) => {
+    const ProgramWithId = ({ match }) => {
       return (
           <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
             isLoading={this.props.dishes.isLoading}
@@ -148,8 +148,8 @@ class Main extends Component {
         <TransitionGroup>
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
-              <Route path="/patients" component={PatientsPage} />
-              <Route path="/patients/:patientId" component={PatientWithId} />
+              <Route path="/programs" component={ProgramsPage} />
+              <Route path="/programs/:programId" component={ProgramWithId} />
               <Route path="/home" component={HomePage} />
               <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />

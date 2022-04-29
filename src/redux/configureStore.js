@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createForms } from 'react-redux-form';
-import { Patients } from './patients';
+import { Programs } from './programs';
 import { Dishes } from './dishes';
 import { Comments } from './comments';
 import { Promotions } from './promotions';
@@ -17,7 +17,7 @@ import { InitialFeedback } from './forms';
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
-            patients: Patients,
+            programs: Programs,
             dishes: Dishes,
             comments: Comments,
             promotions: Promotions,

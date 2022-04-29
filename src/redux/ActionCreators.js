@@ -6,23 +6,23 @@ import { baseUrl } from '../shared/baseUrl';
 //these actions supply information to reducers
 
 
-export const addPatient = (patient) => ({
-    type: ActionTypes.ADD_PATIENT,
-    payload: patient
+export const addProgram = (program) => ({
+    type: ActionTypes.ADD_PROGRAM,
+    payload: program
 });
 
-export const addPatients = (patients) => ({
-    type: ActionTypes.ADD_PATIENTS,
-    payload: patients
+export const addPrograms = (programs) => ({
+    type: ActionTypes.ADD_PROGRAMS,
+    payload: programs
 });
 
-export const patientsFailed = (errmess) => ({
-    type: ActionTypes.PATIENTS_FAILED,
+export const programsFailed = (errmess) => ({
+    type: ActionTypes.PROGRAMS_FAILED,
     payload: errmess
 });
 
-export const fetchPatients = () => (dispatch) => {
-    return fetch(baseUrl + 'patients')
+export const fetchPrograms = () => (dispatch) => {
+    return fetch(baseUrl + 'programs')
         .then(response => {
             if (response.ok) {
                 return response;
@@ -38,22 +38,22 @@ export const fetchPatients = () => (dispatch) => {
             throw errmess;
         })
         .then(response => response.json())
-        .then(patients => dispatch(addPatients(patients)))
-        .catch(error => dispatch(patientsFailed(error.message)));
+        .then(programs => dispatch(addPrograms(programs)))
+        .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postPatient = (name) => (dispatch) => {
+export const postProgram = (name) => (dispatch) => {
 
-    const newPatient = {
+    const newProgram = {
         name: name
     }
-    console.log('Patient ', newPatient);
+    console.log('Program ', newProgram);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'patients', {
+    return fetch(baseUrl + 'programs', {
         method: 'POST',
-        body: JSON.stringify(newPatient),
+        body: JSON.stringify(newProgram),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': bearer
@@ -75,9 +75,9 @@ export const postPatient = (name) => (dispatch) => {
         throw errmess;
     })
     .then(response => response.json())
-    .then(response => dispatch(addPatient(response)))
-    .catch(error => { console.log('Post patient ', error.message);
-        alert('Your patient could not be posted\nError: '+ error.message); })
+    .then(response => dispatch(addProgram(response)))
+    .catch(error => { console.log('Post program ', error.message);
+        alert('Your program could not be posted\nError: '+ error.message); })
 }
 
 
