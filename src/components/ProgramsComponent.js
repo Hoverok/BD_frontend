@@ -13,18 +13,20 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 function RenderProgramInList({ program, onClick }) {
     return (
-        <Link className= 'text-link' to={`/programs/${program._id}`} >
+
         <Media tag="li">
             <Media left middle>
                 <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
             </Media>
-            <Media body className="ml-5">
-                <Media heading>{program.name}</Media>
-                <p>{program.name}</p>
-                <p>{program.name}</p>
-            </Media>
+            <Link to={`/programs/${program._id}`} className='text-link' >
+                <Media body className="ml-5">
+                    <Media heading>{program.name}</Media>
+                    <p>{program.name}</p>
+                    <p>{program.name}</p>
+                </Media>
+            </Link>
         </Media>
-        </Link>
+
     );
 }
 
@@ -94,11 +96,11 @@ const Programs = (props) => {
         );
     });
 
-    if (props.programs.errMess) {
+    if (props.programs.programsErrMess) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.programs.errMess}</h4>
+                    <h4>{props.programs.programsErrMess}</h4>
                 </div>
             </div>
         );

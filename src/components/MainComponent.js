@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Programs from './ProgramsComponent';
+import ProgramDetail from './ProgramDetailComponent';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Menu from './MenuComponent';
@@ -78,22 +79,17 @@ class Main extends Component {
       return (
         <Programs
           programs={this.props.programs}
-          //programsErrMess={this.props.programs.errMess}
           postProgram={this.props.postProgram}
+          programsErrMess={this.props.programs.errMess}
         />
       )
     }
 
     const ProgramWithId = ({ match }) => {
       return (
-          <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
-            isLoading={this.props.dishes.isLoading}
-            errMess={this.props.dishes.errMess}
-            comments={this.props.comments.comments.filter((comment) => comment.dish === match.params.dishId)}
-            commentsErrMess={this.props.comments.errMess}
-            postComment={this.props.postComment}
-            favorite={this.props.favorites.favorites ? this.props.favorites.favorites.dishes.some((dish) => dish._id === match.params.dishId) : false}
-            postFavorite={this.props.postFavorite}
+          <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
+            //isLoading={this.props.dishes.isLoading}
+            errMess={this.props.programs.errMess}
           />
       );
     }
@@ -148,12 +144,12 @@ class Main extends Component {
         <TransitionGroup>
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
-              <Route path="/programs" component={ProgramsPage} />
+              <Route exact path="/programs" component={ProgramsPage} />
               <Route path="/programs/:programId" component={ProgramWithId} />
-              <Route path="/home" component={HomePage} />
-              <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />
+              <Route path="/home" component={HomePage} />
+              <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
               <PrivateRoute exact path="/favorites" component={() => <Favorites favorites={this.props.favorites} deleteFavorite={this.props.deleteFavorite} />} />
               <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
               <Redirect to="/home" />
