@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, Button, Row, Col
+    Modal, ModalHeader, ModalBody, Button, Row, Col, Media
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
+
 
 function RenderDish({ dish, favorite, postFavorite }) {
     return (
@@ -69,6 +71,38 @@ function RenderComments({ comments, postComment, dishId }) {
         );
 }
 
+function RenderPatientInList({ patient, onClick }) {
+    return (
+        <Media tag="li">
+            <Media left middle>
+                <Media object src={baseUrl + "images/pic.jpg"} alt={patient.name} />
+            </Media>
+            <Media body className="ml-5">
+                <Media heading>{patient.name}</Media>
+                <p>{patient.name}</p>
+                <p>{patient.name}</p>
+            </Media>
+        </Media>
+    );
+}
+
+
+function RenderLeader({ leader }) {
+    return (
+        <Media tag="li">
+            <Media left middle>
+                <Media object src={baseUrl + leader.image} alt={leader.name} />
+            </Media>
+            <Media body className="ml-5">
+                <Media heading>{leader.name}</Media>
+                <p>{leader.designation}</p>
+                <p>{leader.description}</p>
+            </Media>
+        </Media>
+    );
+
+}
+
 class CommentForm extends Component {
 
     constructor(props) {
@@ -124,6 +158,16 @@ class CommentForm extends Component {
 }
 
 const Patients = (props) => {
+    const patients = props.patients.patients.map((patient) => {
+        return (
+            <Fade in key={patient._id}>
+                <div className="col-12 mt-2">
+                    <RenderPatientInList patient={patient} />
+                </div>
+            </Fade>
+        );
+    });
+
     if (props.patients.errMess) {
         return (
             <div className="container">
@@ -142,15 +186,18 @@ const Patients = (props) => {
                         <BreadcrumbItem active>Pacientai</BreadcrumbItem>
                     </Breadcrumb>
                 </div>
-
-                <div className="row">
-                    <div className="col-12">
-                        <h3>Pacientai</h3>
-                        <hr />
-                    </div>
-                </div>
                 <div className="row">
                     <CommentForm patients={props.patients} postPatient={props.postPatient} />
+                </div>
+                <div className="row row-content">
+                    <div className="col-12">
+                        <h2>Pacientai</h2>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            {patients}
+                        </div>
+                    </div>
                 </div>
             </div>
 
