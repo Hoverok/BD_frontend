@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Programs from './ProgramsComponent';
 import ProgramDetail from './ProgramDetailComponent';
+import Search from './SearchComponent'; //redo search export from class to constant
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Menu from './MenuComponent';
@@ -37,6 +37,7 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   fetchComments: () => { dispatch(fetchComments()) },
   fetchDishes: () => { dispatch(fetchDishes()) },
   resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
+  resetSearchField: () => {dispatch(actions).reset('searchParams')},
   fetchPromos: () => { dispatch(fetchPromos()) },
   fetchLeaders: () => dispatch(fetchLeaders()),
   postFeedback: (feedback) => dispatch(postFeedback(feedback)),
@@ -75,15 +76,23 @@ class Main extends Component {
       );
     }
 
-    const ProgramsPage = () => {
-      return (
-        <Programs
-          programs={this.props.programs}
-          postProgram={this.props.postProgram}
-          programsErrMess={this.props.programs.errMess}
-        />
-      )
-    }
+    // const ProgramsPage = () => {
+    //   return (
+    //     <Programs
+    //       programs={this.props.programs}
+    //       postProgram={this.props.postProgram}
+    //       programsErrMess={this.props.programs.errMess}
+    //     />
+    //   )
+    // }
+
+    // const Search = () => {
+    //   return (
+
+    //   )
+    // }
+
+
 
     const ProgramWithId = ({ match }) => {
       return (
@@ -144,7 +153,7 @@ class Main extends Component {
         <TransitionGroup>
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
-              <Route exact path="/programs" component={ProgramsPage} />
+              <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess}/>} />
               <Route path="/programs/:programId" component={ProgramWithId} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />

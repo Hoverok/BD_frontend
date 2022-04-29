@@ -9,25 +9,51 @@ import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import { SearchParams } from '../shared/searchParams';
 
 
 function RenderProgramInList({ program, onClick }) {
-    return (
 
-        <Media tag="li">
-            <Media left middle>
-                <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
-            </Media>
-            <Link to={`/programs/${program._id}`} className='text-link' >
-                <Media body className="ml-5">
-                    <Media heading>{program.name}</Media>
-                    <p>{program.name}</p>
-                    <p>{program.name}</p>
+
+    if (SearchParams.name === '') {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
                 </Media>
-            </Link>
-        </Media>
-
-    );
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        <Media heading>{program.name}</Media>
+                        <p>{program.name}</p>
+                        <p>{program.name}</p>
+                        <p>SearchParams.name is empty {SearchParams.name}</p>
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+    else if ((program.name.toLowerCase()).includes(SearchParams.name.toLowerCase()) ) {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        <Media heading>{program.name}</Media>
+                        <p>{program.name}</p>
+                        <p>{program.name}</p>
+                        <p>SearchParams.name: {SearchParams.name}</p>
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+    else {
+        return (
+            <div></div>
+        );
+    }
 }
 
 
@@ -128,11 +154,9 @@ const Programs = (props) => {
                     </div>
                 </div>
             </div>
-
-
-
-
         );
+
+
 }
 
 export default Programs;
