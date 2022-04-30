@@ -4,19 +4,19 @@ import {
     CardTitle, Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, Button, Row, Col, Form
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 
-function RenderProgram({ program, putProgram }) {
+function RenderProgram({ program, putProgram, deleteProgram }) {
     return (
 
         <div className="row">
             <div className="col-12 m-1">
-                <EditProgramForm program={program} putProgram={putProgram} />
+                <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram}/>
                 <div className="d-none d-sm-block">
                     <span className="badge badge-info">{program.programStatus}</span>
                 </div>
@@ -121,40 +121,6 @@ class CommentForm extends Component {
 
 }
 
-const ProgramDetail = (props) => {
-    if (props.errMess) {
-        return (
-            <div className="container">
-                <div className="row">
-                    <h4>{props.errMess}</h4>
-                </div>
-            </div>
-        );
-    }
-    else if (props.program != null)
-        return (
-            <div className="container">
-                <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.program.name}</BreadcrumbItem>
-                    </Breadcrumb>
-                    <div className="col-12">
-                        <h3>{props.program.name}</h3>
-                        <hr />
-                    </div>
-                </div>
-                <div className="row">
-                    <RenderProgram program={props.program} putProgram={props.putProgram} />
-                </div>
-            </div>
-        );
-    else
-        return (
-            <div></div>
-        );
-}
-
 class EditProgramForm extends Component {
     constructor(props) {
         super(props);
@@ -163,24 +129,22 @@ class EditProgramForm extends Component {
             isDeleteModalOpen: false
         };
         this.toggleModal = this.toggleModal.bind(this);
-        //this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
         this.handleUpdateAd = this.handleUpdateAd.bind(this);
-        //this.handleDeleteAd = this.handleDeleteAd.bind(this);
+        this.handleDeleteAd = this.handleDeleteAd.bind(this);
     }
 
     toggleModal() {
-        //alert(this.props.dish.label)
         this.setState({
             isModalOpen: !this.state.isModalOpen
         });
     }
 
-    // toggleDeleteModal() {
-    //     //alert(this.props.dish.label)
-    //     this.setState({
-    //         isDeleteModalOpen: !this.state.isDeleteModalOpen
-    //     });
-    // }
+    toggleDeleteModal() {
+        this.setState({
+            isDeleteModalOpen: !this.state.isDeleteModalOpen
+        });
+    }
 
     handleUpdateAd(values) {
         this.toggleModal();
@@ -190,7 +154,8 @@ class EditProgramForm extends Component {
 
     handleDeleteAd(event) {
         this.toggleDeleteModal();
-        this.props.deleteDish(this.props.dish.id);
+        this.props.deleteProgram(this.props.program._id);
+
     }
 
     handleNameChanged(event) {
@@ -263,14 +228,14 @@ class EditProgramForm extends Component {
                     <ModalBody>
                         <Form onSubmit={this.handleDeleteAd}>
                             <div className="form-row">
-                                <div className="form-group required col-sm-12">
-                                    <label className="control-label" for="Photo">Ar tikrai norite pašalinti? </label>
+                                <div className="form-group col-sm-12">
+                                    <p>Ar tikrai norite ištrinti programą? </p>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <Button type="cancel" className="btn btn-secondary btn-sm ml-auto"
                                     data-dismiss="modal">Atšaukti</Button>
-                                <Button type="submit" value="submit" className="bg-primary">Pašalinti</Button>
+                                <Button type="submit" value="submit" className="bg-primary">Ištrinti</Button>
                             </div>
                         </Form>
                     </ModalBody>
@@ -278,6 +243,40 @@ class EditProgramForm extends Component {
             </div>
         );
     }
+}
+
+const ProgramDetail = (props) => {
+    if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.program != null)
+        return (
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.program.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.program.name}</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    <RenderProgram program={props.program} putProgram={props.putProgram} deleteProgram={props.deleteProgram} />
+                </div>
+            </div>
+        );
+    else
+        return (
+            <Redirect to='/programs' />
+        );
 }
 
 export default ProgramDetail;

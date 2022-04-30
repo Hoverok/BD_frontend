@@ -12,11 +12,11 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, putProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
+  postProgram, putProgram, deleteProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { TransitionGroup } from 'react-transition-group';
 
 const mapStateToProps = state => { //maps redux store state to props that become available in this component
   return {
@@ -33,6 +33,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   postProgram: (name, personalCode, programStatus) => dispatch(postProgram(name, personalCode, programStatus)),
   putProgram: (programId, name, personalCode, programStatus) => dispatch(putProgram(programId, name, personalCode, programStatus)),
+  deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
@@ -98,6 +99,7 @@ class Main extends Component {
       return (
         <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
           putProgram={this.props.putProgram}
+          deleteProgram={this.props.deleteProgram}
           errMess={this.props.programs.errMess}
         />
       );

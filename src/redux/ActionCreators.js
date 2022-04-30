@@ -100,7 +100,7 @@ export const putProgram = (programId, name, personalCode, programStatus) => (dis
     //console.log('Program ', updatedProgram);
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'programs' + '/' + programId, {
+    return fetch(baseUrl + 'programs/' + programId, {
         method: "PUT",
         body: JSON.stringify(updatedProgram),
         headers: {
@@ -129,6 +129,34 @@ export const putProgram = (programId, name, personalCode, programStatus) => (dis
             alert('error')
             // + 'nError: ' + error.message);
         });
+};
+
+export const deleteProgram = (programId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'programs/' + programId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(programs => { console.log('Program Deleted', programs); dispatch(addPrograms(programs)); })
+        .catch(error => dispatch(programsFailed(error.message)));
 };
 
 
