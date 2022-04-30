@@ -12,7 +12,8 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, putProgram, deleteProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
+  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise,
+  postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
@@ -21,6 +22,7 @@ import { TransitionGroup } from 'react-transition-group';
 const mapStateToProps = state => { //maps redux store state to props that become available in this component
   return {
     programs: state.programs,
+    exercises: state.exercises,
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
@@ -31,10 +33,13 @@ const mapStateToProps = state => { //maps redux store state to props that become
 }
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
+  fetchPrograms: () => { dispatch(fetchPrograms()) },
   postProgram: (name, personalCode, programStatus) => dispatch(postProgram(name, personalCode, programStatus)),
   putProgram: (programId, name, personalCode, programStatus) => dispatch(putProgram(programId, name, personalCode, programStatus)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
-  fetchPrograms: () => { dispatch(fetchPrograms()) },
+  fetchExercises: () => { dispatch(fetchExercises()) },
+  postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
+
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
   fetchDishes: () => { dispatch(fetchDishes()) },
@@ -53,6 +58,7 @@ class Main extends Component {
 
   componentDidMount() { //when react mounts Main component into the view, dishes,comments, etc get fetched and loaded into the store and become availabe for the application
     this.props.fetchPrograms();
+    this.props.fetchExercises();
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
@@ -77,30 +83,15 @@ class Main extends Component {
       );
     }
 
-    // const ProgramsPage = () => {
-    //   return (
-    //     <Programs
-    //       programs={this.props.programs}
-    //       postProgram={this.props.postProgram}
-    //       programsErrMess={this.props.programs.errMess}
-    //     />
-    //   )
-    // }
-
-    // const Search = () => {
-    //   return (
-
-    //   )
-    // }
-
-
-
     const ProgramWithId = ({ match }) => {
       return (
         <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
           putProgram={this.props.putProgram}
           deleteProgram={this.props.deleteProgram}
           errMess={this.props.programs.errMess}
+          exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
+          postExercise={this.props.postExercise}
+          //exercisesErrMess={this.props.exercises.errMess}
         />
       );
     }

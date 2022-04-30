@@ -16,7 +16,7 @@ function RenderProgram({ program, putProgram, deleteProgram }) {
 
         <div className="row">
             <div className="col-12 m-1">
-                <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram}/>
+                <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} />
                 <div className="d-none d-sm-block">
                     <span className="badge badge-info">{program.programStatus}</span>
                 </div>
@@ -28,27 +28,29 @@ function RenderProgram({ program, putProgram, deleteProgram }) {
 
 }
 
-function RenderComments({ comments, postComment, dishId }) {
-    if (comments != null)
+function RenderExercises({ exercises, programId, postExercise }) {
+    if (exercises != null)
         return (
             <div className="col-12 col-md-5 m-1">
-                <h4>Comments</h4>
+                <h4>Exercises</h4>
                 <ul className="list-unstyled">
                     <Stagger in>
-                        {comments.map((comment) => {
+                        {exercises.map((exercise) => {
                             return (
-                                <Fade in key={comment._id}>
+                                <Fade in key={exercise._id}>
                                     <li>
-                                        <p>{comment.comment}</p>
-                                        <p>{comment.rating} stars</p>
-                                        <p>-- {comment.author.firstname} {comment.author.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.updatedAt)))}</p>
+                                        <p>{exercise.name}</p>
+                                        <p>{exercise.ytLink}</p>
+                                        <p>{exercise.difficulty}/5</p>
+                                        <p>{exercise.comment}</p>
+                                        <p>-- {exercise.author.firstname} {exercise.author.lastname} , {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(Date.parse(exercise.updatedAt)))}</p>
                                     </li>
                                 </Fade>
                             );
                         })}
                     </Stagger>
                 </ul>
-                <CommentForm dishId={dishId} postComment={postComment} />
+                <ExerciseForm programId={programId} postExercise={postExercise} />
             </div>
         );
     else
@@ -57,7 +59,7 @@ function RenderComments({ comments, postComment, dishId }) {
         );
 }
 
-class CommentForm extends Component {
+class ExerciseForm extends Component {
 
     constructor(props) {
         super(props);
@@ -79,21 +81,32 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postComment(this.props.dishId, values.rating, values.comment);
+        this.props.postExercise(this.props.programId, values.name, values.ytLink, values.difficulty, values.comment);
     }
 
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Pridėti pratimą </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Pridėti pratimą</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Col>
-                                    <Label htmlFor="rating">Rating</Label>
-                                    <Control.select model=".rating" id="rating" className="form-control">
+                                <Label htmlFor="name" md={3}>Pavadinimas</Label>
+                                <Col md={9}>
+                                    <Control.text model=".name" id="name" name="name"
+                                        placeholder="pavadinimas"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="difficulty" md={3}>Intensyvumas</Label>
+                                <Col md={3}>
+                                    <Control.select model=".difficulty" id="difficulty" name="difficulty"
+                                        className="form-control">
+                                        <option></option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -104,9 +117,17 @@ class CommentForm extends Component {
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="comment">Comment</Label>
-                                    <Control.textarea model=".comment" id="comment"
-                                        rows="6" className="form-control" />
+                                    <Label htmlFor="ytLink" md={3}>Nuoroda</Label>
+                                    <Control.textarea model=".ytLink" id="ytLink" name="ytLink"
+                                        rows="2" className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col>
+                                    <Label htmlFor="comment">Specialisto komentaras</Label>
+                                    <Control.textarea model=".comment" id="comment" name="comment"
+                                        rows="8" className="form-control" />
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
@@ -130,8 +151,8 @@ class EditProgramForm extends Component {
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
-        this.handleUpdateAd = this.handleUpdateAd.bind(this);
-        this.handleDeleteAd = this.handleDeleteAd.bind(this);
+        this.handleUpdateProgram = this.handleUpdateProgram.bind(this);
+        this.handleDeleteProgram = this.handleDeleteProgram.bind(this);
     }
 
     toggleModal() {
@@ -146,28 +167,16 @@ class EditProgramForm extends Component {
         });
     }
 
-    handleUpdateAd(values) {
+    handleUpdateProgram(values) {
         this.toggleModal();
         this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus);
         //this.props.postProgram(values.name, values.personalCode, values.programStatus);
     }
 
-    handleDeleteAd(event) {
+    handleDeleteProgram(event) {
         this.toggleDeleteModal();
         this.props.deleteProgram(this.props.program._id);
 
-    }
-
-    handleNameChanged(event) {
-        adParams.name = event.target.value;
-    }
-
-    handlePersonalCodeChanged(event) {
-        adParams.personalCode = event.target.value;
-    }
-
-    handleLabelProgramStatusChanged(event) {
-        adParams.programStatus = event.target.value;
     }
     render() {
         return (
@@ -182,7 +191,7 @@ class EditProgramForm extends Component {
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Redaguoti duomenis</ModalHeader>
                     <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleUpdateAd(values)}>
+                        <LocalForm onSubmit={(values) => this.handleUpdateProgram(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="name" md={2}>Vardas</Label>
                                 <Col md={10}>
@@ -226,7 +235,7 @@ class EditProgramForm extends Component {
                 <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
                     <ModalHeader toggle={this.toggleDeleteModal}>Redaguoti paciento duomenis</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleDeleteAd}>
+                        <Form onSubmit={this.handleDeleteProgram}>
                             <div className="form-row">
                                 <div className="form-group col-sm-12">
                                     <p>Ar tikrai norite ištrinti programą? </p>
@@ -265,11 +274,17 @@ const ProgramDetail = (props) => {
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>{props.program.name}</h3>
+                        <p>Program ID: {props.program._id}</p>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
-                    <RenderProgram program={props.program} putProgram={props.putProgram} deleteProgram={props.deleteProgram} />
+                    <RenderProgram program={props.program}
+                        putProgram={props.putProgram}
+                        deleteProgram={props.deleteProgram} />
+                    <RenderExercises exercises={props.exercises}
+                        postExercise={props.postExercise}
+                        programId={props.program._id} />
                 </div>
             </div>
         );

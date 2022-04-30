@@ -165,6 +165,88 @@ export const deleteProgram = (programId) => (dispatch) => {
 };
 
 
+export const addExercise = (exercise) => ({
+    type: ActionTypes.ADD_EXERCISE,
+    payload: exercise
+});
+
+export const addExercises = (exercises) => ({
+    type: ActionTypes.ADD_EXERCISES,
+    payload: exercises
+});
+
+export const exercisesFailed = (errmess) => ({
+    type: ActionTypes.EXERCISES_FAILED,
+    payload: errmess
+});
+
+export const fetchExercises = () => (dispatch) => {
+    return fetch(baseUrl + 'exercises')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(exercises => dispatch(addExercises(exercises)))
+        .catch(error => dispatch(exercisesFailed(error.message)));
+}
+
+export const postExercise = (programId, name, ytLink, difficulty, comment) => (dispatch) => {
+
+    const newExercise = {
+        program: programId,
+        name: name,
+        ytLink: ytLink,
+        difficulty: difficulty,
+        comment: comment,
+
+    }
+    console.log('Exercise ', newExercise);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercises', {
+        method: 'POST',
+        body: JSON.stringify(newExercise),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addExercise(response)))
+        .catch(error => {
+            console.log('Post exercises ', error.message);
+            alert('Your exercise could not be posted\nError: ' + error.message);
+        })
+}
+
+
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
