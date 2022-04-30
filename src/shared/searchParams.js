@@ -1,4 +1,5 @@
 export const SearchParams = {
-    name: '',
-    label: ''
+    searchField: '',
+    personalCode: '',
+    programStatus: ''
 };

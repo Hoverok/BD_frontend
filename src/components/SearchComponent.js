@@ -15,15 +15,15 @@ class Search extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNameChanged = this.handleNameChanged.bind(this);
-        this.handleLabelChanged = this.handleLabelChanged.bind(this);
+        this.handleProgramStatusChanged = this.handleProgramStatusChanged.bind(this);
     }
 
     handleNameChanged(event) {
-        SearchParams.name = event.target.value;
+        SearchParams.searchField = event.target.value;
     }
 
-    handleLabelChanged(event) {
-        SearchParams.label = event.target.value;
+    handleProgramStatusChanged(event) {
+        SearchParams.programStatus = event.target.value;
     }
 
 
@@ -38,11 +38,11 @@ class Search extends Component {
                 <div className="col-12 justify-content-center">
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup row>
-                            <div className="col-10">
+                            <div className="col-10 mt-2" >
                                 <Input type="text" className="form-control" id="name" name="name"
-                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchParams.name} onChange={this.handleNameChanged} />
+                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchParams.searchField} onChange={this.handleNameChanged} />
                             </div>
-                            <div className="col-2">
+                            <div className="col-2 mt-2">
                                 <Button type="submit" className="btn btn-primary">
                                     <span className="fa fa-search fa-lg"></span>
                                 </Button>
@@ -52,17 +52,12 @@ class Search extends Component {
                             <div className="col-2">
                                 <Label htmlFor="label">Progamos būsena </Label>
                             </div>
-                            <div className="col-4">
-                                <select onChange={this.handleLabelChanged} >
+                            <div className="col-2">
+                                <select onChange={this.handleProgramStatusChanged} >
                                     <option value=""></option>
-                                    <option value="Jėga">Jėga</option>
-                                    <option value="Ištvermė">Ištvermė</option>
-                                    <option value="H.I.I.T">H.I.I.T</option>
-                                    <option value="Crossfit">Crossfit</option>
-                                    <option value="Reabilitacija">Reabilitacija</option>
-                                    <option value="Svorio metimas">Svorio metimas</option>
-                                    <option value="Svorio priaugimas">Svorio priaugimas</option>
-                                    <option value="Kūno skulptūra">Kūno skulptūra</option>
+                                    <option value="Laukia">Laukia</option>
+                                    <option value="Aktyvi">Aktyvi</option>
+                                    <option value="Baigta">Baigta</option>
                                 </select>
                             </div>
                         </FormGroup>

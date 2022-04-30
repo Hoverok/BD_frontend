@@ -42,10 +42,12 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (name) => (dispatch) => {
+export const postProgram = (name, personalCode, programStatus) => (dispatch) => {
 
     const newProgram = {
-        name: name
+        name: name,
+        personalCode: personalCode,
+        programStatus: programStatus
     }
     console.log('Program ', newProgram);
 

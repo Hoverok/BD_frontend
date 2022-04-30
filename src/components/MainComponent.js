@@ -31,13 +31,12 @@ const mapStateToProps = state => { //maps redux store state to props that become
 }
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
-  postProgram: (name) => dispatch(postProgram(name)),
+  postProgram: (name, personalCode, programStatus) => dispatch(postProgram(name, personalCode, programStatus)),
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
   fetchDishes: () => { dispatch(fetchDishes()) },
   resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
-  resetSearchField: () => {dispatch(actions).reset('searchParams')},
   fetchPromos: () => { dispatch(fetchPromos()) },
   fetchLeaders: () => dispatch(fetchLeaders()),
   postFeedback: (feedback) => dispatch(postFeedback(feedback)),
@@ -96,10 +95,10 @@ class Main extends Component {
 
     const ProgramWithId = ({ match }) => {
       return (
-          <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
-            //isLoading={this.props.dishes.isLoading}
-            errMess={this.props.programs.errMess}
-          />
+        <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
+          //isLoading={this.props.dishes.isLoading}
+          errMess={this.props.programs.errMess}
+        />
       );
     }
 
@@ -153,7 +152,7 @@ class Main extends Component {
         <TransitionGroup>
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
             <Switch>
-              <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess}/>} />
+              <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess} />} />
               <Route path="/programs/:programId" component={ProgramWithId} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />

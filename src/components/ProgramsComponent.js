@@ -15,7 +15,7 @@ import { SearchParams } from '../shared/searchParams';
 function RenderProgramInList({ program, onClick }) {
 
 
-    if (SearchParams.name === '') {
+    if (SearchParams.searchField === '' && SearchParams.programStatus === '') {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -24,15 +24,15 @@ function RenderProgramInList({ program, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>{program.name}</Media>
-                        <p>{program.name}</p>
-                        <p>{program.name}</p>
-                        <p>SearchParams.name is empty {SearchParams.name}</p>
+                        <p>{program.personalCode}</p>
+                        <p>{program.programStatus}</p>
+                        <p>SearchParams.searchField is empty {SearchParams.searchField}</p>
                     </Media>
                 </Link>
             </Media>
         );
     }
-    else if ((program.name.toLowerCase()).includes(SearchParams.name.toLowerCase()) ) {
+    else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -41,9 +41,47 @@ function RenderProgramInList({ program, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>{program.name}</Media>
-                        <p>{program.name}</p>
-                        <p>{program.name}</p>
-                        <p>SearchParams.name: {SearchParams.name}</p>
+                        <p>{program.personalCode}</p>
+                        <p>{program.programStatus}</p>
+                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+    else if (((program.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && SearchParams.programStatus === '') {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        <Media heading>{program.name}</Media>
+                        <p>{program.personalCode}</p>
+                        <p>{program.programStatus}</p>
+                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+    else if (((program.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && SearchParams.programStatus === program.programStatus) {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/pic.jpg"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        <Media heading>{program.name}</Media>
+                        <p>{program.personalCode}</p>
+                        <p>{program.programStatus}</p>
+                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
                     </Media>
                 </Link>
             </Media>
@@ -79,7 +117,7 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postProgram(values.name);
+        this.props.postProgram(values.name, values.personalCode, values.programStatus);
     }
 
     render() {
@@ -97,6 +135,27 @@ class CommentForm extends Component {
                                         placeholder="Vardas"
                                         className="form-control"
                                     />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
+                                <Col md={10}>
+                                    <Control.text model=".personalCode" id="personalCode" name="personalCode"
+                                        placeholder="Asmens Kodas"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="programStatus" md={2}>Būsena</Label>
+                                <Col md={6}>
+                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
+                                        className="form-control">
+                                        <option value=""></option>
+                                        <option value="Laukia">Laukia</option>
+                                        <option value="Aktyvi">Aktyvi</option>
+                                        <option value="Baigta">Baigta</option>
+                                    </Control.select>
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
