@@ -21,8 +21,21 @@ export const Programs = (state = {
                 programs: state.programs.map(
                     program =>
                         program._id === action.payload._id
-                        ? action.payload
-                        : program
+                            ? action.payload
+                            : program
+                )
+            };
+
+        case ActionTypes.REMOVE_PROGRAM: 
+            var program = action.payload;
+            setTimeout(() => {console.log('aaaaaaaaaaaaaaa')}, 5000);
+            setTimeout(() => {  console.log("World!"); }, 5000);
+            console.log('aaaaaaaaaaaaaaa')
+            return {
+                ...state,
+                programs: state.programs.filter(
+                    program =>
+                        program._id !== action.payload._id
                 )
             };
 

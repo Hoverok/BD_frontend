@@ -16,6 +16,11 @@ export const updateProgram = (program) => ({
     payload: program
 });
 
+export const removeProgram = (program) => ({
+    type: ActionTypes.REMOVE_PROGRAM,
+    payload: program
+});
+
 export const addPrograms = (programs) => ({
     type: ActionTypes.ADD_PROGRAMS,
     payload: programs
@@ -155,9 +160,10 @@ export const deleteProgram = (programId) => (dispatch) => {
                 throw error;
             })
         .then(response => response.json())
-        .then(programs => { console.log('Program Deleted', programs); dispatch(addPrograms(programs)); })
+        .then(response => { console.log('Program Deleted', response); dispatch(removeProgram(response)); }) //this doesnt get called
         .catch(error => dispatch(programsFailed(error.message)));
 };
+
 
 
 export const addComment = (comment) => ({

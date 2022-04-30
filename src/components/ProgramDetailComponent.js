@@ -235,7 +235,7 @@ class EditProgramForm extends Component {
                             <div className="form-row">
                                 <Button type="cancel" className="btn btn-secondary btn-sm ml-auto"
                                     data-dismiss="modal">Atšaukti</Button>
-                                <Button type="submit" value="submit" className="bg-primary">Ištrinti</Button>
+                                <Button type="submit" className="bg-primary">Ištrinti</Button>
                             </div>
                         </Form>
                     </ModalBody>
