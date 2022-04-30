@@ -53,7 +53,7 @@ class Search extends Component {
                                 <Label htmlFor="label">Progamos būsena </Label>
                             </div>
                             <div className="col-2">
-                                <select onChange={this.handleProgramStatusChanged} >
+                                <select onChange={this.handleProgramStatusChanged} defaultValue={SearchParams.programStatus} >
                                     <option value=""></option>
                                     <option value="Laukia">Laukia</option>
                                     <option value="Aktyvi">Aktyvi</option>

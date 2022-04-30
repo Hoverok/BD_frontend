@@ -2,28 +2,27 @@ import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, Button, Row, Col
+    Modal, ModalHeader, ModalBody, Button, Row, Col, Form
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import adParams from '../shared/adParams';
 
-function RenderProgram({ program }) {
+function RenderProgram({ program, putProgram }) {
     return (
-        <div className="col-12 col-md-5 m-1">
-            <FadeTransform in
-                transformProps={{
-                    exitTransform: 'scale(0.5) translateY(-50%)'
-                }}>
-                <Card>
-                    <CardBody>
-                        <CardTitle>{program.name}</CardTitle>
-                        <CardText>{program.name}</CardText>
-                    </CardBody>
-                </Card>
-            </FadeTransform>
+
+        <div className="row">
+            <div className="col-12 m-1">
+                <EditProgramForm program={program} putProgram={putProgram} />
+                <div className="d-none d-sm-block">
+                    <span className="badge badge-info">{program.programStatus}</span>
+                </div>
+                <h4>Paciento informacija:</h4>
+                <p>Asmens Kodas: {program.personalCode}</p>
+            </div>
         </div>
     );
 
@@ -123,7 +122,6 @@ class CommentForm extends Component {
 }
 
 const ProgramDetail = (props) => {
-    console.log(props.program)
     if (props.errMess) {
         return (
             <div className="container">
@@ -147,7 +145,7 @@ const ProgramDetail = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <RenderProgram program={props.program} />
+                    <RenderProgram program={props.program} putProgram={props.putProgram} />
                 </div>
             </div>
         );
@@ -155,6 +153,131 @@ const ProgramDetail = (props) => {
         return (
             <div></div>
         );
+}
+
+class EditProgramForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isModalOpen: false,
+            isDeleteModalOpen: false
+        };
+        this.toggleModal = this.toggleModal.bind(this);
+        //this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.handleUpdateAd = this.handleUpdateAd.bind(this);
+        //this.handleDeleteAd = this.handleDeleteAd.bind(this);
+    }
+
+    toggleModal() {
+        //alert(this.props.dish.label)
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    // toggleDeleteModal() {
+    //     //alert(this.props.dish.label)
+    //     this.setState({
+    //         isDeleteModalOpen: !this.state.isDeleteModalOpen
+    //     });
+    // }
+
+    handleUpdateAd(values) {
+        this.toggleModal();
+        this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus);
+        //this.props.postProgram(values.name, values.personalCode, values.programStatus);
+    }
+
+    handleDeleteAd(event) {
+        this.toggleDeleteModal();
+        this.props.deleteDish(this.props.dish.id);
+    }
+
+    handleNameChanged(event) {
+        adParams.name = event.target.value;
+    }
+
+    handlePersonalCodeChanged(event) {
+        adParams.personalCode = event.target.value;
+    }
+
+    handleLabelProgramStatusChanged(event) {
+        adParams.programStatus = event.target.value;
+    }
+    render() {
+        return (
+            <div>
+                <Button outline onClick={this.toggleModal}>
+                    <span className="fa fa-pencil fa-lg"></span> Redaguoti duomenis
+                </Button>
+                {"   "}
+                <Button outline onClick={this.toggleDeleteModal}>
+                    <span className="fa fa-trash fa-lg"></span> Ištrinti
+                </Button>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}>Redaguoti duomenis</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={(values) => this.handleUpdateAd(values)}>
+                            <Row className="form-group">
+                                <Label htmlFor="name" md={2}>Vardas</Label>
+                                <Col md={10}>
+                                    <Control.text model=".name" id="name" name="name"
+                                        placeholder="Vardas"
+                                        defaultValue={this.props.program.name}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
+                                <Col md={10}>
+                                    <Control.text model=".personalCode" id="personalCode" name="personalCode"
+                                        placeholder="Asmens Kodas"
+                                        defaultValue={this.props.program.personalCode}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="programStatus" md={2}>Būsena</Label>
+                                <Col md={6}>
+                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
+                                        defaultValue={this.props.program.programStatus}
+                                        className="form-control">
+                                        <option value=""></option>
+                                        <option value="Laukia">Laukia</option>
+                                        <option value="Aktyvi">Aktyvi</option>
+                                        <option value="Baigta">Baigta</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Button type="submit" className="bg-primary">
+                                Keisti
+                            </Button>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
+                    <ModalHeader toggle={this.toggleDeleteModal}>Redaguoti paciento duomenis</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleDeleteAd}>
+                            <div className="form-row">
+                                <div className="form-group required col-sm-12">
+                                    <label className="control-label" for="Photo">Ar tikrai norite pašalinti? </label>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <Button type="cancel" className="btn btn-secondary btn-sm ml-auto"
+                                    data-dismiss="modal">Atšaukti</Button>
+                                <Button type="submit" value="submit" className="bg-primary">Pašalinti</Button>
+                            </div>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            </div>
+        );
+    }
 }
 
 export default ProgramDetail;

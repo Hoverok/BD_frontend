@@ -95,7 +95,7 @@ function RenderProgramInList({ program, onClick }) {
 }
 
 
-class CommentForm extends Component {
+class PostProgramForm extends Component {
 
     constructor(props) {
         super(props);
@@ -200,7 +200,7 @@ const Programs = (props) => {
                     </Breadcrumb>
                 </div>
                 <div className="row">
-                    <CommentForm programs={props.programs} postProgram={props.postProgram} />
+                    <PostProgramForm programs={props.programs} postProgram={props.postProgram} />
                 </div>
                 <div className="row row-content">
                     <div className="col-12">

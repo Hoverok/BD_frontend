@@ -12,7 +12,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
+  postProgram, putProgram, fetchPrograms, postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
@@ -32,6 +32,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   postProgram: (name, personalCode, programStatus) => dispatch(postProgram(name, personalCode, programStatus)),
+  putProgram: (programId, name, personalCode, programStatus) => dispatch(putProgram(programId, name, personalCode, programStatus)),
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
@@ -96,7 +97,7 @@ class Main extends Component {
     const ProgramWithId = ({ match }) => {
       return (
         <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
-          //isLoading={this.props.dishes.isLoading}
+          putProgram={this.props.putProgram}
           errMess={this.props.programs.errMess}
         />
       );
@@ -150,19 +151,17 @@ class Main extends Component {
           logoutUser={this.props.logoutUser}
         />
         <TransitionGroup>
-          <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
-            <Switch>
-              <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess} />} />
-              <Route path="/programs/:programId" component={ProgramWithId} />
-              <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
-              <Route path="/menu/:dishId" component={DishWithId} />
-              <Route path="/home" component={HomePage} />
-              <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
-              <PrivateRoute exact path="/favorites" component={() => <Favorites favorites={this.props.favorites} deleteFavorite={this.props.deleteFavorite} />} />
-              <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
-              <Redirect to="/home" />
-            </Switch>
-          </CSSTransition>
+          <Switch>
+            <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess} />} />
+            <Route path="/programs/:programId" component={ProgramWithId} />
+            <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
+            <Route path="/menu/:dishId" component={DishWithId} />
+            <Route path="/home" component={HomePage} />
+            <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
+            <PrivateRoute exact path="/favorites" component={() => <Favorites favorites={this.props.favorites} deleteFavorite={this.props.deleteFavorite} />} />
+            <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
+            <Redirect to="/home" />
+          </Switch>
         </TransitionGroup>
         <Footer />
       </div>
