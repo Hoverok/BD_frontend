@@ -12,7 +12,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise,
+  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise, putExercise, 
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
@@ -39,6 +39,9 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
   postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
+  putExercise: (exerciseId, name, ytLink, difficulty, comment) => dispatch(putExercise(exerciseId, name, ytLink, difficulty, comment)),
+  
+
 
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
   fetchComments: () => { dispatch(fetchComments()) },
@@ -91,6 +94,7 @@ class Main extends Component {
           errMess={this.props.programs.errMess}
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
           postExercise={this.props.postExercise}
+          putExercise={this.props.putExercise}
           //exercisesErrMess={this.props.exercises.errMess}
         />
       );

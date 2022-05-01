@@ -170,6 +170,11 @@ export const addExercise = (exercise) => ({
     payload: exercise
 });
 
+export const updateExercise = (exercise) => ({
+    type: ActionTypes.UPDATE_EXERCISE,
+    payload: exercise
+});
+
 export const addExercises = (exercises) => ({
     type: ActionTypes.ADD_EXERCISES,
     payload: exercises
@@ -246,7 +251,47 @@ export const postExercise = (programId, name, ytLink, difficulty, comment) => (d
         })
 }
 
+export const putExercise = (exerciseId, name, ytLink, difficulty, comment) => (dispatch) => {
 
+    const updatedExercise = {
+        name: name,
+        ytLink: ytLink,
+        difficulty: difficulty,
+        comment: comment
+    };
+    //console.log('Exercise ', updatedExercise);
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercises/' + exerciseId, {
+        method: "PUT",
+        body: JSON.stringify(updatedExercise),
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(updateExercise(response)))
+        .catch(error => {
+            //console.log('Post trainer ', error.message);
+            alert('error')
+            // + 'nError: ' + error.message);
+        });
+};
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
