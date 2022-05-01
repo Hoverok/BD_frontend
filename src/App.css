@@ -19,6 +19,10 @@
     padding:70px 30px 70px 30px;
     margin:0px auto;
     background: #9575CD ;
+    background-image: url("./bg2.jpg"); 
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
     color:floralwhite;
 }
 
@@ -57,4 +61,8 @@ address{
 .text-link {
     color: inherit;
     text-decoration: inherit;
+}
+
+.jumbotron-text {
+    color: #512DA8
 }
