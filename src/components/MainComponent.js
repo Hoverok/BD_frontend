@@ -12,7 +12,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise, putExercise, 
+  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise, putExercise, deleteExercise,
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
@@ -40,6 +40,7 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   fetchExercises: () => { dispatch(fetchExercises()) },
   postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
   putExercise: (exerciseId, name, ytLink, difficulty, comment) => dispatch(putExercise(exerciseId, name, ytLink, difficulty, comment)),
+  deleteExercise: (exerciseId) => dispatch(deleteExercise(exerciseId)),
   
 
 
@@ -95,6 +96,7 @@ class Main extends Component {
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
           postExercise={this.props.postExercise}
           putExercise={this.props.putExercise}
+          deleteExercise={this.props.deleteExercise}
           //exercisesErrMess={this.props.exercises.errMess}
         />
       );

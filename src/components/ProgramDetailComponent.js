@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, Button, Row, Col, Form
+    Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
@@ -26,7 +26,7 @@ function RenderProgram({ program, putProgram, deleteProgram }) {
     );
 }
 
-function RenderExercises({ exercises, programId, postExercise, putExercise }) {
+function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
     if (exercises != null)
         return (
             <div className="col-12 col-md-5 m-1">
@@ -36,7 +36,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise }) {
                         {exercises.map((exercise) => {
                             return (
                                 <Fade in key={exercise._id}>
-                                    <EditExerciseForm exercise={exercise} putExercise={putExercise} />
+                                    <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
                                     <li>
                                         <p>{exercise.name}</p>
                                         <p>{exercise.ytLink}</p>
@@ -90,7 +90,7 @@ class EditExerciseForm extends Component {
 
     handleDeleteExercise(event) {
         this.toggleDeleteModal();
-        this.props.handleDeleteExercise(this.props.exercise._id);
+        this.props.deleteExercise(this.props.exercise._id);
 
     }
     render() {
@@ -157,21 +157,15 @@ class EditExerciseForm extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
-                    <ModalHeader toggle={this.toggleDeleteModal}>Redaguoti paciento duomenis</ModalHeader>
+                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti pratim1</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleDeleteProgram}>
-                            <div className="form-row">
-                                <div className="form-group col-sm-12">
-                                    <p>Ar tikrai norite ištrinti programą? </p>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <Button type="cancel" className="btn btn-secondary btn-sm ml-auto"
-                                    data-dismiss="modal">Atšaukti</Button>
-                                <Button type="submit" className="bg-primary">Ištrinti</Button>
-                            </div>
-                        </Form>
+                        <p>  Ar tikrai norite ištrinti pratimą? </p>
                     </ModalBody>
+                    <ModalFooter>
+                        <Button className="btn btn-secondary"
+                            onClick={this.toggleDeleteModal}>Atšaukti</Button>
+                        <Button className="bg-primary" onClick={this.handleDeleteExercise}>Ištrinti</Button>
+                    </ModalFooter>
                 </Modal>
             </div>
         );
@@ -350,23 +344,16 @@ class EditProgramForm extends Component {
                         </LocalForm>
                     </ModalBody>
                 </Modal>
-
                 <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
-                    <ModalHeader toggle={this.toggleDeleteModal}>Redaguoti paciento duomenis</ModalHeader>
+                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti programą</ModalHeader>
                     <ModalBody>
-                        <Form onSubmit={this.handleDeleteProgram}>
-                            <div className="form-row">
-                                <div className="form-group col-sm-12">
-                                    <p>Ar tikrai norite ištrinti programą? </p>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <Button type="cancel" className="btn btn-secondary btn-sm ml-auto"
-                                    data-dismiss="modal">Atšaukti</Button>
-                                <Button type="submit" className="bg-primary">Ištrinti</Button>
-                            </div>
-                        </Form>
+                        <p>  Ar tikrai norite ištrinti programą? </p>
                     </ModalBody>
+                    <ModalFooter>
+                        <Button className="btn btn-secondary"
+                            onClick={this.toggleDeleteModal}>Atšaukti</Button>
+                        <Button className="bg-primary" onClick={this.handleDeleteProgram}>Ištrinti</Button>
+                    </ModalFooter>
                 </Modal>
             </div>
         );
@@ -403,7 +390,9 @@ const ProgramDetail = (props) => {
                         deleteProgram={props.deleteProgram} />
                     <RenderExercises exercises={props.exercises}
                         postExercise={props.postExercise}
-                        putExercise={props.putExercise} />
+                        putExercise={props.putExercise}
+                        deleteExercise={props.deleteExercise}
+                        programId={props.program._id} />
                 </div>
             </div>
         );

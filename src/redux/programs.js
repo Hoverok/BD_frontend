@@ -33,7 +33,6 @@ export const Programs = (state = {
                         program._id !== action.payload._id
                 )
             };
-
         default:
             return state;
     }

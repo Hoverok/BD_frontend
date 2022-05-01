@@ -174,6 +174,10 @@ export const updateExercise = (exercise) => ({
     type: ActionTypes.UPDATE_EXERCISE,
     payload: exercise
 });
+export const removeExercise = (exercise) => ({
+    type: ActionTypes.REMOVE_EXERCISE,
+    payload: exercise
+});
 
 export const addExercises = (exercises) => ({
     type: ActionTypes.ADD_EXERCISES,
@@ -252,7 +256,6 @@ export const postExercise = (programId, name, ytLink, difficulty, comment) => (d
 }
 
 export const putExercise = (exerciseId, name, ytLink, difficulty, comment) => (dispatch) => {
-
     const updatedExercise = {
         name: name,
         ytLink: ytLink,
@@ -291,6 +294,34 @@ export const putExercise = (exerciseId, name, ytLink, difficulty, comment) => (d
             alert('error')
             // + 'nError: ' + error.message);
         });
+};
+
+export const deleteExercise = (exerciseId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercises/' + exerciseId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => { console.log('Exercise Deleted', response); dispatch(removeExercise(response)); }) //this doesnt get called
+        .catch(error => dispatch(exercisesFailed(error.message)));
 };
 
 export const addComment = (comment) => ({

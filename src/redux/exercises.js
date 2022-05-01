@@ -19,9 +19,17 @@ export const Exercises = (state = {
                 ...state,
                 exercises: state.exercises.map(
                     exercise =>
-                    exercise._id === action.payload._id
+                        exercise._id === action.payload._id
                             ? action.payload
                             : exercise
+                )
+            };
+        case ActionTypes.REMOVE_EXERCISE:
+            return {
+                ...state,
+                exercises: state.exercises.filter(
+                    exercise =>
+                        exercise._id !== action.payload._id
                 )
             };
         default:
