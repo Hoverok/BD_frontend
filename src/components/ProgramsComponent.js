@@ -194,10 +194,6 @@ const Programs = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to='/home'>Pagrindinis</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>Programos</BreadcrumbItem>
-                    </Breadcrumb>
                 </div>
                 <div className="row">
                     <PostProgramForm programs={props.programs} postProgram={props.postProgram} />

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form
+    Card, CardImg, CardImgOverlay, CardHeader, CardText, CardBody, CardSubtitle,
+    CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label,
+    Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, Media
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
@@ -21,35 +21,53 @@ function RenderProgram({ program, putProgram, deleteProgram }) {
                 </div>
                 <h4>Paciento informacija:</h4>
                 <p>Asmens Kodas: {program.personalCode}</p>
+                <hr />
             </div>
         </div>
     );
 }
 
+
 function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
     if (exercises != null)
         return (
-            <div className="col-12 col-md-5 m-1">
-                <h4>Exercises</h4>
-                <ul className="list-unstyled">
+            <div className="row">
+                <div className="col-12 m-1">
+                    <h4>Pratimai</h4>
                     <Stagger in>
                         {exercises.map((exercise) => {
                             return (
                                 <Fade in key={exercise._id}>
-                                    <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
-                                    <li>
-                                        <p>{exercise.name}</p>
-                                        <p>{exercise.ytLink}</p>
-                                        <p>{exercise.difficulty}/5</p>
-                                        <p>{exercise.comment}</p>
-                                        <p>-- {exercise.author.firstname} {exercise.author.lastname} , {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(Date.parse(exercise.updatedAt)))}</p>
-                                    </li>
+                                    <Card color="secondary">
+                                        <Card body>
+                                            <CardBody>
+                                                <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
+                                                <CardTitle tag="h5">
+                                                    {exercise.name}<br></br>
+                                                    Intensyvumas: {exercise.difficulty}/5
+                                                </CardTitle>
+                                                <CardText>
+                                                    {exercise.comment}
+                                                </CardText>
+                                                <CardSubtitle
+                                                    className="mb-2 text-muted"
+                                                    tag="h6">
+                                                    Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
+                                                    Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                                                        .format(new Date(Date.parse(exercise.updatedAt)))}
+                                                </CardSubtitle>
+                                                <CardFooter>
+                                                    <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
+                                                </CardFooter>
+                                            </CardBody>
+                                        </Card>
+                                    </Card>
                                 </Fade>
                             );
                         })}
                     </Stagger>
-                </ul>
-                <ExerciseForm programId={programId} postExercise={postExercise} />
+                    <ExerciseForm programId={programId} postExercise={postExercise} />
+                </div>
             </div>
         );
     else
@@ -96,11 +114,10 @@ class EditExerciseForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}>
-                    <span className="fa fa-pencil fa-lg"></span> Redaguoti duomenis
+                <Button className="mb-3" color="info" onClick={this.toggleModal}>
+                    <span className="fa fa-pencil fa-lg"></span> Redaguoti pratimą
                 </Button>
-                {"   "}
-                <Button outline onClick={this.toggleDeleteModal}>
+                <Button className="mb-3 ml-1" color="danger" onClick={this.toggleDeleteModal}>
                     <span className="fa fa-trash fa-lg"></span> Ištrinti
                 </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
@@ -199,8 +216,9 @@ class ExerciseForm extends Component {
 
     render() {
         return (
-            <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Pridėti pratimą </Button>
+            <div className="m-3">
+                <Button color="success" onClick={this.toggleModal}>
+                    <span className="fa fa-plus fa-lg "></span> Pridėti pratimą </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Pridėti pratimą</ModalHeader>
                     <ModalBody>
@@ -294,11 +312,10 @@ class EditProgramForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}>
-                    <span className="fa fa-pencil fa-lg"></span> Redaguoti duomenis
+                <Button className="mb-3" color="info" onClick={this.toggleModal}>
+                    <span className="fa fa-pencil fa-lg"></span> Redaguoti programą
                 </Button>
-                {"   "}
-                <Button outline onClick={this.toggleDeleteModal}>
+                <Button className="mb-3 ml-1" color="danger" onClick={this.toggleDeleteModal}>
                     <span className="fa fa-trash fa-lg"></span> Ištrinti
                 </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
@@ -380,19 +397,22 @@ const ProgramDetail = (props) => {
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>{props.program.name}</h3>
-                        <p>Program ID: {props.program._id}</p>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
-                    <RenderProgram program={props.program}
-                        putProgram={props.putProgram}
-                        deleteProgram={props.deleteProgram} />
-                    <RenderExercises exercises={props.exercises}
-                        postExercise={props.postExercise}
-                        putExercise={props.putExercise}
-                        deleteExercise={props.deleteExercise}
-                        programId={props.program._id} />
+                    <div className="col-12">
+                        <RenderProgram program={props.program}
+                            putProgram={props.putProgram}
+                            deleteProgram={props.deleteProgram} />
+                    </div>
+                    <div className="col-12">
+                        <RenderExercises exercises={props.exercises}
+                            postExercise={props.postExercise}
+                            putExercise={props.putExercise}
+                            deleteExercise={props.deleteExercise}
+                            programId={props.program._id} />
+                    </div>
                 </div>
             </div>
         );
