@@ -56,7 +56,7 @@ class Header extends Component {
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
                                 <NavItem>
-                                    <NavLink className="nav-link" to="/home">
+                                    <NavLink className="nav-link" to="/welcome">
                                         <span className="fa fa-home fa-lg"></span> Home
                                     </NavLink>
                                 </NavItem>
@@ -90,7 +90,7 @@ class Header extends Component {
                                 <NavItem>
                                     {!this.props.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleModal}>
-                                            <span className="fa fa-sign-in fa-lg"></span> Login
+                                            <span className="fa fa-sign-in fa-lg"></span> Prisijungti
                                             {this.props.auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
@@ -100,7 +100,7 @@ class Header extends Component {
                                         <div>
                                             <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
                                             <Button outline onClick={this.handleLogout}>
-                                                <span className="fa fa-sign-out fa-lg"></span> Logout
+                                                <span className="fa fa-sign-out fa-lg"></span> Atsijungti
                                                 {this.props.auth.isFetching ?
                                                     <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                     : null
