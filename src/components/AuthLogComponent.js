@@ -43,14 +43,18 @@ class AuthLog extends Component {
             <div className="container">
                 {!this.props.auth.isAuthenticated ?
                     <div className="col-12 m-1">
-                        <button type="button" class="btn btn-success btn-lg btn-block"
+                        <button type="button" className="btn btn-success btn-lg btn-block"
                             data-toggle="tooltip" data-placement="right" title="Rasti pacientui priskirtą programą"
                             onClick={this.togglePatientModal}>Pacientas</button>
-                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick={this.toggleModal}>Gydytojas</button>
+                        <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.toggleModal}>Gydytojas</button>
                     </div>
                     :
                     <div>
-                        <Redirect to='/programs' />
+                    <div className="col-12 m-1">
+                        <button type="button" className="btn btn-success btn-lg btn-block"
+                            data-toggle="tooltip" data-placement="right" title="Rasti pacientui priskirtą programą"
+                            onClick={this.togglePatientModal}>Pacientas</button>
+                    </div>
                     </div>
                 }
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
