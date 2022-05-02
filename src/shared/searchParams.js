@@ -1,5 +1,6 @@
 export const SearchParams = {
     searchField: '',
     personalCode: '',
-    programStatus: ''
+    programStatus: '',
+    patientProgram: ''
 };

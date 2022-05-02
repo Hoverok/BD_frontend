@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
   putExercise: (exerciseId, name, ytLink, difficulty, comment) => dispatch(putExercise(exerciseId, name, ytLink, difficulty, comment)),
   deleteExercise: (exerciseId) => dispatch(deleteExercise(exerciseId)),
-  
+
 
 
   postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)), //takes parameters in the left part, on the right dispatches through action creator
@@ -99,7 +99,7 @@ class Main extends Component {
           postExercise={this.props.postExercise}
           putExercise={this.props.putExercise}
           deleteExercise={this.props.deleteExercise}
-          //exercisesErrMess={this.props.exercises.errMess}
+        //exercisesErrMess={this.props.exercises.errMess}
         />
       );
     }
@@ -109,7 +109,7 @@ class Main extends Component {
         <PatientProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
           errMess={this.props.programs.errMess}
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
-          //exercisesErrMess={this.props.exercises.errMess}
+        //exercisesErrMess={this.props.exercises.errMess}
         />
       );
     }
@@ -165,7 +165,7 @@ class Main extends Component {
           <Switch>
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
-            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} />} />
+            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
 
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />

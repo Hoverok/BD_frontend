@@ -63,6 +63,10 @@ address{
     text-decoration: inherit;
 }
 
+.text-link:hover {
+    text-decoration: inherit;
+}
+
 .jumbotron-text {
     color: #512DA8
 }
