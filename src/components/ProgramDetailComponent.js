@@ -75,9 +75,6 @@ class RenderPatient extends Component {
 
 
 
-// patient={props.patients.patients.filter((patient) => patient._id === props.program.patient)[0]}
-
-
 function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
     if (exercises != null)
         return (
@@ -349,7 +346,7 @@ class EditProgramForm extends Component {
 
     handleUpdateProgram(values) {
         this.toggleModal();
-        this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus);
+        this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus, values.patientId);
         //this.props.postProgram(values.name, values.personalCode, values.programStatus);
     }
 
@@ -371,6 +368,15 @@ class EditProgramForm extends Component {
                     <ModalHeader toggle={this.toggleModal}>Redaguoti duomenis</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateProgram(values)}>
+                        <Row className="form-group">
+                                <Label htmlFor="patientId" md={2}>Paciento ID</Label>
+                                <Col md={10}>
+                                    <Control.text model=".patientId" id="patientId" name="patientId"
+                                        defaultValue={this.props.program.patient}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
                             <Row className="form-group">
                                 <Label htmlFor="name" md={2}>Vardas</Label>
                                 <Col md={10}>

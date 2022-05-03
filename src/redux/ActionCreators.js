@@ -96,13 +96,14 @@ export const postProgram = (name, personalCode, programStatus, patientId) => (di
         })
 }
 
-export const putProgram = (programId, name, personalCode, programStatus) => (dispatch) => {
+export const putProgram = (programId, name, personalCode, programStatus, patientId) => (dispatch) => {
 
     const updatedProgram = {
         programId: programId,
         name: name,
         personalCode: personalCode,
         programStatus: programStatus,
+        patient: patientId
     };
     //console.log('Program ', updatedProgram);
     const bearer = 'Bearer ' + localStorage.getItem('token');

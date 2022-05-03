@@ -39,7 +39,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postProgram: (name, personalCode, programStatus, patientId) => dispatch(postProgram(name, personalCode, programStatus, patientId)),
-  putProgram: (programId, name, personalCode, programStatus) => dispatch(putProgram(programId, name, personalCode, programStatus)),
+  putProgram: (programId, name, personalCode, programStatus, patientId) => dispatch(putProgram(programId, name, personalCode, programStatus, patientId)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
   postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
