@@ -1,7 +1,8 @@
 export const adParams = {
     name: '',
     personalCode: '',
-    programStatus: ''
+    programStatus: '',
+    patientId: ''
 };
 
 export default adParams;

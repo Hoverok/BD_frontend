@@ -13,61 +13,109 @@ import adParams from '../shared/adParams';
 
 function RenderProgram({ program, putProgram, deleteProgram }) {
     return (
-        <div className="row">
-            <div className="col-12 m-1">
-                <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} />
-                <div className="d-none d-sm-block">
-                    <span className="badge badge-info">{program.programStatus}</span>
-                </div>
-                <h4>Paciento informacija:</h4>
-                <p>Asmens Kodas: {program.personalCode}</p>
-                <hr />
+        <div className="col-12 m-1">
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} />
+            <div className="d-none d-sm-block">
+                <span className="badge badge-info">{program.programStatus}</span>
             </div>
+            {/* <h4>Paciento informacija:</h4>
+            <p>Asmens Kodas: {program.personalCode}</p> */}
+            {/* <div className="row">
+                <div className="col-12 m-1">
+                    <p>PatientID programoje: {program.patient}</p>
+                    <p>{patient.fullName}</p>
+                </div>
+            </div> */}
+            <hr />
         </div>
     );
 }
+
+// function RenderPatient({ patient }) {
+//     return (
+//         <div className="col-12 m-1">
+//             <h4>Paciento informacija:</h4>
+//             <p>Asmens Kodas: {patient.personalCode}</p>
+//             <div className="row">
+//                 <div className="col-12 m-1">
+//                     <p>{patient.fullName}</p>
+//                 </div>
+//             </div>
+//             <hr />
+//         </div>
+//     );
+// }
+
+class RenderPatient extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+
+
+    render() {
+        return (
+            <div className="col-12 m-1">
+                <h4>Paciento informacija:</h4>
+                {/* <p>Asmens Kodas: {this.props.patient.personalCode}</p> */}
+                <div className="row">
+                    <div className="col-12 m-1">
+                        <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
+                        <p>{this.props.patient.fullName}</p>
+                        {/* patient={props.patients.patients.filter((patient) => patient._id === props.program.patient)[0]} */}
+                    </div>
+                </div>
+                <hr />
+            </div>
+        );
+    }
+}
+
+
+
+
+// patient={props.patients.patients.filter((patient) => patient._id === props.program.patient)[0]}
 
 
 function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
     if (exercises != null)
         return (
-            <div className="row">
-                <div className="col-12 m-1">
-                    <h4>Pratimai</h4>
-                    <Stagger in>
-                        {exercises.map((exercise) => {
-                            return (
-                                <Fade in key={exercise._id}>
-                                    <Card color="secondary">
-                                        <Card body>
-                                            <CardBody>
-                                                <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
-                                                <CardTitle tag="h5">
-                                                    {exercise.name}<br></br>
-                                                    Intensyvumas: {exercise.difficulty}/5
-                                                </CardTitle>
-                                                <CardText>
-                                                    {exercise.comment}
-                                                </CardText>
-                                                <CardSubtitle
-                                                    className="mb-2 text-muted"
-                                                    tag="h6">
-                                                    Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
-                                                    Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                                                        .format(new Date(Date.parse(exercise.updatedAt)))}
-                                                </CardSubtitle>
-                                                <CardFooter>
-                                                    <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
-                                                </CardFooter>
-                                            </CardBody>
-                                        </Card>
+            <div className="col-12 m-1">
+                <h4>Pratimai</h4>
+                <Stagger in>
+                    {exercises.map((exercise) => {
+                        return (
+                            <Fade in key={exercise._id}>
+                                <Card color="secondary">
+                                    <Card body>
+                                        <CardBody>
+                                            <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
+                                            <CardTitle tag="h5">
+                                                {exercise.name}<br></br>
+                                                Intensyvumas: {exercise.difficulty}/5
+                                            </CardTitle>
+                                            <CardText>
+                                                {exercise.comment}
+                                            </CardText>
+                                            <CardSubtitle
+                                                className="mb-2 text-muted"
+                                                tag="h6">
+                                                Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
+                                                Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                                                    .format(new Date(Date.parse(exercise.updatedAt)))}
+                                            </CardSubtitle>
+                                            <CardFooter>
+                                                <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
+                                            </CardFooter>
+                                        </CardBody>
                                     </Card>
-                                </Fade>
-                            );
-                        })}
-                    </Stagger>
-                    <ExerciseForm programId={programId} postExercise={postExercise} />
-                </div>
+                                </Card>
+                            </Fade>
+                        );
+                    })}
+                </Stagger>
+                <ExerciseForm programId={programId} postExercise={postExercise} />
             </div>
         );
     else
@@ -104,6 +152,7 @@ class EditExerciseForm extends Component {
     handleUpdateExercise(values) {
         this.toggleModal();
         this.props.putExercise(this.props.exercise._id, values.name, values.ytLink, values.difficulty, values.comment);
+        this.forceUpdate();
     }
 
     handleDeleteExercise(event) {
@@ -401,18 +450,25 @@ const ProgramDetail = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12">
-                        <RenderProgram program={props.program}
-                            putProgram={props.putProgram}
-                            deleteProgram={props.deleteProgram} />
-                    </div>
-                    <div className="col-12">
-                        <RenderExercises exercises={props.exercises}
-                            postExercise={props.postExercise}
-                            putExercise={props.putExercise}
-                            deleteExercise={props.deleteExercise}
-                            programId={props.program._id} />
-                    </div>
+                    <RenderProgram program={props.program}
+                        putProgram={props.putProgram}
+                        deleteProgram={props.deleteProgram}
+                    />
+                </div>
+
+                <div className="row">
+                    <RenderPatient patients={props.patients.patients}
+                        program={props.program}
+                        patient={props.patient}
+                        programId={props.program._id} />
+                </div>
+
+                <div className="row">
+                    <RenderExercises exercises={props.exercises}
+                        postExercise={props.postExercise}
+                        putExercise={props.putExercise}
+                        deleteExercise={props.deleteExercise}
+                        programId={props.program._id} />
                 </div>
             </div>
         );

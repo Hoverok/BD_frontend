@@ -15,6 +15,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise, putExercise, deleteExercise,
+  postPatient, putPatient, deletePatient, fetchPatients,
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
@@ -25,6 +26,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
   return {
     programs: state.programs,
     exercises: state.exercises,
+    patients: state.patients,
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
@@ -36,13 +38,17 @@ const mapStateToProps = state => { //maps redux store state to props that become
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   fetchPrograms: () => { dispatch(fetchPrograms()) },
-  postProgram: (name, personalCode, programStatus) => dispatch(postProgram(name, personalCode, programStatus)),
+  postProgram: (name, personalCode, programStatus, patientId) => dispatch(postProgram(name, personalCode, programStatus, patientId)),
   putProgram: (programId, name, personalCode, programStatus) => dispatch(putProgram(programId, name, personalCode, programStatus)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
   postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
   putExercise: (exerciseId, name, ytLink, difficulty, comment) => dispatch(putExercise(exerciseId, name, ytLink, difficulty, comment)),
   deleteExercise: (exerciseId) => dispatch(deleteExercise(exerciseId)),
+  fetchPatients: () => { dispatch(fetchPatients()) },
+  postPatient: (fullName, personalCode, address, telNum, email) => dispatch(postPatient(fullName, personalCode, address, telNum, email)),
+  putPatient: (patientId, fullName, address, personalCode, telNum, email) => dispatch(putPatient(patientId, fullName, address, personalCode, telNum, email)),
+  deletePatient: (patientId) => dispatch(deletePatient(patientId)),
 
 
 
@@ -65,6 +71,8 @@ class Main extends Component {
   componentDidMount() { //when react mounts Main component into the view, dishes,comments, etc get fetched and loaded into the store and become availabe for the application
     this.props.fetchPrograms();
     this.props.fetchExercises();
+    this.props.fetchPatients();
+
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
@@ -99,6 +107,8 @@ class Main extends Component {
           postExercise={this.props.postExercise}
           putExercise={this.props.putExercise}
           deleteExercise={this.props.deleteExercise}
+          patients={this.props.patients}
+          patient = {this.props.patients.patients.filter((patient) => patient._id === (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
         //exercisesErrMess={this.props.exercises.errMess}
         />
       );
@@ -163,7 +173,8 @@ class Main extends Component {
         />
         <TransitionGroup>
           <Switch>
-            <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram} programsErrMess={this.props.programs.errMess} />} />
+            <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
+              programsErrMess={this.props.programs.errMess} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
             <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />

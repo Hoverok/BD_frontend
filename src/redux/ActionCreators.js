@@ -53,12 +53,13 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (name, personalCode, programStatus) => (dispatch) => {
+export const postProgram = (name, personalCode, programStatus, patientId) => (dispatch) => {
 
     const newProgram = {
         name: name,
         personalCode: personalCode,
-        programStatus: programStatus
+        programStatus: programStatus,
+        patient: patientId
     }
     console.log('Program ', newProgram);
 
@@ -98,9 +99,10 @@ export const postProgram = (name, personalCode, programStatus) => (dispatch) => 
 export const putProgram = (programId, name, personalCode, programStatus) => (dispatch) => {
 
     const updatedProgram = {
+        programId: programId,
         name: name,
         personalCode: personalCode,
-        programStatus: programStatus
+        programStatus: programStatus,
     };
     //console.log('Program ', updatedProgram);
     const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -131,7 +133,7 @@ export const putProgram = (programId, name, personalCode, programStatus) => (dis
         .then(response => dispatch(updateProgram(response)))
         .catch(error => {
             //console.log('Post trainer ', error.message);
-            alert('error')
+            alert('error from putProgram')
             // + 'nError: ' + error.message);
         });
 };
@@ -323,6 +325,167 @@ export const deleteExercise = (exerciseId) => (dispatch) => {
         .then(response => { console.log('Exercise Deleted', response); dispatch(removeExercise(response)); }) //this doesnt get called
         .catch(error => dispatch(exercisesFailed(error.message)));
 };
+
+export const addPatient = (patient) => ({
+    type: ActionTypes.ADD_PATIENT,
+    payload: patient
+});
+
+export const updatePatient = (patient) => ({
+    type: ActionTypes.UPDATE_PATIENT,
+    payload: patient
+});
+export const removePatient = (patient) => ({
+    type: ActionTypes.REMOVE_PATIENT,
+    payload: patient
+});
+
+export const addPatients = (patients) => ({
+    type: ActionTypes.ADD_PATIENTS,
+    payload: patients
+});
+
+export const patientsFailed = (errmess) => ({
+    type: ActionTypes.PATIENTS_FAILED,
+    payload: errmess
+});
+
+export const fetchPatients = () => (dispatch) => {
+    return fetch(baseUrl + 'patients')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(patients => dispatch(addPatients(patients)))
+        .catch(error => dispatch(patientsFailed(error.message)));
+}
+
+export const postPatient = (fullName, personalCode, address, telNum, email) => (dispatch) => {
+
+    const newPatient = {
+        fullName: fullName,
+        personalCode: personalCode,
+        address: address,
+        telNum: telNum,
+        email: email,
+
+    }
+    console.log('Patient ', newPatient);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'patients', {
+        method: 'POST',
+        body: JSON.stringify(newPatient),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addPatient(response)))
+        .catch(error => {
+            console.log('Post patients ', error.message);
+            alert('Patient could not be posted\nError: ' + error.message);
+        })
+}
+
+export const putPatient = (patientId, fullName, address, personalCode, telNum, email) => (dispatch) => {
+    const updatedPatient = {
+        fullName: fullName,
+        personalCode: personalCode,
+        address: address,
+        telNum: telNum,
+        email: email
+    };
+    //console.log('Patient ', updatedPatient);
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'patients/' + patientId, {
+        method: "PUT",
+        body: JSON.stringify(updatedPatient),
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(updatePatient(response)))
+        .catch(error => {
+            //console.log('Post trainer ', error.message);
+            alert('error')
+            // + 'nError: ' + error.message);
+        });
+};
+
+export const deletePatient = (patientId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'patients/' + patientId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => { console.log('Patient Deleted', response); dispatch(removePatient(response)); }) //this doesnt get called
+        .catch(error => dispatch(patientsFailed(error.message)));
+};
+
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,

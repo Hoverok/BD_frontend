@@ -9,7 +9,7 @@ export const Exercises = (state = {
             return { ...state, isLoading: false, errMess: null, exercises: action.payload };
 
         case ActionTypes.EXERCISES_FAILED:
-            return { ...state, isLoading: false, errMess: action.payload, comments: [] };
+            return { ...state, isLoading: false, errMess: action.payload, exercises: [] };
 
         case ActionTypes.ADD_EXERCISE:
             var exercise = action.payload;

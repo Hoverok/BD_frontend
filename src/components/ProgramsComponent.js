@@ -117,7 +117,8 @@ class PostProgramForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postProgram(values.name, values.personalCode, values.programStatus);
+        //use searchParams to store personalCode and filter patient_.id out of it
+        this.props.postProgram(values.name, values.personalCode, values.programStatus, values.patientId);
     }
 
     render() {
@@ -156,6 +157,15 @@ class PostProgramForm extends Component {
                                         <option value="Aktyvi">Aktyvi</option>
                                         <option value="Baigta">Baigta</option>
                                     </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="patientId" md={2}>Paciento ID</Label>
+                                <Col md={10}>
+                                    <Control.text model=".patientId" id="patientId" name="patientId"
+                                        placeholder="Paciento ID"
+                                        className="form-control"
+                                    />
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
