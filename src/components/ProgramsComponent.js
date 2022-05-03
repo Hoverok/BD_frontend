@@ -10,6 +10,7 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
+import adParams from '../shared/adParams';
 
 
 function RenderProgramInList({ program, onClick }) {
@@ -107,8 +108,10 @@ class PostProgramForm extends Component {
             isNavOpen: false,
             isModalOpen: false
         };
+        // console.log("PATIENTS: " + JSON.stringify(this.props.patients))
+        // console.log("PATIENT ID: " + JSON.stringify((this.props.patients.patients[0])))
     }
-
+    
     toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
@@ -118,7 +121,9 @@ class PostProgramForm extends Component {
     handleSubmit(values) {
         this.toggleModal();
         //use searchParams to store personalCode and filter patient_.id out of it
-        this.props.postProgram(values.name, values.personalCode, values.programStatus, values.patientId);
+        adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
+        // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
+        this.props.postProgram(values.name, values.personalCode, values.programStatus, adParams.personalCode);
     }
 
     render() {
@@ -206,7 +211,7 @@ const Programs = (props) => {
                 <div className="row">
                 </div>
                 <div className="row">
-                    <PostProgramForm programs={props.programs} postProgram={props.postProgram} />
+                    <PostProgramForm programs={props.programs} postProgram={props.postProgram} patients={props.patients} />
                 </div>
                 <div className="row row-content">
                     <div className="col-12">

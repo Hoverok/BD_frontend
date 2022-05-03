@@ -108,7 +108,7 @@ class Main extends Component {
           putExercise={this.props.putExercise}
           deleteExercise={this.props.deleteExercise}
           patients={this.props.patients}
-          patient = {this.props.patients.patients.filter((patient) => patient._id === (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
+          patient={this.props.patients.patients.filter((patient) => patient._id === (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
         //exercisesErrMess={this.props.exercises.errMess}
         />
       );
@@ -174,7 +174,7 @@ class Main extends Component {
         <TransitionGroup>
           <Switch>
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
-              programsErrMess={this.props.programs.errMess} />} />
+              programsErrMess={this.props.programs.errMess}           patients={this.props.patients} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
             <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
