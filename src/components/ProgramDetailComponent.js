@@ -14,7 +14,7 @@ import adParams from '../shared/adParams';
 function RenderProgram({ program, putProgram, deleteProgram, patient, patients }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patient={patient} patients={patients}/>
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patient={patient} patients={patients} />
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
@@ -86,7 +86,8 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                                 className="mb-2 text-muted"
                                                 tag="h6">
                                                 Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
-                                                Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                                                Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA',
+                                                    { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
                                                     .format(new Date(Date.parse(exercise.updatedAt)))}
                                             </CardSubtitle>
                                             <CardFooter>
@@ -362,7 +363,7 @@ class EditProgramForm extends Component {
                     <ModalHeader toggle={this.toggleModal}>Redaguoti duomenis</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateProgram(values)}>
-                        <Row className="form-group">
+                            <Row className="form-group">
                                 <Label htmlFor="patientId" md={2}>Paciento ID</Label>
                                 <Col md={10}>
                                     <Control.text model=".patientId" id="patientId" name="patientId"

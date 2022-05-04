@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ProgramDetail from './ProgramDetailComponent';
-import Search from './SearchComponent'; //redo search export from class to constant
+import Search from './SearchComponent'; 
+import SearchPatients from './SearchPatientsComponent';
+
 import AuthLog from './AuthLogComponent';
 import PatientProgramDetail from './PatientProgramComponent';
 import Home from './HomeComponent';
@@ -173,11 +175,14 @@ class Main extends Component {
         />
         <TransitionGroup>
           <Switch>
+            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
+            <Route path="/welcome/:programId" component={PatientProgramWithId} />
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
               programsErrMess={this.props.programs.errMess} patients={this.props.patients} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
-            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
-            <Route path="/welcome/:programId" component={PatientProgramWithId} />
+            <Route exact path="/patients" component={() => <SearchPatients patients={this.props.patients} postPatient={this.props.postPatient}
+              patientsErrMess={this.props.patients.errMess} />} />
+
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
             <Route path="/menu/:dishId" component={DishWithId} />
             <Route path="/home" component={HomePage} />

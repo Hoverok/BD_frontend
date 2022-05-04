@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { Component } from 'react';
-import { SearchParams } from '../shared/searchParams';
-import Programs from './ProgramsComponent';
+import { SearchPatientsParams} from '../shared/searchPatientsParams';
+import Patients from './PatientsComponent';
 
 //tie search parameters to props like in conctacComponent
 
@@ -15,15 +15,10 @@ class Search extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNameChanged = this.handleNameChanged.bind(this);
-        this.handleProgramStatusChanged = this.handleProgramStatusChanged.bind(this);
     }
 
     handleNameChanged(event) {
-        SearchParams.searchField = event.target.value;
-    }
-
-    handleProgramStatusChanged(event) {
-        SearchParams.programStatus = event.target.value;
+        SearchPatientsParams.searchField = event.target.value;
     }
 
 
@@ -40,7 +35,7 @@ class Search extends Component {
                         <FormGroup row>
                             <div className="col-10 mt-2" >
                                 <Input type="text" className="form-control" id="name" name="name"
-                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchParams.searchField} onChange={this.handleNameChanged} />
+                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchPatientsParams.searchField} onChange={this.handleNameChanged} />
                             </div>
                             <div className="col-2 mt-2">
                                 <Button type="submit" className="btn btn-primary">
@@ -48,29 +43,17 @@ class Search extends Component {
                                 </Button>
                             </div>
                         </FormGroup>
-                        <FormGroup row>
-                            <div className="col-2">
-                                <Label htmlFor="label">Progamos būsena </Label>
-                            </div>
-                            <div className="col-2">
-                                <select onChange={this.handleProgramStatusChanged} defaultValue={SearchParams.programStatus} >
-                                    <option value=""></option>
-                                    <option value="Laukia">Laukia</option>
-                                    <option value="Aktyvi">Aktyvi</option>
-                                    <option value="Baigta">Baigta</option>
-                                </select>
-                            </div>
-                        </FormGroup>
                     </Form>
 
                 </div>
+
                 <div className="row col-12 justify-content-center">
-                    <Programs programs={this.props.programs}
-                        postProgram={this.props.postProgram}
+                    <Patients
+                        postPatient={this.props.postPatient}
                         patients={this.props.patients}
-                        programsErrMess={this.props.errMess} />
+                        patientsErrMess={this.props.patients.patientsErrMess} />
                 </div>
-{/* follow through errMess path */}
+
 
             </div>
 
