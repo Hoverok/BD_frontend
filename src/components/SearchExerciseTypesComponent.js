@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { Component } from 'react';
-import { SearchPatientsParams} from '../shared/searchPatientsParams';
-import Patients from './PatientsComponent';
+import { SearchExerciseTypesParams} from '../shared/searchExerciseTypesParams';
+import {ExerciseTypes} from './ExerciseTypesComponent';
 
-//tie search parameters to props like in conctacComponent
 
-class SearchPatients extends Component {
+class SearchExerciseTypes extends Component {
     constructor(props) {
         super(props);
 
@@ -18,7 +17,7 @@ class SearchPatients extends Component {
     }
 
     handleNameChanged(event) {
-        SearchPatientsParams.searchField = event.target.value;
+        SearchExerciseTypesParams.searchField = event.target.value;
     }
 
 
@@ -35,7 +34,7 @@ class SearchPatients extends Component {
                         <FormGroup row>
                             <div className="col-10 mt-2" >
                                 <Input type="text" className="form-control" id="name" name="name"
-                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchPatientsParams.searchField} onChange={this.handleNameChanged} />
+                                    placeholder="Įveskite paieškos parametrus" defaultValue={SearchExerciseTypesParams.searchField} onChange={this.handleNameChanged} />
                             </div>
                             <div className="col-2 mt-2">
                                 <Button type="submit" className="btn btn-primary">
@@ -48,13 +47,11 @@ class SearchPatients extends Component {
                 </div>
 
                 <div className="row col-12 justify-content-center">
-                    <Patients
-                        postPatient={this.props.postPatient}
-                        patients={this.props.patients}
-                        patientsErrMess={this.props.patients.patientsErrMess} />
+                    <ExerciseTypes
+                        postExerciseType={this.props.postExerciseType}
+                        exerciseTypes={this.props.exerciseTypes}
+                        exerciseTypesErrMess={this.props.exerciseTypes.exerciseTypesErrMess} />
                 </div>
-
-
             </div>
 
 
@@ -62,4 +59,4 @@ class SearchPatients extends Component {
     }
 }
 
-export default SearchPatients;
+export default SearchExerciseTypes;

@@ -3,6 +3,7 @@ import { createForms } from 'react-redux-form';
 import { Programs } from './programs';
 import { Exercises } from './exercises';
 import { Patients } from './patients';
+import { ExerciseTypes } from './exerciseTypes';
 import { Dishes } from './dishes';
 import { Comments } from './comments';
 import { Promotions } from './promotions';
@@ -22,6 +23,7 @@ export const ConfigureStore = () => {
             programs: Programs,
             exercises: Exercises,
             patients: Patients,
+            exerciseTypes: ExerciseTypes,
             dishes: Dishes,
             comments: Comments,
             promotions: Promotions,

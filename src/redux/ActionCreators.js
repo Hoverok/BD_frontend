@@ -488,10 +488,167 @@ export const deletePatient = (patientId) => (dispatch) => {
 };
 
 
+export const addExerciseType = (exerciseType) => ({
+    type: ActionTypes.ADD_EXERCISETYPE,
+    payload: exerciseType
+});
+
+export const updateExerciseType = (exerciseType) => ({
+    type: ActionTypes.UPDATE_EXERCISETYPE,
+    payload: exerciseType
+});
+export const removeExerciseType = (exerciseType) => ({
+    type: ActionTypes.REMOVE_EXERCISETYPE,
+    payload: exerciseType
+});
+
+export const addExerciseTypes = (exerciseTypes) => ({
+    type: ActionTypes.ADD_EXERCISETYPES,
+    payload: exerciseTypes
+});
+
+export const exerciseTypesFailed = (errmess) => ({
+    type: ActionTypes.EXERCISETYPES_FAILED,
+    payload: errmess
+});
+
+export const fetchExerciseTypes = () => (dispatch) => {
+    return fetch(baseUrl + 'exercisetypes')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(exerciseTypes => dispatch(addExerciseTypes(exerciseTypes)))
+        .catch(error => dispatch(exerciseTypesFailed(error.message)));
+}
+
+export const postExerciseType = (ytLink, title, intensity, inventory) => (dispatch) => {
+
+    const newExerciseType = {
+        ytLink: ytLink,
+        title: title,
+        intensity: intensity,
+        inventory: inventory
+    }
+    console.log('ExerciseType ', newExerciseType);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercisetype', {
+        method: 'POST',
+        body: JSON.stringify(newExerciseType),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addExerciseType(response)))
+        .catch(error => {
+            console.log('Post exercisetypes ', error.message);
+            alert('ExerciseType could not be posted\nError: ' + error.message);
+        })
+}
+
+export const putExerciseType = (exerciseTypeId, ytLink, title, intensity, inventory) => (dispatch) => {
+    const updatedExerciseType = {
+        ytLink: ytLink,
+        title: title,
+        intensity: intensity,
+        inventory: inventory
+    };
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercisetypes/' + exerciseTypeId, {
+        method: "PUT",
+        body: JSON.stringify(updatedExerciseType),
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(updateExerciseType(response)))
+        .catch(error => {
+            //console.log('Post trainer ', error.message);
+            alert('error' + error)
+            // + 'nError: ' + error.message);
+        });
+};
+
+export const deleteExerciseType = (exerciseTypeId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'exercisetypes/' + exerciseTypeId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => { console.log('exercisetype Deleted', response); dispatch(removeExerciseType(response)); }) //this doesnt get called
+        .catch(error => dispatch(exerciseTypesFailed(error.message)));
+};
+
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
 });
+
 
 //thunk that calls actions (dispatches them) based on server response
 export const fetchComments = () => (dispatch) => {

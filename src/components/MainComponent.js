@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ProgramDetail from './ProgramDetailComponent';
 import PatientDetail from './PatientDetailComponent';
-import Search from './SearchComponent'; 
+import Search from './SearchComponent';
 import SearchPatients from './SearchPatientsComponent';
-
+import SearchExerciseTypes from './SearchExerciseTypesComponent';
 import AuthLog from './AuthLogComponent';
 import PatientProgramDetail from './PatientProgramComponent';
 import Home from './HomeComponent';
@@ -17,8 +17,8 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  postProgram, putProgram, deleteProgram, fetchPrograms, fetchExercises, postExercise, putExercise, deleteExercise,
-  postPatient, putPatient, deletePatient, fetchPatients,
+  fetchPrograms, postProgram, putProgram, deleteProgram, fetchExercises, postExercise, putExercise, deleteExercise,
+  fetchPatients, postPatient, putPatient, deletePatient, fetchExerciseTypes, postExerciseType, putExerciseType, deleteExerciseType,
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
@@ -30,6 +30,8 @@ const mapStateToProps = state => { //maps redux store state to props that become
     programs: state.programs,
     exercises: state.exercises,
     patients: state.patients,
+    exerciseType: state.exerciseType,
+
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
@@ -52,6 +54,10 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   postPatient: (fullName, personalCode, address, telNum, email) => dispatch(postPatient(fullName, personalCode, address, telNum, email)),
   putPatient: (patientId, fullName, address, personalCode, telNum, email) => dispatch(putPatient(patientId, fullName, address, personalCode, telNum, email)),
   deletePatient: (patientId) => dispatch(deletePatient(patientId)),
+  fetchExerciseTypes: () => { dispatch(fetchExerciseTypes()) },
+  postExerciseType: (ytLink, title, intensity, inventory) => dispatch(postExerciseType(ytLink, title, intensity, inventory)),
+  putExerciseType: (exerciseTypeId, ytLink, title, intensity, inventory) => dispatch(putExerciseType(exerciseTypeId, ytLink, title, intensity, inventory)),
+  deleteExerciseType: (exerciseTypeId) => dispatch(deleteExerciseType(exerciseTypeId)),
 
 
 
@@ -75,6 +81,7 @@ class Main extends Component {
     this.props.fetchPrograms();
     this.props.fetchExercises();
     this.props.fetchPatients();
+    this.props.fetchExerciseTypes();
 
     this.props.fetchDishes();
     this.props.fetchComments();
@@ -139,7 +146,7 @@ class Main extends Component {
     }
 
 
-    
+
 
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {
@@ -198,6 +205,8 @@ class Main extends Component {
             <Route exact path="/patients" component={() => <SearchPatients patients={this.props.patients} postPatient={this.props.postPatient}
               patientsErrMess={this.props.patients.errMess} />} />
             <Route path="/patients/:patientId" component={PatientWithId} />
+            <Route exact path="/exerciseTypes" component={() => <SearchExerciseTypes exerciseTypes={this.props.exerciseTypes} postExerciseType={this.props.postExerciseType}
+              exerciseTypesErrMess={this.props.exerciseTypes.errMess} />} />
 
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
             <Route path="/menu/:dishId" component={DishWithId} />

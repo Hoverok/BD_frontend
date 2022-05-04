@@ -13,12 +13,24 @@ function RenderPatient({ patient, putPatient, deletePatient }) {
     return (
         <div className="col-12 m-1">
             <EditPatientForm patient={patient} putPatient={putPatient} deletePatient={deletePatient} />
-            <h4>Paciento informacija:</h4>
-            <p>Pacientas: <b>{patient.fullName}</b></p>
-            <p>Asmens Kodas: <b>{patient.personalCode}</b></p>
-            <p>Adresas: <b>{patient.address}</b></p>
-            <p>Tel. numeris: <b>{patient.telNum}</b></p>
-            <p>El. paštas: <b>{patient.email}</b></p>
+            <h3>Paciento informacija:</h3>
+            <br></br>
+            <div className='row'>
+                <div className="col-12 col-sm-2">
+                    <p>Pacientas:</p>
+                    <p>Asmens Kodas:</p>
+                    <p>Adresas:</p>
+                    <p>Tel. numeris:</p>
+                    <p>El. paštas:</p>
+                </div>
+                <div className="col-12 col-sm-6">
+                    <p><b>{patient.fullName}</b></p>
+                    <p><b>{patient.personalCode}</b></p>
+                    <p><b>{patient.address}</b></p>
+                    <p><b>{patient.telNum}</b></p>
+                    <p><b>{patient.email}</b></p>
+                </div>
+            </div>
             <hr />
         </div>
     );
@@ -65,7 +77,7 @@ class EditPatientForm extends Component {
         return (
             <div>
                 <Button className="mb-3" color="info" onClick={this.toggleModal}>
-                    <span className="fa fa-pencil fa-lg"></span> Redaguoti pacientą
+                    <span className="fa fa-pencil fa-lg"></span> Redaguoti
                 </Button>
                 <Button className="mb-3 ml-1" color="danger" onClick={this.toggleDeleteModal}>
                     <span className="fa fa-trash fa-lg"></span> Ištrinti
