@@ -6,26 +6,19 @@ import {
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
-import { Loading } from './LoadingComponent';
-import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
-import adParams from '../shared/adParams';
 
-function RenderProgram({ program, putProgram, deleteProgram, patient, patients }) {
+
+
+function RenderPatient({ patient, putPatient, deletePatient }) {
     return (
         <div className="col-12 m-1">
-            <EditPatientForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patient={patient} patients={patients} />
-            <div className="d-none d-sm-block">
-                <span className="badge badge-info">{program.programStatus}</span>
-            </div>
-            {/* <h4>Paciento informacija:</h4>
-            <p>Asmens Kodas: {program.personalCode}</p> */}
-            {/* <div className="row">
-                <div className="col-12 m-1">
-                    <p>PatientID programoje: {program.patient}</p>
-                    <p>{patient.fullName}</p>
-                </div>
-            </div> */}
+            <EditPatientForm patient={patient} putPatient={putPatient} deletePatient={deletePatient} />
+            <h4>Paciento informacija:</h4>
+            <p>Pacientas: <b>{patient.fullName}</b></p>
+            <p>Asmens Kodas: <b>{patient.personalCode}</b></p>
+            <p>Adresas: <b>{patient.address}</b></p>
+            <p>Tel. numeris: <b>{patient.telNum}</b></p>
+            <p>El. paštas: <b>{patient.email}</b></p>
             <hr />
         </div>
     );
@@ -33,7 +26,7 @@ function RenderProgram({ program, putProgram, deleteProgram, patient, patients }
 
 
 
-class EditProgramForm extends Component {
+class EditPatientForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,8 +35,8 @@ class EditProgramForm extends Component {
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
-        this.handleUpdateProgram = this.handleUpdateProgram.bind(this);
-        this.handleDeleteProgram = this.handleDeleteProgram.bind(this);
+        this.handleUpdatePatient = this.handleUpdatePatient.bind(this);
+        this.handleDeletePatient = this.handleDeletePatient.bind(this);
     }
 
     toggleModal() {
@@ -58,52 +51,35 @@ class EditProgramForm extends Component {
         });
     }
 
-    handleUpdateProgram(values) {
+    handleUpdatePatient(values) {
         this.toggleModal();
-        console.log(JSON.stringify(this.props.patients.patients));
-        try {
-            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
-            // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus, adParams.personalCode);
-        }
-        catch (err) {
-            alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
-        }
+        this.props.putPatient(this.props.patient._id, values.name, values.personalCode, values.address, values.telNum, values.email);
     }
 
-    handleDeleteProgram(event) {
+    handleDeletePatient(event) {
         this.toggleDeleteModal();
-        this.props.deleteProgram(this.props.program._id);
+        this.props.deletePatient(this.props.patient._id);
 
     }
     render() {
         return (
             <div>
                 <Button className="mb-3" color="info" onClick={this.toggleModal}>
-                    <span className="fa fa-pencil fa-lg"></span> Redaguoti programą
+                    <span className="fa fa-pencil fa-lg"></span> Redaguoti pacientą
                 </Button>
                 <Button className="mb-3 ml-1" color="danger" onClick={this.toggleDeleteModal}>
                     <span className="fa fa-trash fa-lg"></span> Ištrinti
                 </Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Redaguoti duomenis</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Redaguoti paciento duomenis</ModalHeader>
                     <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleUpdateProgram(values)}>
+                        <LocalForm onSubmit={(values) => this.handleUpdatePatient(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="patientId" md={2}>Paciento ID</Label>
-                                <Col md={10}>
-                                    <Control.text model=".patientId" id="patientId" name="patientId"
-                                        defaultValue={this.props.patient.personalCode}
-                                        className="form-control"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="name" md={2}>Vardas</Label>
+                                <Label htmlFor="name" md={2}>Vardas Pavardė</Label>
                                 <Col md={10}>
                                     <Control.text model=".name" id="name" name="name"
-                                        placeholder="Vardas"
-                                        defaultValue={this.props.program.name}
+                                        placeholder="Vardas Pavardė"
+                                        defaultValue={this.props.patient.fullName}
                                         className="form-control"
                                     />
                                 </Col>
@@ -113,39 +89,56 @@ class EditProgramForm extends Component {
                                 <Col md={10}>
                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
                                         placeholder="Asmens Kodas"
-                                        defaultValue={this.props.program.personalCode}
+                                        defaultValue={this.props.patient.personalCode}
                                         className="form-control"
                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="programStatus" md={2}>Būsena</Label>
-                                <Col md={6}>
-                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
-                                        defaultValue={this.props.program.programStatus}
-                                        className="form-control">
-                                        <option value=""></option>
-                                        <option value="Laukia">Laukia</option>
-                                        <option value="Aktyvi">Aktyvi</option>
-                                        <option value="Baigta">Baigta</option>
-                                    </Control.select>
+                                <Label htmlFor="address" md={2}>Adresas</Label>
+                                <Col md={10}>
+                                    <Control.text model=".address" id="address" name="address"
+                                        placeholder="Gatvė Namo Nr.-Būto Nr."
+                                        defaultValue={this.props.patient.address}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="telNum" md={2}>Telefono Numeris</Label>
+                                <Col md={10}>
+                                    <Control.text model=".telNum" id="telNum" name="telNum"
+                                        placeholder="+370XXXXXXXX"
+                                        defaultValue={this.props.patient.telNum}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="email" md={2}>El. Paštas</Label>
+                                <Col md={10}>
+                                    <Control.text model=".email" id="email" name="email"
+                                        placeholder="pavyzdys@email.com"
+                                        defaultValue={this.props.patient.email}
+                                        className="form-control"
+                                    />
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
-                                Keisti
+                                Pateikti
                             </Button>
                         </LocalForm>
                     </ModalBody>
                 </Modal>
                 <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
-                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti programą</ModalHeader>
+                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti pacientą</ModalHeader>
                     <ModalBody>
-                        <p>  Ar tikrai norite ištrinti programą? </p>
+                        <p>  Ar tikrai norite ištrinti pacientą? </p>
                     </ModalBody>
                     <ModalFooter>
                         <Button className="btn btn-secondary"
                             onClick={this.toggleDeleteModal}>Atšaukti</Button>
-                        <Button className="bg-primary" onClick={this.handleDeleteProgram}>Ištrinti</Button>
+                        <Button className="bg-primary" onClick={this.handleDeletePatient}>Ištrinti</Button>
                     </ModalFooter>
                 </Modal>
             </div>
@@ -163,48 +156,31 @@ const PatientDetail = (props) => {
             </div>
         );
     }
-    else if (props.program != null)
+    else if (props.patient != null)
         return (
             <div className="container">
                 <div className="row">
                     <Breadcrumb>
-                        <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.program.name}</BreadcrumbItem>
+                        <BreadcrumbItem><Link to='/patients'>Pacientai</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.patient.fullName}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.program.name}</h3>
+                        <h3>{props.patient.fullName}</h3>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
-                    <RenderProgram program={props.program}
-                        putProgram={props.putProgram}
-                        deleteProgram={props.deleteProgram}
-                        patient={props.patient}
-                        patients={props.patients}
+                    <RenderPatient patient={props.patient}
+                        putPatient={props.putPatient}
+                        deletePatient={props.deletePatient}
                     />
-                </div>
-
-                <div className="row">
-                    <RenderPatient patients={props.patients.patients}
-                        program={props.program}
-                        patient={props.patient}
-                        programId={props.program._id} />
-                </div>
-
-                <div className="row">
-                    <RenderExercises exercises={props.exercises}
-                        postExercise={props.postExercise}
-                        putExercise={props.putExercise}
-                        deleteExercise={props.deleteExercise}
-                        programId={props.program._id} />
                 </div>
             </div>
         );
     else
         return (
-            <Redirect to='/programs' />
+            <Redirect to='/patients' />
         );
 }
 
-export default ProgramDetail;
+export default PatientDetail;

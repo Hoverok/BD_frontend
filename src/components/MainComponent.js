@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProgramDetail from './ProgramDetailComponent';
+import PatientDetail from './PatientDetailComponent';
 import Search from './SearchComponent'; 
 import SearchPatients from './SearchPatientsComponent';
 
@@ -116,6 +117,17 @@ class Main extends Component {
       );
     }
 
+    const PatientWithId = ({ match }) => {
+      return (
+        <PatientDetail patient={this.props.patients.patients.filter((patient) => patient._id === match.params.patientId)[0]}
+          putPatient={this.props.putPatient}
+          deletePatient={this.props.deletePatient}
+          errMess={this.props.patients.errMess}
+        //exercisesErrMess={this.props.exercises.errMess}
+        />
+      );
+    }
+
     const PatientProgramWithId = ({ match }) => {
       return (
         <PatientProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
@@ -125,6 +137,9 @@ class Main extends Component {
         />
       );
     }
+
+
+    
 
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {
@@ -182,6 +197,7 @@ class Main extends Component {
             <Route path="/programs/:programId" component={ProgramWithId} />
             <Route exact path="/patients" component={() => <SearchPatients patients={this.props.patients} postPatient={this.props.postPatient}
               patientsErrMess={this.props.patients.errMess} />} />
+            <Route path="/patients/:patientId" component={PatientWithId} />
 
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
             <Route path="/menu/:dishId" component={DishWithId} />
