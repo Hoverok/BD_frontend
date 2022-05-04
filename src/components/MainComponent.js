@@ -174,18 +174,17 @@ class Main extends Component {
         <TransitionGroup>
           <Switch>
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
-              programsErrMess={this.props.programs.errMess}           patients={this.props.patients} />} />
+              programsErrMess={this.props.programs.errMess} patients={this.props.patients} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
             <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
-
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
             <Route path="/menu/:dishId" component={DishWithId} />
             <Route path="/home" component={HomePage} />
             <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
             <PrivateRoute exact path="/favorites" component={() => <Favorites favorites={this.props.favorites} deleteFavorite={this.props.deleteFavorite} />} />
             <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} />} />
-            <Redirect to="/home" />
+            <Redirect to="/welcome" />
           </Switch>
         </TransitionGroup>
         <Footer />

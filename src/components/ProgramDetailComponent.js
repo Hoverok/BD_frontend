@@ -11,10 +11,10 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 
-function RenderProgram({ program, putProgram, deleteProgram }) {
+function RenderProgram({ program, putProgram, deleteProgram, patient, patients }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} />
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patient={patient} patients={patients}/>
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
@@ -31,20 +31,6 @@ function RenderProgram({ program, putProgram, deleteProgram }) {
     );
 }
 
-// function RenderPatient({ patient }) {
-//     return (
-//         <div className="col-12 m-1">
-//             <h4>Paciento informacija:</h4>
-//             <p>Asmens Kodas: {patient.personalCode}</p>
-//             <div className="row">
-//                 <div className="col-12 m-1">
-//                     <p>{patient.fullName}</p>
-//                 </div>
-//             </div>
-//             <hr />
-//         </div>
-//     );
-// }
 
 class RenderPatient extends Component {
     constructor(props) {
@@ -61,8 +47,9 @@ class RenderPatient extends Component {
                 {/* <p>Asmens Kodas: {this.props.patient.personalCode}</p> */}
                 <div className="row">
                     <div className="col-12 m-1">
-                        <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-                        <p>{this.props.patient.fullName}</p>
+                        {/* <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p> */}
+                        <p>Pacientas: {this.props.patient.fullName}</p>
+                        <p>Asmens kodas: {this.props.patient.personalCode}</p>
                         {/* patient={props.patients.patients.filter((patient) => patient._id === props.program.patient)[0]} */}
                     </div>
                 </div>
@@ -346,8 +333,15 @@ class EditProgramForm extends Component {
 
     handleUpdateProgram(values) {
         this.toggleModal();
-        this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus, values.patientId);
-        //this.props.postProgram(values.name, values.personalCode, values.programStatus);
+        console.log(JSON.stringify(this.props.patients.patients));
+        try {
+            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
+            // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
+            this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus, adParams.personalCode);
+        }
+        catch (err) {
+            alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
+        }
     }
 
     handleDeleteProgram(event) {
@@ -372,7 +366,7 @@ class EditProgramForm extends Component {
                                 <Label htmlFor="patientId" md={2}>Paciento ID</Label>
                                 <Col md={10}>
                                     <Control.text model=".patientId" id="patientId" name="patientId"
-                                        defaultValue={this.props.program.patient}
+                                        defaultValue={this.props.patient.personalCode}
                                         className="form-control"
                                     />
                                 </Col>
@@ -459,6 +453,8 @@ const ProgramDetail = (props) => {
                     <RenderProgram program={props.program}
                         putProgram={props.putProgram}
                         deleteProgram={props.deleteProgram}
+                        patient={props.patient}
+                        patients={props.patients}
                     />
                 </div>
 
