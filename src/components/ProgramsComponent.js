@@ -111,7 +111,7 @@ class PostProgramForm extends Component {
         // console.log("PATIENTS: " + JSON.stringify(this.props.patients))
         // console.log("PATIENT ID: " + JSON.stringify((this.props.patients.patients[0])))
     }
-    
+
     toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
@@ -121,9 +121,14 @@ class PostProgramForm extends Component {
     handleSubmit(values) {
         this.toggleModal();
         //use searchParams to store personalCode and filter patient_.id out of it
-        adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
-        // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-        this.props.postProgram(values.name, values.personalCode, values.programStatus, adParams.personalCode);
+        try {
+            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
+            // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
+            this.props.postProgram(values.name, values.personalCode, values.programStatus, adParams.personalCode);
+        }
+        catch (err) {
+            alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
+        }
     }
 
     render() {
