@@ -18,7 +18,7 @@ function RenderPatientList({ patient, onClick }) {
         return (
             <Media tag="li">
                 <Media left middle>
-                    <Media object src={baseUrl + "images/user.png"} alt={patient.name} />
+                    <Media object src={baseUrl + "images/patient.png"} alt={patient.name} />
                 </Media>
                 <Link to={`/patients/${patient._id}`} className='text-link' >
                     <Media body className="ml-5">
@@ -37,7 +37,7 @@ function RenderPatientList({ patient, onClick }) {
         return (
             <Media tag="li">
                 <Media left middle>
-                    <Media object src={baseUrl + "images/user.png"} alt={patient.name} />
+                    <Media object src={baseUrl + "images/patient.png"} alt={patient.name} />
                 </Media>
                 <Link to={`/patients/${patient._id}`} className='text-link' >
                     <Media body className="ml-5">
