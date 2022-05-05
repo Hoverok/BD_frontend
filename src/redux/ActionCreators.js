@@ -428,7 +428,7 @@ export const putPatient = (patientId, fullName, address, personalCode, telNum, e
     //console.log('Patient ', updatedPatient);
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'patients/' + patientId, {
+    return fetch(baseUrl + 'patients' + patientId, {
         method: "PUT",
         body: JSON.stringify(updatedPatient),
         headers: {
@@ -545,7 +545,7 @@ export const postExerciseType = (ytLink, title, intensity, inventory) => (dispat
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'exercisetype', {
+    return fetch(baseUrl + 'exercisetypes', {
         method: 'POST',
         body: JSON.stringify(newExerciseType),
         headers: {
@@ -585,7 +585,7 @@ export const putExerciseType = (exerciseTypeId, ytLink, title, intensity, invent
     };
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'exercisetypes/' + exerciseTypeId, {
+    return fetch(baseUrl + 'exercisetypes' + exerciseTypeId, {
         method: "PUT",
         body: JSON.stringify(updatedExerciseType),
         headers: {

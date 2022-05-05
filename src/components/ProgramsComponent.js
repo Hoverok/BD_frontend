@@ -134,7 +134,7 @@ class PostProgramForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Nauja programa</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Nauja programa</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos paciento programos registracija</ModalHeader>
                     <ModalBody>

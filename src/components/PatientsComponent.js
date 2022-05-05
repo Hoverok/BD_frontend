@@ -89,7 +89,7 @@ class PostPatientForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Naujas pacientas</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pacientas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos paciento registracija</ModalHeader>
                     <ModalBody>

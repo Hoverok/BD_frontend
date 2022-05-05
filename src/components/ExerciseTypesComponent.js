@@ -86,22 +86,22 @@ class PostExerciseTypeForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Naujas pratimas</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos pratimo įvedimas</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="ytLink" md={2}>Nuoroda</Label>
-                                <Col md={10}>
+                                <Label htmlFor="ytLink" md={3}>Nuoroda</Label>
+                                <Col md={9}>
                                     <Control.text model=".ytLink" id="ytLink" name="ytLink"
                                         className="form-control"
                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="personalCode" md={2}>Pavadinimas</Label>
-                                <Col md={10}>
+                                <Label htmlFor="title" md={3}>Pavadinimas</Label>
+                                <Col md={9}>
                                     <Control.text model=".title" id="title" name="title"
                                         placeholder="Pavadinimas"
                                         className="form-control"
@@ -109,7 +109,7 @@ class PostExerciseTypeForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="intensity" md={2}>Intensyvumas</Label>
+                                <Label htmlFor="intensity" md={3}>Intensyvumas</Label>
                                 <Col md={3}>
                                     <Control.select model=".intensity" id="intensity" name="intensity"
                                         className="form-control">
@@ -154,7 +154,7 @@ const ExerciseTypes = (props) => {
         );
     });
 
-    if (props.patexerciseTypesients.exerciseTypesErrMess) {
+    if (props.exerciseTypes.exerciseTypesErrMess) {
         return (
             <div className="container">
                 <div className="row">
@@ -184,5 +184,6 @@ const ExerciseTypes = (props) => {
             </div>
         );
 }
+
 
 export default ExerciseTypes;

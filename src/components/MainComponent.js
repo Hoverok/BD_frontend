@@ -30,7 +30,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
     programs: state.programs,
     exercises: state.exercises,
     patients: state.patients,
-    exerciseType: state.exerciseType,
+    exerciseTypes: state.exerciseTypes,
 
     dishes: state.dishes,
     comments: state.comments,

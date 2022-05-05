@@ -5,7 +5,7 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { Component } from 'react';
 import { SearchExerciseTypesParams} from '../shared/searchExerciseTypesParams';
-import {ExerciseTypes} from './ExerciseTypesComponent';
+import ExerciseTypes from './ExerciseTypesComponent';
 
 
 class SearchExerciseTypes extends Component {
