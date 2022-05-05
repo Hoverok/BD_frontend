@@ -119,8 +119,6 @@ class Main extends Component {
           putExercise={this.props.putExercise}
           deleteExercise={this.props.deleteExercise}
           patients={this.props.patients}
-          patient={this.props.patients.patients.filter((patient) => patient._id ===
-            (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
           exerciseTypes={this.props.exerciseTypes}
 
         />

@@ -24,9 +24,11 @@ function RenderProgramInList({ program, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        <Media heading>{program.description}</Media>
-                        <p>Pacientas{program.personalCode}</p>
-                        <p>Paciento asmens kodas{program.programStatus}</p>
+                        <Media heading>{program.patient.fullName}</Media>
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit'})
+                            .format(new Date(Date.parse(program.updatedAt)))}</p>
                         {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
                 </Link>
@@ -122,6 +124,7 @@ class PostProgramForm extends Component {
         this.toggleModal();
         //use searchParams to store personalCode and filter patient_.id out of it
         try {
+            console.log("hi");
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
             // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
             this.props.postProgram(values.description, values.duration, adParams.personalCode);

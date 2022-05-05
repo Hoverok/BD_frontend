@@ -11,10 +11,10 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 
-function RenderProgram({ program, putProgram, deleteProgram, patient, patients }) {
+function RenderProgram({ program, putProgram, deleteProgram, patients }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patient={patient} patients={patients} />
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} />
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
@@ -39,8 +39,6 @@ class RenderPatient extends Component {
         this.state = {
         };
     }
-
-
     render() {
         return (
             <div className="col-12 m-1">
@@ -55,11 +53,11 @@ class RenderPatient extends Component {
                         <p>El. paštas:</p>
                     </div>
                     <div className="col-12 col-sm-6">
-                        <p><b>{this.props.patient.fullName}</b></p>
-                        <p><b>{this.props.patient.personalCode}</b></p>
-                        <p><b>{this.props.patient.address}</b></p>
-                        <p><b>{this.props.patient.telNum}</b></p>
-                        <p><b>{this.props.patient.email}</b></p>
+                        <p><b>{this.props.program.patient.fullName}</b></p>
+                        <p><b>{this.props.program.patient.personalCode}</b></p>
+                        <p><b>{this.props.program.patient.address}</b></p>
+                        <p><b>{this.props.program.patient.telNum}</b></p>
+                        <p><b>{this.props.program.patient.email}</b></p>
                     </div>
                 </div>
             </div>
@@ -361,7 +359,7 @@ class EditProgramForm extends Component {
                                 <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
                                 <Col md={10}>
                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
-                                        defaultValue={this.props.patient.personalCode}
+                                        defaultValue={this.props.program.patient.personalCode}
                                         className="form-control"
                                     />
                                 </Col>
