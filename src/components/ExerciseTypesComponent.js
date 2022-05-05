@@ -24,6 +24,7 @@ function RenderExerciseTypeList({ exerciseType, onClick }) {
                     <Media body className="ml-5">
                         <Media heading>{exerciseType.title}</Media>
                         <p>{exerciseType.ytLink}</p>
+                        <p>{exerciseType._id}</p>
                         <p> Atnaujinta: {new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
                             .format(new Date(Date.parse(exerciseType.updatedAt)))}</p>
@@ -126,7 +127,7 @@ class PostExerciseTypeForm extends Component {
                                 <Col>
                                     <Label htmlFor="inventory" md={3}>Įrankiai</Label>
                                     <Control.textarea model=".inventory" id="inventory" name="inventory"
-                                        rows="3" 
+                                        rows="3"
                                         className="form-control"
                                     />
                                 </Col>
@@ -173,7 +174,7 @@ const ExerciseTypes = (props) => {
                 </div>
                 <div className="row row-content">
                     <div className="col-12">
-                        <h2>Pacientai</h2>
+                        <h2>Pratimai</h2>
                     </div>
                     <div className="row">
                         <div className="col-12">

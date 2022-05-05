@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ProgramDetail from './ProgramDetailComponent';
 import PatientDetail from './PatientDetailComponent';
+import ExerciseTypeDetail from './ExerciseTypesComponent';
+import PatientProgramDetail from './PatientProgramComponent';
 import Search from './SearchComponent';
 import SearchPatients from './SearchPatientsComponent';
 import SearchExerciseTypes from './SearchExerciseTypesComponent';
 import AuthLog from './AuthLogComponent';
-import PatientProgramDetail from './PatientProgramComponent';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Menu from './MenuComponent';
@@ -119,7 +120,7 @@ class Main extends Component {
           deleteExercise={this.props.deleteExercise}
           patients={this.props.patients}
           patient={this.props.patients.patients.filter((patient) => patient._id === (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
-        //exercisesErrMess={this.props.exercises.errMess}
+
         />
       );
     }
@@ -130,7 +131,6 @@ class Main extends Component {
           putPatient={this.props.putPatient}
           deletePatient={this.props.deletePatient}
           errMess={this.props.patients.errMess}
-        //exercisesErrMess={this.props.exercises.errMess}
         />
       );
     }
@@ -140,13 +140,19 @@ class Main extends Component {
         <PatientProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
           errMess={this.props.programs.errMess}
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
-        //exercisesErrMess={this.props.exercises.errMess}
         />
       );
     }
 
-
-
+    const ExerciseTypeWithId = ({ match }) => {
+      return (
+        <ExerciseTypeDetail exerciseType={this.props.exerciseTypes.exerciseTypes.filter((exerciseType) => exerciseType._id === match.params.exerciseTypeId)[0]}
+          putExerciseType={this.props.putExerciseType}
+          deleteExerciseType={this.props.deleteExerciseType}
+          errMess={this.props.exerciseTypes.errMess}
+        />
+      );
+    }
 
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {
@@ -205,8 +211,11 @@ class Main extends Component {
             <Route exact path="/patients" component={() => <SearchPatients patients={this.props.patients} postPatient={this.props.postPatient}
               patientsErrMess={this.props.patients.errMess} />} />
             <Route path="/patients/:patientId" component={PatientWithId} />
-            <Route exact path="/exerciseTypes" component={() => <SearchExerciseTypes exerciseTypes={this.props.exerciseTypes} postExerciseType={this.props.postExerciseType}
+            <Route exact path="/exercisetypes" component={() => <SearchExerciseTypes exerciseTypes={this.props.exerciseTypes} postExerciseType={this.props.postExerciseType}
               exerciseTypesErrMess={this.props.exerciseTypes.errMess} />} />
+            <Route path="/exercisetypes/:exerciseTypeId" component={ExerciseTypeWithId} />
+
+
 
             <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
             <Route path="/menu/:dishId" component={DishWithId} />
