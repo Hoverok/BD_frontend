@@ -43,17 +43,24 @@ class RenderPatient extends Component {
     render() {
         return (
             <div className="col-12 m-1">
-                <h4>Paciento informacija:</h4>
-                {/* <p>Asmens Kodas: {this.props.patient.personalCode}</p> */}
-                <div className="row">
-                    <div className="col-12 m-1">
-                        {/* <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p> */}
-                        <p>Pacientas: {this.props.patient.fullName}</p>
-                        <p>Asmens kodas: {this.props.patient.personalCode}</p>
-                        {/* patient={props.patients.patients.filter((patient) => patient._id === props.program.patient)[0]} */}
-                    </div>
+            <h3>Paciento informacija:</h3>
+            <br></br>
+            <div className='row'>
+                <div className="col-12 col-sm-2">
+                    <p>Pacientas:</p>
+                    <p>Asmens Kodas:</p>
+                    <p>Adresas:</p>
+                    <p>Tel. numeris:</p>
+                    <p>El. paštas:</p>
                 </div>
-                <hr />
+                <div className="col-12 col-sm-6">
+                    <p><b>{this.props.patient.fullName}</b></p>
+                    <p><b>{this.props.patient.personalCode}</b></p>
+                    <p><b>{this.props.patient.address}</b></p>
+                    <p><b>{this.props.patient.telNum}</b></p>
+                    <p><b>{this.props.patient.email}</b></p>
+                </div>
+            </div>
             </div>
         );
     }
@@ -62,7 +69,7 @@ class RenderPatient extends Component {
 
 
 
-function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
+function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise, exerciseTypes }) {
     if (exercises != null)
         return (
             <div className="col-12 m-1">
@@ -76,11 +83,11 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                         <CardBody>
                                             <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
                                             <CardTitle tag="h5">
-                                                {exercise.name}<br></br>
-                                                Intensyvumas: {exercise.difficulty}/5
+                                                Pavadinimas: {exercise.exerciseType.title}
                                             </CardTitle>
                                             <CardText>
-                                                {exercise.comment}
+                                            Intensyvumas: {exercise.exerciseType.intensity}/5 <br></br>
+                                            Instrukijos: {exercise.instuructions}
                                             </CardText>
                                             <CardSubtitle
                                                 className="mb-2 text-muted"
@@ -91,7 +98,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                                     .format(new Date(Date.parse(exercise.updatedAt)))}
                                             </CardSubtitle>
                                             <CardFooter>
-                                                <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
+                                                <a href={exercise.exerciseType.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
                                             </CardFooter>
                                         </CardBody>
                                     </Card>
@@ -245,7 +252,7 @@ class ExerciseForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postExercise(this.props.programId, values.name, values.ytLink, values.difficulty, values.comment);
+        this.props.postExercise(this.props.programId, values.exerciseTypeId, values.instuructions);
     }
 
     render() {
@@ -258,40 +265,18 @@ class ExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="name" md={3}>Pavadinimas</Label>
+                                <Label htmlFor="exerciseTypeId" md={3}>Pratimo tipo ID</Label>
                                 <Col md={9}>
-                                    <Control.text model=".name" id="name" name="name"
-                                        placeholder="pavadinimas"
+                                    <Control.text model=".exerciseTypeId" id="exerciseTypeId" name="exerciseTypeId"
+                                        placeholder=""
                                         className="form-control"
                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="difficulty" md={3}>Intensyvumas</Label>
-                                <Col md={3}>
-                                    <Control.select model=".difficulty" id="difficulty" name="difficulty"
-                                        className="form-control">
-                                        <option></option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="ytLink" md={3}>Nuoroda</Label>
-                                    <Control.textarea model=".ytLink" id="ytLink" name="ytLink"
-                                        rows="2" className="form-control"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col>
-                                    <Label htmlFor="comment">Specialisto komentaras</Label>
-                                    <Control.textarea model=".comment" id="comment" name="comment"
+                                    <Label htmlFor="instuructions">Specialisto komentaras</Label>
+                                    <Control.textarea model=".instuructions" id="instuructions" name="instuructions"
                                         rows="8" className="form-control" />
                                 </Col>
                             </Row>
@@ -468,6 +453,7 @@ const ProgramDetail = (props) => {
 
                 <div className="row">
                     <RenderExercises exercises={props.exercises}
+                    exerciseTypes={props.exerciseTypes}
                         postExercise={props.postExercise}
                         putExercise={props.putExercise}
                         deleteExercise={props.deleteExercise}

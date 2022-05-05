@@ -48,8 +48,8 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   putProgram: (programId, name, personalCode, programStatus, patientId) => dispatch(putProgram(programId, name, personalCode, programStatus, patientId)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
-  postExercise: (programId, name, ytLink, difficulty, comment) => dispatch(postExercise(programId, name, ytLink, difficulty, comment)),
-  putExercise: (exerciseId, name, ytLink, difficulty, comment) => dispatch(putExercise(exerciseId, name, ytLink, difficulty, comment)),
+  postExercise: (programId, exerciseTypeId, instuructions) => dispatch(postExercise(programId, exerciseTypeId, instuructions)),
+  putExercise: (exerciseId, exerciseTypeId, instuructions) => dispatch(putExercise(exerciseId, exerciseTypeId, instuructions)),
   deleteExercise: (exerciseId) => dispatch(deleteExercise(exerciseId)),
   fetchPatients: () => { dispatch(fetchPatients()) },
   postPatient: (fullName, personalCode, address, telNum, email) => dispatch(postPatient(fullName, personalCode, address, telNum, email)),
@@ -119,7 +119,9 @@ class Main extends Component {
           putExercise={this.props.putExercise}
           deleteExercise={this.props.deleteExercise}
           patients={this.props.patients}
-          patient={this.props.patients.patients.filter((patient) => patient._id === (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
+          patient={this.props.patients.patients.filter((patient) => patient._id ===
+            (this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]).patient)[0]}
+          exerciseTypes={this.props.exerciseTypes}
 
         />
       );

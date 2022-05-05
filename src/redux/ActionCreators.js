@@ -213,15 +213,12 @@ export const fetchExercises = () => (dispatch) => {
         .catch(error => dispatch(exercisesFailed(error.message)));
 }
 
-export const postExercise = (programId, name, ytLink, difficulty, comment) => (dispatch) => {
+export const postExercise = (programId, exerciseTypeId, instuructions) => (dispatch) => {
 
     const newExercise = {
         program: programId,
-        name: name,
-        ytLink: ytLink,
-        difficulty: difficulty,
-        comment: comment,
-
+        exerciseType: exerciseTypeId,
+        instuructions: instuructions
     }
     console.log('Exercise ', newExercise);
 
@@ -258,12 +255,10 @@ export const postExercise = (programId, name, ytLink, difficulty, comment) => (d
         })
 }
 
-export const putExercise = (exerciseId, name, ytLink, difficulty, comment) => (dispatch) => {
+export const putExercise = (exerciseId, exerciseTypeId, instuructions) => (dispatch) => {
     const updatedExercise = {
-        name: name,
-        ytLink: ytLink,
-        difficulty: difficulty,
-        comment: comment
+        exerciseTypeId: exerciseTypeId,
+        instuructions: instuructions
     };
     //console.log('Exercise ', updatedExercise);
     const bearer = 'Bearer ' + localStorage.getItem('token');
