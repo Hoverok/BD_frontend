@@ -16,7 +16,7 @@ import adParams from '../shared/adParams';
 function RenderProgramInList({ program, onClick }) {
 
 
-    if (SearchParams.searchField === '' && SearchParams.programStatus === '') {
+    if (SearchParams.searchField === '') {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -27,7 +27,7 @@ function RenderProgramInList({ program, onClick }) {
                         <Media heading>{program.patient.fullName}</Media>
                         <p>Asmens kodas: {program.patient.personalCode}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit'})
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
                         {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
@@ -35,7 +35,27 @@ function RenderProgramInList({ program, onClick }) {
             </Media>
         );
     }
-    else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
+    // else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
+    //     return (
+    //         <Media tag="li">
+    //             <Media left middle>
+    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+    //             </Media>
+    //             <Link to={`/programs/${program._id}`} className='text-link' >
+    //                 <Media body className="ml-5">
+    //                     <Media heading>{program.patient.fullName}</Media>
+    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
+    //                     <p>{new Intl.DateTimeFormat('fr-CA',
+    //                         { year: 'numeric', month: '2-digit', day: '2-digit'})
+    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
+    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+    //                 </Media>
+    //             </Link>
+    //         </Media>
+    //     );
+    // }
+    else if (((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -43,53 +63,61 @@ function RenderProgramInList({ program, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        <Media heading>{program.name}</Media>
-                        <p>{program.personalCode}</p>
-                        <p>{program.programStatus}</p>
-                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
+                        <Media heading>{program.patient.fullName}</Media>
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.updatedAt)))}</p>
+                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
                 </Link>
             </Media>
         );
     }
-    else if (((program.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
-        || (program.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && SearchParams.programStatus === '') {
-        return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{program.name}</Media>
-                        <p>{program.personalCode}</p>
-                        <p>{program.programStatus}</p>
-                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
-                    </Media>
-                </Link>
-            </Media>
-        );
-    }
-    else if (((program.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
-        || (program.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && SearchParams.programStatus === program.programStatus) {
-        return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{program.name}</Media>
-                        <p>{program.personalCode}</p>
-                        <p>{program.programStatus}</p>
-                        <p>SearchParams.searchField: {SearchParams.searchField}</p>
-                    </Media>
-                </Link>
-            </Media>
-        );
-    }
+
+    // else if (((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+    //     || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+    //     && SearchParams.programStatus === '') {
+    //     return (
+    //         <Media tag="li">
+    //             <Media left middle>
+    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+    //             </Media>
+    //             <Link to={`/programs/${program._id}`} className='text-link' >
+    //                 <Media body className="ml-5">
+    //                     <Media heading>{program.patient.fullName}</Media>
+    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
+    //                     <p>{new Intl.DateTimeFormat('fr-CA',
+    //                         { year: 'numeric', month: '2-digit', day: '2-digit' })
+    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
+    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+    //                 </Media>
+    //             </Link>
+    //         </Media>
+    //     );
+    // }
+
+    // else if (((program.patient.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+    //     || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+    //     && SearchParams.programStatus === program.programStatus) {
+    //     return (
+    //         <Media tag="li">
+    //             <Media left middle>
+    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+    //             </Media>
+    //             <Link to={`/programs/${program._id}`} className='text-link' >
+    //                 <Media body className="ml-5">
+    //                     <Media heading>{program.patient.fullName}</Media>
+    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
+    //                     <p>{new Intl.DateTimeFormat('fr-CA',
+    //                         { year: 'numeric', month: '2-digit', day: '2-digit'})
+    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
+    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+    //                 </Media>
+    //             </Link>
+    //         </Media>
+    //     );
+    // }
     else {
         return (
             <div></div>
