@@ -12,8 +12,6 @@ import { SearchExerciseTypesParams } from '../shared/searchExerciseTypesParams';
 
 
 function RenderExerciseTypeList({ exerciseType, onClick }) {
-
-
     if (SearchExerciseTypesParams.searchField === '') {
         return (
             <Media tag="li">

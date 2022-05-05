@@ -4,8 +4,9 @@ import {
     CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, Media
 } from 'reactstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
+import Youtube from 'react-youtube';
 
 
 
@@ -22,6 +23,7 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
                     <p>Pavadinimas:</p>
                     <p>Intensyvumas:</p>
                     <p>Įrankiai:</p>
+                    <p>Vaizdo įrašas</p>
                 </div>
                 <div className="col-12 col-sm-6">
                     <p><b>{exerciseType._id}</b></p>
@@ -29,6 +31,8 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
                     <p><b>{exerciseType.title}</b></p>
                     <p><b>{exerciseType.intensity}/5</b></p>
                     <p><b>{exerciseType.inventory}</b></p>
+                    <br></br>
+                    <ReactYoutube ytLink={exerciseType.ytLink} />
                 </div>
             </div>
             <hr />
@@ -36,7 +40,37 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
     );
 }
 
+class ReactYoutube extends Component {
+    constructor(props) {
+        super(props);
+    }
 
+    videoOnReady(event) {
+        event.target.pauseVideo();
+    }
+
+    render() {
+        const i = (this.props.ytLink).indexOf("=");
+        let vidId = (this.props.ytLink).substring(i + 1, i + 12);
+
+        if (i === -1 || vidId.length !== 11) {
+            vidId = "jpF_cfyA2Dc";
+        }
+        const opts = {
+            height: '500',
+            width: '800',
+            playerVars: {
+                autoplay: 0
+            }
+        }
+        return (
+            <Youtube
+                videoId={vidId}
+                opts={opts}
+                onReady={this.videoOnReady} />
+        );
+    }
+}
 
 class EditExerciseTypeForm extends Component {
     constructor(props) {
