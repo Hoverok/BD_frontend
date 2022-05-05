@@ -53,12 +53,11 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (name, personalCode, programStatus, patientId) => (dispatch) => {
+export const postProgram = (description, duration, patientId) => (dispatch) => {
 
     const newProgram = {
-        name: name,
-        personalCode: personalCode,
-        programStatus: programStatus,
+        description: description,
+        duration: duration,
         patient: patientId
     }
     console.log('Program ', newProgram);
@@ -96,13 +95,11 @@ export const postProgram = (name, personalCode, programStatus, patientId) => (di
         })
 }
 
-export const putProgram = (programId, name, personalCode, programStatus, patientId) => (dispatch) => {
-
+export const putProgram = (programId, description, duration, patientId) => (dispatch) => {
     const updatedProgram = {
         programId: programId,
-        name: name,
-        personalCode: personalCode,
-        programStatus: programStatus,
+        description: description,
+        duration: duration,
         patient: patientId
     };
     //console.log('Program ', updatedProgram);
@@ -412,7 +409,7 @@ export const postPatient = (fullName, personalCode, address, telNum, email) => (
         })
 }
 
-export const putPatient = (patientId, fullName, address, personalCode, telNum, email) => (dispatch) => {
+export const putPatient = (patientId, fullName, personalCode, address, telNum, email) => (dispatch) => {
     const updatedPatient = {
         fullName: fullName,
         personalCode: personalCode,
@@ -423,7 +420,7 @@ export const putPatient = (patientId, fullName, address, personalCode, telNum, e
     //console.log('Patient ', updatedPatient);
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'patients' + patientId, {
+    return fetch(baseUrl + 'patients/' + patientId, {
         method: "PUT",
         body: JSON.stringify(updatedPatient),
         headers: {

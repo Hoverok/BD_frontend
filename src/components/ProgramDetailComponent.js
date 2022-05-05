@@ -18,6 +18,7 @@ function RenderProgram({ program, putProgram, deleteProgram, patient, patients }
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
+            
             {/* <h4>Paciento informacija:</h4>
             <p>Asmens Kodas: {program.personalCode}</p> */}
             {/* <div className="row">
@@ -43,24 +44,24 @@ class RenderPatient extends Component {
     render() {
         return (
             <div className="col-12 m-1">
-            <h3>Paciento informacija:</h3>
-            <br></br>
-            <div className='row'>
-                <div className="col-12 col-sm-2">
-                    <p>Pacientas:</p>
-                    <p>Asmens Kodas:</p>
-                    <p>Adresas:</p>
-                    <p>Tel. numeris:</p>
-                    <p>El. paštas:</p>
+                <h3>Paciento informacija:</h3>
+                <br></br>
+                <div className='row'>
+                    <div className="col-12 col-sm-2">
+                        <p>Pacientas:</p>
+                        <p>Asmens Kodas:</p>
+                        <p>Adresas:</p>
+                        <p>Tel. numeris:</p>
+                        <p>El. paštas:</p>
+                    </div>
+                    <div className="col-12 col-sm-6">
+                        <p><b>{this.props.patient.fullName}</b></p>
+                        <p><b>{this.props.patient.personalCode}</b></p>
+                        <p><b>{this.props.patient.address}</b></p>
+                        <p><b>{this.props.patient.telNum}</b></p>
+                        <p><b>{this.props.patient.email}</b></p>
+                    </div>
                 </div>
-                <div className="col-12 col-sm-6">
-                    <p><b>{this.props.patient.fullName}</b></p>
-                    <p><b>{this.props.patient.personalCode}</b></p>
-                    <p><b>{this.props.patient.address}</b></p>
-                    <p><b>{this.props.patient.telNum}</b></p>
-                    <p><b>{this.props.patient.email}</b></p>
-                </div>
-            </div>
             </div>
         );
     }
@@ -86,8 +87,8 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                                 Pavadinimas: {exercise.exerciseType.title}
                                             </CardTitle>
                                             <CardText>
-                                            Intensyvumas: {exercise.exerciseType.intensity}/5 <br></br>
-                                            Instrukijos: {exercise.instuructions}
+                                                Intensyvumas: {exercise.exerciseType.intensity}/5 <br></br>
+                                                Instrukijos: {exercise.instuructions}
                                             </CardText>
                                             <CardSubtitle
                                                 className="mb-2 text-muted"
@@ -321,9 +322,9 @@ class EditProgramForm extends Component {
         this.toggleModal();
         console.log(JSON.stringify(this.props.patients.patients));
         try {
-            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
+            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
             // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.putProgram(this.props.program._id, values.name, values.personalCode, values.programStatus, adParams.personalCode);
+            this.props.putProgram(this.props.program._id, values.description, values.duration, adParams.personalCode);
         }
         catch (err) {
             alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
@@ -333,7 +334,6 @@ class EditProgramForm extends Component {
     handleDeleteProgram(event) {
         this.toggleDeleteModal();
         this.props.deleteProgram(this.props.program._id);
-
     }
     render() {
         return (
@@ -349,20 +349,10 @@ class EditProgramForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateProgram(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="patientId" md={2}>Paciento ID</Label>
-                                <Col md={10}>
-                                    <Control.text model=".patientId" id="patientId" name="patientId"
-                                        defaultValue={this.props.patient.personalCode}
-                                        className="form-control"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="name" md={2}>Vardas</Label>
-                                <Col md={10}>
-                                    <Control.text model=".name" id="name" name="name"
-                                        placeholder="Vardas"
-                                        defaultValue={this.props.program.name}
+                                <Col>
+                                    <Label htmlFor="description" md={3}>Aprašymas</Label>
+                                    <Control.textarea model=".description" id="description" name="description"
+                                        rows="6" defaultValue={this.props.program.description}
                                         className="form-control"
                                     />
                                 </Col>
@@ -371,23 +361,28 @@ class EditProgramForm extends Component {
                                 <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
                                 <Col md={10}>
                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
-                                        placeholder="Asmens Kodas"
-                                        defaultValue={this.props.program.personalCode}
+                                        defaultValue={this.props.patient.personalCode}
                                         className="form-control"
                                     />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            {/* <Row className="form-group">
                                 <Label htmlFor="programStatus" md={2}>Būsena</Label>
                                 <Col md={6}>
                                     <Control.select model=".programStatus" id="programStatus" name="programStatus"
-                                        defaultValue={this.props.program.programStatus}
                                         className="form-control">
                                         <option value=""></option>
-                                        <option value="Laukia">Laukia</option>
                                         <option value="Aktyvi">Aktyvi</option>
                                         <option value="Baigta">Baigta</option>
                                     </Control.select>
+                                </Col>
+                            </Row> */}
+                            <Row className="form-group">
+                                <Label htmlFor="duration" md={2}>Trukmė</Label>
+                                <Col md={10}>
+                                    <Control.text model=".duration" id="duration" name="duration"
+                                        className="form-control" defaultValue={this.props.program.description}
+                                    />
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
@@ -453,7 +448,7 @@ const ProgramDetail = (props) => {
 
                 <div className="row">
                     <RenderExercises exercises={props.exercises}
-                    exerciseTypes={props.exerciseTypes}
+                        exerciseTypes={props.exerciseTypes}
                         postExercise={props.postExercise}
                         putExercise={props.putExercise}
                         deleteExercise={props.deleteExercise}

@@ -24,10 +24,10 @@ function RenderProgramInList({ program, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        <Media heading>{program.name}</Media>
-                        <p>{program.personalCode}</p>
-                        <p>{program.programStatus}</p>
-                        <p>SearchParams.searchField is empty {SearchParams.searchField}</p>
+                        <Media heading>{program.description}</Media>
+                        <p>Pacientas{program.personalCode}</p>
+                        <p>Paciento asmens kodas{program.programStatus}</p>
+                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
                 </Link>
             </Media>
@@ -122,12 +122,12 @@ class PostProgramForm extends Component {
         this.toggleModal();
         //use searchParams to store personalCode and filter patient_.id out of it
         try {
-            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.patientId)[0])._id);
+            adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
             // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.postProgram(values.name, values.personalCode, values.programStatus, adParams.personalCode);
+            this.props.postProgram(values.description, values.duration, adParams.personalCode);
         }
         catch (err) {
-            alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
+            alert("Pacientas su " + values.personalCode + " asmens kodo nerastas");
         }
     }
 
@@ -140,10 +140,10 @@ class PostProgramForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="name" md={2}>Vardas</Label>
-                                <Col md={10}>
-                                    <Control.text model=".name" id="name" name="name"
-                                        placeholder="Vardas"
+                                <Col>
+                                    <Label htmlFor="description" md={3}>Aprašymas</Label>
+                                    <Control.textarea model=".description" id="description" name="description"
+                                        rows="6"
                                         className="form-control"
                                     />
                                 </Col>
@@ -157,23 +157,21 @@ class PostProgramForm extends Component {
                                     />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
+                            {/* <Row className="form-group">
                                 <Label htmlFor="programStatus" md={2}>Būsena</Label>
                                 <Col md={6}>
                                     <Control.select model=".programStatus" id="programStatus" name="programStatus"
                                         className="form-control">
                                         <option value=""></option>
-                                        <option value="Laukia">Laukia</option>
                                         <option value="Aktyvi">Aktyvi</option>
                                         <option value="Baigta">Baigta</option>
                                     </Control.select>
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row className="form-group">
-                                <Label htmlFor="patientId" md={2}>Paciento ID</Label>
+                                <Label htmlFor="duration" md={2}>Trukmė</Label>
                                 <Col md={10}>
-                                    <Control.text model=".patientId" id="patientId" name="patientId"
-                                        placeholder="Paciento ID"
+                                    <Control.text model=".duration" id="duration" name="duration"
                                         className="form-control"
                                     />
                                 </Col>

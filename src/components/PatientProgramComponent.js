@@ -76,11 +76,11 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                         <Card body>
                                             <CardBody>
                                                 <CardTitle tag="h5">
-                                                    {exercise.name}<br></br>
-                                                    Intensyvumas: {exercise.difficulty}/5
+                                                    {exercise.exerciseType.title}<br></br>
+                                                    Intensyvumas: {exercise.exerciseType.intensity}/5
                                                 </CardTitle>
                                                 <CardText>
-                                                    {exercise.comment}
+                                                    {exercise.instuructions}
                                                 </CardText>
                                                 <CardSubtitle
                                                     className="mb-2 text-muted"
@@ -90,7 +90,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                                         .format(new Date(Date.parse(exercise.updatedAt)))}
                                                 </CardSubtitle>
                                                 <CardFooter className="d-flex justify-content-center">
-                                                    <ReactYoutube ytLink={exercise.ytLink} />
+                                                    <ReactYoutube ytLink={exercise.exerciseType.ytLink} />
                                                 </CardFooter>
                                             </CardBody>
                                         </Card>
@@ -124,7 +124,7 @@ const PatientProgramDetail = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <h3>{props.program.name}</h3>
+                        <h2>{props.program.description}</h2>
                         <hr />
                     </div>
                 </div>
