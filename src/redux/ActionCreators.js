@@ -577,7 +577,7 @@ export const putExerciseType = (exerciseTypeId, ytLink, title, intensity, invent
     };
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'exercisetypes' + exerciseTypeId, {
+    return fetch(baseUrl + 'exercisetypes/' + exerciseTypeId, {
         method: "PUT",
         body: JSON.stringify(updatedExerciseType),
         headers: {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ProgramDetail from './ProgramDetailComponent';
 import PatientDetail from './PatientDetailComponent';
-import ExerciseTypeDetail from './ExerciseTypesComponent';
+import ExerciseTypeDetail from './ExerciseTypeDetail';
 import PatientProgramDetail from './PatientProgramComponent';
 import Search from './SearchComponent';
 import SearchPatients from './SearchPatientsComponent';
@@ -153,6 +153,16 @@ class Main extends Component {
         />
       );
     }
+
+    // const ExerciseTypeWithId = ({ match }) => {
+    //   return (
+    //     <ExerciseTypeDetail exerciseType={this.props.exerciseTypes.exerciseTypes.filter((exerciseType) => exerciseType._id === match.params.exerciseTypeId)[0]}
+    //       putExerciseType={this.props.putExerciseType}
+    //       deleteExerciseType={this.props.deleteExerciseType}
+    //       errMess={this.props.exerciseTypes.errMess}
+    //     />
+    //   );
+    // }
 
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {

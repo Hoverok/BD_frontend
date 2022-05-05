@@ -146,6 +146,7 @@ class PostExerciseTypeForm extends Component {
 
 const ExerciseTypes = (props) => {
     const exerciseTypes = props.exerciseTypes.exerciseTypes.map((exerciseType) => {
+        console.log("exerciseType._id " + exerciseType._id)
         return (
             <Fade in key={exerciseType._id}>
                 <div className="col-12 mt-2">

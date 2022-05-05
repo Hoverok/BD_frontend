@@ -13,11 +13,11 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
     return (
         <div className="col-12 m-1">
             <EditExerciseTypeForm exerciseType={exerciseType} putExerciseType={putExerciseType} deleteExerciseType={deleteExerciseType} />
-            <h3>Paciento informacija:</h3>
+            <h3>Pratimo informacija:</h3>
             <br></br>
             <div className='row'>
                 <div className="col-12 col-sm-2">
-                    <>Pratimo ID:</>
+                    <p>Pratimo ID:</p>
                     <p>Nuoroda:</p>
                     <p>Pavadinimas:</p>
                     <p>Intensyvumas:</p>
@@ -85,7 +85,7 @@ class EditExerciseTypeForm extends Component {
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Redaguoti paciento duomenis</ModalHeader>
                     <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <LocalForm onSubmit={(values) => this.handleUpdateExerciseType(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="ytLink" md={3}>Nuoroda</Label>
                                 <Col md={9}>
