@@ -5,6 +5,47 @@ import { baseUrl } from '../shared/baseUrl';
 //reducers take action as one of the parameters, the current state of the application as another parameter and generates(returns) the next state
 //these actions supply information to reducers
 
+export const addUsers = (users) => ({
+    type: ActionTypes.ADD_USERS,
+    payload: users
+});
+
+export const usersFailed = (errmess) => ({
+    type: ActionTypes.USERS_FAILED,
+    payload: errmess
+});
+
+export const fetchUsers = () => (dispatch) => {
+
+
+    
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'users', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(users => dispatch(addUsers(users)))
+        .catch(error => dispatch(usersFailed(error.message)));
+}
 
 export const addProgram = (program) => ({
     type: ActionTypes.ADD_PROGRAM,
@@ -95,12 +136,13 @@ export const postProgram = (description, duration, patientId) => (dispatch) => {
         })
 }
 
-export const putProgram = (programId, description, duration, patientId) => (dispatch) => {
+export const putProgram = (programId, description, duration, patientId, doctorId) => (dispatch) => {
     const updatedProgram = {
         programId: programId,
         description: description,
         duration: duration,
-        patient: patientId
+        patient: patientId,
+        author: doctorId
     };
     //console.log('Program ', updatedProgram);
     const bearer = 'Bearer ' + localStorage.getItem('token');

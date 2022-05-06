@@ -17,7 +17,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
+import { fetchUsers,
   fetchPrograms, postProgram, putProgram, deleteProgram, fetchExercises, postExercise, putExercise, deleteExercise,
   fetchPatients, postPatient, putPatient, deletePatient, fetchExerciseTypes, postExerciseType, putExerciseType, deleteExerciseType,
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
@@ -28,6 +28,7 @@ import { TransitionGroup } from 'react-transition-group';
 
 const mapStateToProps = state => { //maps redux store state to props that become available in this component
   return {
+    users: state.users,
     programs: state.programs,
     exercises: state.exercises,
     patients: state.patients,
@@ -43,9 +44,10 @@ const mapStateToProps = state => { //maps redux store state to props that become
 }
 
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
+  fetchUsers: () => { dispatch(fetchUsers()) },
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postProgram: (description, duration, patientId) => dispatch(postProgram(description, duration, patientId)),
-  putProgram: (programId, description, duration, patientId) => dispatch(putProgram(programId, description, duration, patientId)),
+  putProgram: (programId, description, duration, patientId, doctorId) => dispatch(putProgram(programId, description, duration, patientId, doctorId)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
   postExercise: (programId, exerciseTypeId, instuructions) => dispatch(postExercise(programId, exerciseTypeId, instuructions)),
@@ -79,6 +81,7 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
 class Main extends Component {
 
   componentDidMount() { //when react mounts Main component into the view, dishes,comments, etc get fetched and loaded into the store and become availabe for the application
+    this.props.fetchUsers();
     this.props.fetchPrograms();
     this.props.fetchExercises();
     this.props.fetchPatients();
@@ -111,6 +114,7 @@ class Main extends Component {
     const ProgramWithId = ({ match }) => {
       return (
         <ProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
+          users={this.props.users}
           putProgram={this.props.putProgram}
           deleteProgram={this.props.deleteProgram}
           errMess={this.props.programs.errMess}

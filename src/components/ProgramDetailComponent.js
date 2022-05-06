@@ -11,14 +11,14 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 
-function RenderProgram({ program, putProgram, deleteProgram, patients }) {
+function RenderProgram({ program, putProgram, deleteProgram, patients, users }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} />
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users}/>
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
-            
+
             {/* <h4>Paciento informacija:</h4>
             <p>Asmens Kodas: {program.personalCode}</p> */}
             {/* <div className="row">
@@ -41,29 +41,42 @@ class RenderPatient extends Component {
     }
     render() {
         return (
-            <div className="col-12 m-1">
-                <h3>Paciento informacija:</h3>
-                <br></br>
+            <div className="col-12">
+
                 <div className='row'>
                     <div className="col-12 col-sm-2">
+                        <h3>Pacientas:</h3>
                         <p>Pacientas:</p>
                         <p>Asmens Kodas:</p>
                         <p>Adresas:</p>
                         <p>Tel. numeris:</p>
                         <p>El. paštas:</p>
                     </div>
-                    <div className="col-12 col-sm-6">
+                    <div className="col-12 col-sm-4">
+                        <h3><span>&nbsp;</span> </h3>
                         <p><b>{this.props.program.patient.fullName}</b></p>
                         <p><b>{this.props.program.patient.personalCode}</b></p>
                         <p><b>{this.props.program.patient.address}</b></p>
                         <p><b>{this.props.program.patient.telNum}</b></p>
                         <p><b>{this.props.program.patient.email}</b></p>
                     </div>
+                    <div className="col-12 col-sm-2">
+                        <h3>Gydytojas:</h3>
+                        <p>Gydytojas:</p>
+                        <p>Rašto Nr.:</p>
+                    </div>
+                    <div className="col-12 col-sm-4">
+                        <h3><span>&nbsp;</span> </h3>
+                        <p><b>{this.props.program.author.fullName}</b></p>
+                        <p><b>{this.props.program.author.stampNr}</b></p>
+                    </div>
                 </div>
+                <hr />
             </div>
         );
     }
 }
+
 
 
 
@@ -318,15 +331,22 @@ class EditProgramForm extends Component {
 
     handleUpdateProgram(values) {
         this.toggleModal();
-        console.log(JSON.stringify(this.props.patients.patients));
         try {
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
-            // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.putProgram(this.props.program._id, values.description, values.duration, adParams.personalCode);
         }
         catch (err) {
             alert("Pacientas su " + values.patientId + " asmens kodo nerastas");
+            return;
         }
+        try {
+            adParams.stampNr = ((this.props.users.users.filter((user) => user.stampNr === values.stampNr)[0])._id);
+        }
+        catch (err) {
+            alert("Gydytojas su " + values.stampNr + " rašto kodu nerastas");
+            return;
+        }
+
+        this.props.putProgram(this.props.program._id, values.description, values.duration, adParams.personalCode, adParams.stampNr);
     }
 
     handleDeleteProgram(event) {
@@ -356,10 +376,19 @@ class EditProgramForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
-                                <Col md={10}>
+                                <Label htmlFor="personalCode" md={4}>Paciento asm. kodas</Label>
+                                <Col md={8}>
                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
                                         defaultValue={this.props.program.patient.personalCode}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="stampNr" md={4}>Gydytojo Rašto Nr.</Label>
+                                <Col md={8}>
+                                    <Control.text model=".stampNr" id="stampNr" name="stampNr"
+                                        defaultValue={this.props.program.author.stampNr}
                                         className="form-control"
                                     />
                                 </Col>
@@ -376,10 +405,10 @@ class EditProgramForm extends Component {
                                 </Col>
                             </Row> */}
                             <Row className="form-group">
-                                <Label htmlFor="duration" md={2}>Trukmė</Label>
-                                <Col md={10}>
+                                <Label htmlFor="duration" md={4}>Trukmė</Label>
+                                <Col md={8}>
                                     <Control.text model=".duration" id="duration" name="duration"
-                                        className="form-control" defaultValue={this.props.program.description}
+                                        className="form-control" defaultValue={this.props.program.duration}
                                     />
                                 </Col>
                             </Row>
@@ -434,16 +463,13 @@ const ProgramDetail = (props) => {
                         deleteProgram={props.deleteProgram}
                         patient={props.patient}
                         patients={props.patients}
+                        users={props.users}
                     />
                 </div>
 
                 <div className="row">
-                    <RenderPatient patients={props.patients.patients}
-                        program={props.program}
-                        patient={props.patient}
-                        programId={props.program._id} />
+                    <RenderPatient program={props.program} />
                 </div>
-
                 <div className="row">
                     <RenderExercises exercises={props.exercises}
                         exerciseTypes={props.exerciseTypes}

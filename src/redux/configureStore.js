@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createForms } from 'react-redux-form';
+import { Users } from './users';
 import { Programs } from './programs';
 import { Exercises } from './exercises';
 import { Patients } from './patients';
@@ -14,12 +15,14 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { InitialFeedback } from './forms';
 
+
 //actions are payloads of info from application to the store, done by dispatch()
 
 //take reducers to configure the store
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
+            users: Users,
             programs: Programs,
             exercises: Exercises,
             patients: Patients,
