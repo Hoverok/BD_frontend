@@ -11,12 +11,8 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
-
-
 function RenderProgramInList({ program, messages, onClick }) {
-
-
-    if (SearchParams.searchField === '') {
+    if (SearchParams.searchField === ''  && SearchParams.newMessage === (((messages.map(message => message.messageSeen).indexOf(false)) === -1))) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -25,13 +21,10 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>{program.patient.fullName}</Media>
-                        {(messages.map(message => message.messageSeen).indexOf(true))}
-                        {messages.findIndex(message => message.messageSeen)}
-
-                        {(((messages.map(message => message.messageSeen).indexOf(true)) === -1)) ?
-                            <p>Nėra naujų pranešimų</p>
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
                             :
-                            <p>Yra naujų pranešimų</p>
+                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
                         }
                         <p>Asmens kodas: {program.patient.personalCode}</p>
                         <p>Gyd.: {program.author.fullName}</p>
@@ -44,6 +37,33 @@ function RenderProgramInList({ program, messages, onClick }) {
             </Media>
         );
     }
+    else if (SearchParams.searchField === '' && SearchParams.newMessage !== (((messages.map(message => message.messageSeen).indexOf(false)) === -1))) {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        <Media heading>{program.patient.fullName}</Media>
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
+                            :
+                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
+                        }
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Gyd.: {program.author.fullName}</p>
+                        <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.updatedAt)))}</p>
+                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+
+    
     // else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
     //     return (
     //         <Media tag="li">
@@ -73,7 +93,13 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>{program.patient.fullName}</Media>
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
+                            :
+                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
+                        }
                         <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Gyd.: {program.author.fullName}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
@@ -174,7 +200,7 @@ class PostProgramForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Nauja programa</Button>
+                <Button color="primary" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Nauja programa</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos paciento programos registracija</ModalHeader>
                     <ModalBody>
@@ -254,7 +280,9 @@ const Programs = (props) => {
                 <div className="row">
                 </div>
                 <div className="row">
-                    <PostProgramForm programs={props.programs} postProgram={props.postProgram} patients={props.patients} />
+                    <div className="col-12">
+                        <PostProgramForm programs={props.programs} postProgram={props.postProgram} patients={props.patients} />
+                    </div>
                 </div>
                 <div className="row row-content">
                     <div className="col-12">

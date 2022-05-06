@@ -2,5 +2,6 @@ export const SearchParams = {
     searchField: '',
     personalCode: '',
     programStatus: '',
-    patientProgram: ''
+    patientProgram: '',
+    newMessage: false
 };
