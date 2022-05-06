@@ -32,6 +32,43 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
     );
 }
 
+function RenderMessages({ messages, putMessage }) {
+    if (messages != null)
+        return (
+            <div className="col-12 col-md-5 m-1">
+                <h3>Paciento atsiliepimai:</h3>
+                <ul className="list-unstyled">
+                    <Stagger in>
+                        {messages.map((message) => {
+                            return (
+                                <Fade in key={message._id}>
+                                    <li>
+                                        <p>{message.message}</p>
+                                        {!message.messageSeen ?
+                                            <p className="text-primary">
+                                                Laukia gydytojo apdorojimo &nbsp; <Button outline color="success" data-toggle="tooltip" data-placement="bottom"
+                                                    title="Ištrinti atsiliepimą" onClick={() => putMessage(message._id, message.message, true)}>
+                                                    <span className="fa fa-check"></span>
+                                                </Button></p>
+                                            :
+                                            <p className="text-success">Apdorotas</p>}
+                                        <p>-- {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                            .format(new Date(Date.parse(message.createdAt)))}</p>
+                                    </li>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
+                </ul>
+                <hr></hr>
+            </div>
+        );
+    else
+        return (
+            <div className="col-12 col-md-5 m-1"><h3>Paciento atsiliepimų nėra</h3> <br></br></div>
+        );
+}
+
 
 class RenderPatient extends Component {
     constructor(props) {
@@ -437,8 +474,6 @@ const ProgramDetail = (props) => {
                             </div>
                         </div>
                         <hr />
-                        <h3>Paciento atsiliepimai {props.program.feedback}</h3>
-                        <hr />
                     </div>
                 </div>
                 <div className="row">
@@ -450,7 +485,12 @@ const ProgramDetail = (props) => {
                         users={props.users}
                     />
                 </div>
-
+                <div className="row">
+                    <RenderMessages messages={props.messages}
+                        putMessage={props.putMessage}
+                    />
+                    <hr />
+                </div>
                 <div className="row">
                     <RenderPatient program={props.program} />
                 </div>

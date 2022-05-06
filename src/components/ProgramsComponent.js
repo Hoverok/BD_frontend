@@ -13,7 +13,7 @@ import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
 
 
-function RenderProgramInList({ program, onClick }) {
+function RenderProgramInList({ program, messages, onClick }) {
 
 
     if (SearchParams.searchField === '') {
@@ -25,7 +25,16 @@ function RenderProgramInList({ program, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>{program.patient.fullName}</Media>
+                        {(messages.map(message => message.messageSeen).indexOf(true))}
+                        {messages.findIndex(message => message.messageSeen)}
+
+                        {(((messages.map(message => message.messageSeen).indexOf(true)) === -1)) ?
+                            <p>Nėra naujų pranešimų</p>
+                            :
+                            <p>Yra naujų pranešimų</p>
+                        }
                         <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Gyd.: {program.author.fullName}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
@@ -224,7 +233,7 @@ const Programs = (props) => {
         return (
             <Fade in key={program._id}>
                 <div className="col-12 mt-2">
-                    <RenderProgramInList program={program} />
+                    <RenderProgramInList program={program} messages={props.messages.messages.filter((message) => message.program === program._id)} />
                 </div>
             </Fade>
         );

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Card, CardImg, CardImgOverlay, CardHeader, CardText, CardBody, CardSubtitle,
+    Card, Button, CardImgOverlay, CardHeader, CardText, CardBody, CardSubtitle,
     CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, Media
+    Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Form, Media
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
@@ -13,23 +13,28 @@ import Youtube from 'react-youtube';
 //_nBlN9yp9R8
 // <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
 
-function RenderMessages({ messages, postMessage, programId }) {
+function RenderMessages({ messages, postMessage, deleteMessage, programId }) {
     if (messages != null)
         return (
             <div className="col-12 col-md-5 m-1">
-                <h4>Jųsų atsiliepimai</h4>
                 <ul className="list-unstyled">
                     <Stagger in>
                         {messages.map((message) => {
                             return (
                                 <Fade in key={message._id}>
                                     <li>
+
                                         <p>{message.message}</p>
                                         {!message.messageSeen ?
-                                        <p className="text-primary">Laukia gydytojo apdorojimo</p>
-                                        :
-                                        <p className="text-success">Apdorotas</p>}
-                                        <p>-- {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(Date.parse(message.createdAt)))}</p>
+                                            <p className="text-primary">
+                                                Laukia gydytojo apdorojimo   &nbsp;                                              <Button outline color="danger" data-toggle="tooltip" data-placement="bottom"
+                                                    title="Ištrinti atsiliepimą" onClick={() => deleteMessage(message._id)}>
+                                                    <span className="fa fa-times"></span>
+                                                </Button></p>
+                                            :
+                                            <p className="text-success">Apdorotas</p>}
+                                        <p>-- {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                            .format(new Date(Date.parse(message.createdAt)))}</p>
                                     </li>
                                 </Fade>
                             );
@@ -145,12 +150,13 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                     <Card color="secondary">
                                         <Card body>
                                             <CardBody>
-                                                <CardTitle tag="h5">
-                                                    {exercise.exerciseType.title}<br></br>
-                                                    Intensyvumas: {exercise.exerciseType.intensity}/5
+                                                <CardTitle>
+                                                    <h3>{exercise.exerciseType.title}<br></br></h3>
+                                                    <h5>Intensyvumas: {exercise.exerciseType.intensity}/5</h5>
                                                 </CardTitle>
                                                 <CardText>
-                                                    {exercise.instuructions}
+                                                    <p><b>Instrukijos:</b>{exercise.instuructions}</p>
+                                                    <p><b>Įrankiai:</b> {exercise.exerciseType.inventory}</p>
                                                 </CardText>
                                                 <CardSubtitle
                                                     className="mb-2 text-muted"
@@ -195,13 +201,18 @@ const PatientProgramDetail = (props) => {
                 <div className="row">
                     <div className="col-12">
                         <h2>{props.program.patient.fullName}</h2>
+                        <h5>Įrankiai: Nėra {props.program.requirements}</h5>
                         <h5>{props.program.description}</h5>
                         <hr />
                     </div>
                 </div>
                 <div className="row">
+                    <div className="col-12">
+                        <h3>Jųsų atsiliepimai</h3>
+                    </div>
                     <RenderMessages messages={props.messages}
                         postMessage={props.postMessage}
+                        deleteMessage={props.deleteMessage}
                         programId={props.program._id} />
                 </div>
                 <div className="row">

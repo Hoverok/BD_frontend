@@ -68,7 +68,8 @@ class Search extends Component {
                     <Programs programs={this.props.programs}
                         postProgram={this.props.postProgram}
                         patients={this.props.patients}
-                        programsErrMess={this.props.errMess} />
+                        programsErrMess={this.props.errMess}
+                        messages={this.props.messages} />
                 </div>
 {/* follow through errMess path */}
 

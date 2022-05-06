@@ -17,7 +17,8 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUsers,
+import {
+  fetchUsers,
   fetchPrograms, postProgram, putProgram, deleteProgram, fetchExercises, postExercise, putExercise, deleteExercise,
   fetchPatients, postPatient, putPatient, deletePatient, fetchExerciseTypes, postExerciseType, putExerciseType, deleteExerciseType,
   fetchMessages, postMessage, putMessage, deleteMessage,
@@ -93,7 +94,7 @@ class Main extends Component {
     this.props.fetchPatients();
     this.props.fetchExerciseTypes();
     this.props.fetchMessages();
-    
+
 
     this.props.fetchDishes();
     this.props.fetchComments();
@@ -132,7 +133,8 @@ class Main extends Component {
           deleteExercise={this.props.deleteExercise}
           patients={this.props.patients}
           exerciseTypes={this.props.exerciseTypes}
-
+          messages={this.props.messages.messages.filter((message) => message.program === match.params.programId)}
+          putMessage={this.props.putMessage}
         />
       );
     }
@@ -154,6 +156,7 @@ class Main extends Component {
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
           messages={this.props.messages.messages.filter((message) => message.program === match.params.programId)}
           postMessage={this.props.postMessage}
+          deleteMessage={this.props.deleteMessage}
         />
       );
     }
@@ -230,7 +233,7 @@ class Main extends Component {
             <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
-              programsErrMess={this.props.programs.errMess} patients={this.props.patients} />} />
+              programsErrMess={this.props.programs.errMess} patients={this.props.patients} messages={this.props.messages} />} />
             <Route path="/programs/:programId" component={ProgramWithId} />
             <Route exact path="/patients" component={() => <SearchPatients patients={this.props.patients} postPatient={this.props.postPatient}
               patientsErrMess={this.props.patients.errMess} />} />
