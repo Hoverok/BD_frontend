@@ -3,7 +3,8 @@ export const adParams = {
     personalCode: '',
     programStatus: '',
     patientId: '',
-    stampNr: ''
+    stampNr: '',
+    exerciseTypeId: ''
 };
 
 export default adParams;

@@ -14,7 +14,7 @@ import adParams from '../shared/adParams';
 function RenderProgram({ program, putProgram, deleteProgram, patients, users }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users}/>
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users} />
             <div className="d-none d-sm-block">
                 <span className="badge badge-info">{program.programStatus}</span>
             </div>
@@ -155,8 +155,9 @@ class EditExerciseForm extends Component {
 
     handleUpdateExercise(values) {
         this.toggleModal();
-        this.props.putExercise(this.props.exercise._id, values.name, values.ytLink, values.difficulty, values.comment);
-        this.forceUpdate();
+        this.props.putExercise(this.props.exercise._id, values.exerciseTypeId, values.instuructions);
+
+        // this.forceUpdate();
     }
 
     handleDeleteExercise(event) {
@@ -178,44 +179,19 @@ class EditExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateExercise(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="name" md={3}>Pavadinimas</Label>
+                                <Label htmlFor="exerciseTypeId" md={3}>Pratimo tipo ID</Label>
                                 <Col md={9}>
-                                    <Control.text model=".name" id="name" name="name"
-                                        placeholder="pavadinimas"
-                                        defaultValue={this.props.exercise.name}
-                                        className="form-control"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="difficulty" md={3}>Intensyvumas</Label>
-                                <Col md={3}>
-                                    <Control.select model=".difficulty" id="difficulty" name="difficulty"
-                                        defaultValue={this.props.exercise.difficulty}
-                                        className="form-control">
-                                        <option></option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col>
-                                    <Label htmlFor="ytLink" md={3}>Nuoroda</Label>
-                                    <Control.textarea model=".ytLink" id="ytLink" name="ytLink"
-                                        rows="2" defaultValue={this.props.exercise.ytLink}
+                                    <Control.text model=".exerciseTypeId" id="exerciseTypeId" name="exerciseTypeId"
+                                        placeholder="" defaultValue={this.props.exercise.exerciseType._id}
                                         className="form-control"
                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="comment">Specialisto komentaras</Label>
-                                    <Control.textarea model=".comment" id="comment" name="comment"
-                                        rows="8" defaultValue={this.props.exercise.comment}
+                                    <Label htmlFor="instuructions">Specialisto komentaras</Label>
+                                    <Control.textarea model=".instuructions" id="instuructions" name="instuructions"
+                                        rows="8" defaultValue={this.props.exercise.instuructions}
                                         className="form-control" />
                                 </Col>
                             </Row>

@@ -296,7 +296,8 @@ export const postExercise = (programId, exerciseTypeId, instuructions) => (dispa
 
 export const putExercise = (exerciseId, exerciseTypeId, instuructions) => (dispatch) => {
     const updatedExercise = {
-        exerciseTypeId: exerciseTypeId,
+        exerciseId: exerciseId,
+        exerciseType: exerciseTypeId,
         instuructions: instuructions
     };
     //console.log('Exercise ', updatedExercise);
