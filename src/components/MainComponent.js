@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { fetchUsers,
   fetchPrograms, postProgram, putProgram, deleteProgram, fetchExercises, postExercise, putExercise, deleteExercise,
   fetchPatients, postPatient, putPatient, deletePatient, fetchExerciseTypes, postExerciseType, putExerciseType, deleteExerciseType,
+  fetchMessages, postMessage, putMessage, deleteMessage,
   postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders,
   loginUser, logoutUser, fetchFavorites, postFavorite, deleteFavorite
 } from '../redux/ActionCreators';
@@ -33,6 +34,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
     exercises: state.exercises,
     patients: state.patients,
     exerciseTypes: state.exerciseTypes,
+    messages: state.messages,
 
     dishes: state.dishes,
     comments: state.comments,
@@ -61,6 +63,10 @@ const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatchi
   postExerciseType: (ytLink, title, intensity, inventory) => dispatch(postExerciseType(ytLink, title, intensity, inventory)),
   putExerciseType: (exerciseTypeId, ytLink, title, intensity, inventory) => dispatch(putExerciseType(exerciseTypeId, ytLink, title, intensity, inventory)),
   deleteExerciseType: (exerciseTypeId) => dispatch(deleteExerciseType(exerciseTypeId)),
+  fetchMessages: () => { dispatch(fetchMessages()) },
+  postMessage: (programId, message) => dispatch(postMessage(programId, message)),
+  putMessage: (messageId, message, messageSeen) => dispatch(putMessage(messageId, message, messageSeen)),
+  deleteMessage: (messageId) => dispatch(deleteMessage(messageId)),
 
 
 
@@ -86,6 +92,8 @@ class Main extends Component {
     this.props.fetchExercises();
     this.props.fetchPatients();
     this.props.fetchExerciseTypes();
+    this.props.fetchMessages();
+    
 
     this.props.fetchDishes();
     this.props.fetchComments();
@@ -144,6 +152,8 @@ class Main extends Component {
         <PatientProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
           errMess={this.props.programs.errMess}
           exercises={this.props.exercises.exercises.filter((exercise) => exercise.program === match.params.programId)}
+          messages={this.props.messages.messages.filter((message) => message.program === match.params.programId)}
+          postMessage={this.props.postMessage}
         />
       );
     }

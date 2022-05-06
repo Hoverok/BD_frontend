@@ -18,7 +18,7 @@ export const usersFailed = (errmess) => ({
 export const fetchUsers = () => (dispatch) => {
 
 
-    
+
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'users', {
         method: 'GET',
@@ -678,12 +678,163 @@ export const deleteExerciseType = (exerciseTypeId) => (dispatch) => {
         .then(response => { console.log('exercisetype Deleted', response); dispatch(removeExerciseType(response)); }) //this doesnt get called
         .catch(error => dispatch(exerciseTypesFailed(error.message)));
 };
+export const addMessage = (message) => ({
+    type: ActionTypes.ADD_MESSAGE,
+    payload: message
+});
+
+export const updateMessage = (message) => ({
+    type: ActionTypes.UPDATE_MESSAGE,
+    payload: message
+});
+export const removeMessage = (message) => ({
+    type: ActionTypes.REMOVE_MESSAGE,
+    payload: message
+});
+
+export const addMessages = (messages) => ({
+    type: ActionTypes.ADD_MESSAGES,
+    payload: messages
+});
+
+export const messagesFailed = (errmess) => ({
+    type: ActionTypes.MESSAGES_FAILED,
+    payload: errmess
+});
+
+export const fetchMessages = () => (dispatch) => {
+    return fetch(baseUrl + 'messages')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(messages => dispatch(addMessages(messages)))
+        .catch(error => dispatch(messagesFailed(error.message)));
+}
+
+export const postMessage = (programId, message) => (dispatch) => {
+
+    const newMessage= {
+        program: programId,
+        message: message
+    }
+    console.log('Message ', newMessage);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'messages', {
+        method: 'POST',
+        body: JSON.stringify(newMessage),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addMessage(response)))
+        .catch(error => {
+            console.log('Post messages ', error.message);
+            alert('Your message could not be posted\nError: ' + error.message);
+        })
+}
+
+export const putMessage = (messageId, message, messageSeen) => (dispatch) => {
+    const updatedMessage = {
+        message: message,
+        messageSeen: messageSeen
+    };
+    //console.log('Message ', updatedMessage);
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'messages/' + messageId, {
+        method: "PUT",
+        body: JSON.stringify(updatedMessage),
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(updateMessage(response)))
+        .catch(error => {
+            //console.log('Post trainer ', error.message);
+            alert('error' + error.message)
+            // + 'nError: ' + error.message);
+        });
+};
+
+export const deleteMessage = (messageId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'messages/' + messageId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => { console.log('Message Deleted', response); dispatch(removeMessage(response)); }) //this doesnt get called
+        .catch(error => dispatch(messagesFailed(error.message)));
+};
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
 });
-
 
 //thunk that calls actions (dispatches them) based on server response
 export const fetchComments = () => (dispatch) => {

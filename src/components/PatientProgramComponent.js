@@ -13,19 +13,89 @@ import Youtube from 'react-youtube';
 //_nBlN9yp9R8
 // <a href={exercise.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
 
-function RenderProgram({ program, putProgram, deleteProgram }) {
-    return (
-        <div className="row">
-            <div className="col-12 m-1">
-                <div className="d-none d-sm-block">
-                    <span className="badge badge-info">{program.programStatus}</span>
-                </div>
-                <h4>Paciento informacija:</h4>
-                <p>Asmens Kodas: {program.personalCode}</p>
-                <hr />
+function RenderMessages({ messages, postMessage, programId }) {
+    if (messages != null)
+        return (
+            <div className="col-12 col-md-5 m-1">
+                <h4>Jųsų atsiliepimai</h4>
+                <ul className="list-unstyled">
+                    <Stagger in>
+                        {messages.map((message) => {
+                            return (
+                                <Fade in key={message._id}>
+                                    <li>
+                                        <p>{message.message}</p>
+                                        {!message.messageSeen ?
+                                        <p className="text-primary">Laukia gydytojo apdorojimo</p>
+                                        :
+                                        <p className="text-success">Apdorotas</p>}
+                                        <p>-- {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(Date.parse(message.createdAt)))}</p>
+                                    </li>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
+                </ul>
+                <MessageForm programId={programId} postMessage={postMessage} />
+                <hr></hr>
             </div>
-        </div>
-    );
+        );
+    else
+        return (
+            <div></div>
+        );
+}
+
+class MessageForm extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.state = {
+            isNavOpen: false,
+            isModalOpen: false
+        };
+    }
+
+    toggleModal() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    handleSubmit(values) {
+        this.toggleModal();
+        this.props.postMessage(this.props.programId, values.message);
+    }
+
+    render() {
+        return (
+            <div>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Parašyti gydytojui</Button>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}> Parašyti atsiliepimą gydytojui apie programą</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                            <Row className="form-group">
+                                <Col>
+                                    <Label htmlFor="message">Atsiliepimas</Label>
+                                    <Control.textarea model=".message" id="message"
+                                        rows="3" className="form-control" />
+                                </Col>
+                            </Row>
+                            <Button type="submit" className="bg-primary">
+                                Submit
+                            </Button>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+            </div>
+        );
+    }
+
 }
 
 
@@ -124,9 +194,15 @@ const PatientProgramDetail = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <h2>{props.program.description}</h2>
+                        <h2>{props.program.patient.fullName}</h2>
+                        <h5>{props.program.description}</h5>
                         <hr />
                     </div>
+                </div>
+                <div className="row">
+                    <RenderMessages messages={props.messages}
+                        postMessage={props.postMessage}
+                        programId={props.program._id} />
                 </div>
                 <div className="row">
                     <div className="col-12">
@@ -134,7 +210,7 @@ const PatientProgramDetail = (props) => {
                             programId={props.program._id} />
                     </div>
                 </div>
-            </div>
+            </div >
         );
     else
         return (
