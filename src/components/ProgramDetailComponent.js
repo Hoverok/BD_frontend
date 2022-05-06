@@ -42,7 +42,6 @@ class RenderPatient extends Component {
     render() {
         return (
             <div className="col-12">
-
                 <div className='row'>
                     <div className="col-12 col-sm-2">
                         <h3>Pacientas:</h3>
@@ -426,10 +425,19 @@ const ProgramDetail = (props) => {
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.program.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{props.program.description}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.program.name}</h3>
+                        <div className="row">
+                            <div className="col-12 col-sm-6">
+                                <h3>{props.program.description}</h3>
+                            </div>
+                            <div className="col-12 col-sm-6">
+                                <h3>Trūkmė {props.program.duration}</h3>
+                            </div>
+                        </div>
+                        <hr />
+                        <h3>Paciento atsiliepimai {props.program.feedback}</h3>
                         <hr />
                     </div>
                 </div>
