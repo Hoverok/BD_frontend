@@ -27,7 +27,7 @@ function RenderMessages({ messages, postMessage, deleteMessage, programId }) {
                                         <p>{message.message}</p>
                                         {!message.messageSeen ?
                                             <p className="text-primary">
-                                                Laukia gydytojo apdorojimo   &nbsp;                                              <Button outline color="danger" data-toggle="tooltip" data-placement="bottom"
+                                                Laukia gydytojo apdorojimo &nbsp;<Button outline color="danger" data-toggle="tooltip" data-placement="bottom"
                                                     title="Ištrinti atsiliepimą" onClick={() => deleteMessage(message._id)}>
                                                     <span className="fa fa-times"></span>
                                                 </Button></p>

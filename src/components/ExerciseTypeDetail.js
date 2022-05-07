@@ -19,7 +19,6 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
             <div className='row'>
                 <div className="col-12 col-sm-2">
                     <p>Pratimo ID:</p>
-                    <p>Nuoroda:</p>
                     <p>Pavadinimas:</p>
                     <p>Intensyvumas:</p>
                     <p>Įrankiai:</p>
@@ -27,7 +26,6 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
                 </div>
                 <div className="col-12 col-sm-6">
                     <p><b>{exerciseType._id}</b></p>
-                    <p><b>{exerciseType.ytLink}</b></p>
                     <p><b>{exerciseType.title}</b></p>
                     <p><b>{exerciseType.intensity}/5</b></p>
                     <p><b>{exerciseType.inventory}</b></p>

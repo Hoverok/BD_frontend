@@ -3,5 +3,5 @@ export const SearchParams = {
     personalCode: '',
     programStatus: '',
     patientProgram: '',
-    newMessage: false
+    newMessage: '-1'
 };

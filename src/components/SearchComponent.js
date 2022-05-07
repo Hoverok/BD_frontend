@@ -16,16 +16,22 @@ class Search extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNameChanged = this.handleNameChanged.bind(this);
+        this.handleMessageChanged = this.handleMessageChanged.bind(this);
     }
 
     handleNameChanged(event) {
         SearchParams.searchField = event.target.value;
     }
 
+    handleMessageChanged(event) {
+        SearchParams.newMessage = event.target.value;
+    }
+
     handleSubmit(values) {
-        SearchParams.newMessage = values.newMessage;
+        // SearchParams.newMessage = values.newMessage;
         //alert(SearchParams.newMessage);
         this.forceUpdate();
+        console.log(SearchParams.newMessage);
     }
 
     render() {
@@ -44,16 +50,15 @@ class Search extends Component {
                                 </Button>
                             </div>
                         </FormGroup>
-                        <FormGroup>
-                            <div className="col-4 mt-2" >
-                                <div className="form-check">
-                                    <Label check>
-                                        <Control.checkbox model=".newMessage" name="newMessage" 
-                                            className="form-check-input" defaultValue={SearchParams.newMessage}
-                                        /> {' '}
-                                        <strong>Nauji pranešimai</strong>
-                                    </Label>
-                                </div>
+                        <FormGroup row>
+                            <div className="col-2">
+                                <Label htmlFor="label">Atsiliepimai </Label>
+                            </div>
+                            <div className="col-2">
+                                <select onChange={this.handleMessageChanged} defaultValue={SearchParams.newMessage} >
+                                    <option value="-1">Visi</option>
+                                    <option value="1">Nauji atsiliepimai</option>
+                                </select>
                             </div>
                         </FormGroup>
                         <FormGroup row>

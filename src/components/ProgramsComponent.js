@@ -12,7 +12,34 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
 function RenderProgramInList({ program, messages, onClick }) {
-    if (SearchParams.searchField === ''  && SearchParams.newMessage === (((messages.map(message => message.messageSeen).indexOf(false)) === -1))) {
+    // if (SearchParams.searchField === '' && Number(SearchParams.newMessage) === -1) {
+    //     return (
+    //         <Media tag="li">
+    //             <Media left middle>
+    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+    //             </Media>
+    //             <Link to={`/programs/${program._id}`} className='text-link' >
+    //                 <Media body className="ml-5">
+    //                     <Media heading>{program.patient.fullName}</Media>
+    //                     {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+    //                         <p></p>
+    //                         :
+    //                         <span className="badge badge-pill badge-warning">Naujas Atsiliepimas</span>
+    //                     }
+    //                     <p>Asmens1111 kodas: {program.patient.personalCode}</p>
+    //                     <p>Gyd.: {program.author.fullName}</p>
+    //                     <p>{new Intl.DateTimeFormat('fr-CA',
+    //                         { year: 'numeric', month: '2-digit', day: '2-digit' })
+    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
+    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+    //                 </Media>
+    //             </Link>
+    //         </Media>
+    //     );
+    // }
+    if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -22,37 +49,13 @@ function RenderProgramInList({ program, messages, onClick }) {
                     <Media body className="ml-5">
                         <Media heading>{program.patient.fullName}</Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p></p>
+                            <p>N4ra</p>
                             :
-                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
+                            <span className="badge badge-pill badge-warning">Naujas pranešimasssssssssss</span>
                         }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Asmens111 kodas: {program.patient.personalCode}</p>
                         <p>Gyd.: {program.author.fullName}</p>
-                        <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.updatedAt)))}</p>
-                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-                    </Media>
-                </Link>
-            </Media>
-        );
-    }
-    else if (SearchParams.searchField === '' && SearchParams.newMessage !== (((messages.map(message => message.messageSeen).indexOf(false)) === -1))) {
-        return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{program.patient.fullName}</Media>
-                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p></p>
-                            :
-                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
-                        }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
-                        <p>Gyd.: {program.author.fullName}</p>
+                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
@@ -63,7 +66,7 @@ function RenderProgramInList({ program, messages, onClick }) {
         );
     }
 
-    
+
     // else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
     //     return (
     //         <Media tag="li">
@@ -83,8 +86,10 @@ function RenderProgramInList({ program, messages, onClick }) {
     //         </Media>
     //     );
     // }
-    else if (((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
-        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))) {
+    else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+         && Number(SearchParams.newMessage) === -1)) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -96,10 +101,11 @@ function RenderProgramInList({ program, messages, onClick }) {
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
-                            <span className="badge badge-pill badge-warning">Naujas pranešimas</span>
+                            <span className="badge badge-pill badge-warning">Naujas praaaanešimas</span>
                         }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Asmens2222 kodas: {program.patient.personalCode}</p>
                         <p>Gyd.: {program.author.fullName}</p>
+                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
