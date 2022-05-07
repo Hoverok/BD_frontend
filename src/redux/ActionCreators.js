@@ -94,11 +94,12 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (description, duration, patientId) => (dispatch) => {
+export const postProgram = (description, duration, programStatus, patientId) => (dispatch) => {
 
     const newProgram = {
         description: description,
         duration: duration,
+        programStatus: programStatus,
         patient: patientId
     }
     console.log('Program ', newProgram);
@@ -136,11 +137,13 @@ export const postProgram = (description, duration, patientId) => (dispatch) => {
         })
 }
 
-export const putProgram = (programId, description, duration, patientId, doctorId) => (dispatch) => {
+export const putProgram = (programId, description, duration, programStatus, requirements, patientId, doctorId) => (dispatch) => {
     const updatedProgram = {
         programId: programId,
         description: description,
         duration: duration,
+        programStatus: programStatus,
+        requirements: requirements,
         patient: patientId,
         author: doctorId
     };

@@ -23,7 +23,6 @@ function RenderMessages({ messages, postMessage, deleteMessage, programId }) {
                             return (
                                 <Fade in key={message._id}>
                                     <li>
-
                                         <p>{message.message}</p>
                                         {!message.messageSeen ?
                                             <p className="text-primary">
@@ -200,8 +199,13 @@ const PatientProgramDetail = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
+                        {(props.program.programStatus === "Aktyvi") ?
+                            <h4><span className="badge badge-success">Programa aktyvi</span></h4>
+                            :
+                            <h4><span className="badge badge-danger">Programa baigta</span></h4>
+                        }
                         <h2>{props.program.patient.fullName}</h2>
-                        <h5>Įrankiai: Nėra {props.program.requirements}</h5>
+                        <h5>Įrankiai: {props.program.requirements}</h5>
                         <h5>{props.program.description}</h5>
                         <hr />
                     </div>

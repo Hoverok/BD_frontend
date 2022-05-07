@@ -37,9 +37,11 @@ function RenderProgramInList({ program, messages, onClick }) {
     //         </Media>
     //     );
     // }
-    if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+    if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))) {
+        || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))
+        && SearchParams.programStatus === program.programStatus)) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -47,13 +49,21 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        <Media heading>{program.patient.fullName}</Media>
-                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p>N4ra</p>
+                        {(program.programStatus === "Aktyvi") ?
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
+                            </Media>
                             :
-                            <span className="badge badge-pill badge-warning">Naujas pranešimasssssssssss</span>
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
+                            </Media>
                         }
-                        <p>Asmens111 kodas: {program.patient.personalCode}</p>
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
+                            :
+                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                        }
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
                         <p>Gyd.: {program.author.fullName}</p>
                         <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
@@ -63,9 +73,48 @@ function RenderProgramInList({ program, messages, onClick }) {
                     </Media>
                 </Link>
             </Media>
+
         );
     }
+    else if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))
+        && SearchParams.programStatus === "")) {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        {(program.programStatus === "Aktyvi") ?
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
+                            </Media>
+                            :
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
+                            </Media>
+                        }
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
+                            :
+                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                        }
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Gyd.: {program.author.fullName}</p>
+                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
+                        <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.updatedAt)))}</p>
+                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                    </Media>
+                </Link>
+            </Media>
 
+        );
+    }
 
     // else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
     //     return (
@@ -89,7 +138,8 @@ function RenderProgramInList({ program, messages, onClick }) {
     else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-         && Number(SearchParams.newMessage) === -1)) {
+        && Number(SearchParams.newMessage) === -1)
+        && SearchParams.programStatus === "") {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -97,13 +147,59 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        <Media heading>{program.patient.fullName}</Media>
+                        {(program.programStatus === "Aktyvi") ?
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
+                            </Media>
+                            :
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
+                            </Media>
+                        }
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
-                            <span className="badge badge-pill badge-warning">Naujas praaaanešimas</span>
+                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
                         }
-                        <p>Asmens2222 kodas: {program.patient.personalCode}</p>
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
+                        <p>Gyd.: {program.author.fullName}</p>
+                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
+                        <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.updatedAt)))}</p>
+                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                    </Media>
+                </Link>
+            </Media>
+        );
+    }
+    else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
+        || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
+        && Number(SearchParams.newMessage) === -1)
+        && SearchParams.programStatus === program.programStatus) {
+        return (
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
+                </Media>
+                <Link to={`/programs/${program._id}`} className='text-link' >
+                    <Media body className="ml-5">
+                        {(program.programStatus === "Aktyvi") ?
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
+                            </Media>
+                            :
+                            <Media heading>
+                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
+                            </Media>
+                        }
+                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                            <p></p>
+                            :
+                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                        }
+                        <p>Asmens kodas: {program.patient.personalCode}</p>
                         <p>Gyd.: {program.author.fullName}</p>
                         <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
@@ -196,7 +292,7 @@ class PostProgramForm extends Component {
             console.log("hi");
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
             // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.postProgram(values.description, values.duration, adParams.personalCode);
+            this.props.postProgram(values.description, values.duration, "Aktyvi", adParams.personalCode);
         }
         catch (err) {
             alert("Pacientas su " + values.personalCode + " asmens kodo nerastas");
@@ -261,6 +357,7 @@ class PostProgramForm extends Component {
 }
 
 const Programs = (props) => {
+
     const programs = props.programs.programs.map((program) => {
         return (
             <Fade in key={program._id}>
@@ -270,7 +367,6 @@ const Programs = (props) => {
             </Fade>
         );
     });
-
     if (props.programs.programsErrMess) {
         return (
             <div className="container">
@@ -302,8 +398,6 @@ const Programs = (props) => {
                 </div>
             </div>
         );
-
-
 }
 
 export default Programs;

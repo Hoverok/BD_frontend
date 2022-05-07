@@ -26,12 +26,12 @@ class Search extends Component {
     handleMessageChanged(event) {
         SearchParams.newMessage = event.target.value;
     }
+    handleProgramStatusChanged(event) {
+        SearchParams.programStatus = event.target.value;
+    }
 
     handleSubmit(values) {
-        // SearchParams.newMessage = values.newMessage;
-        //alert(SearchParams.newMessage);
         this.forceUpdate();
-        console.log(SearchParams.newMessage);
     }
 
     render() {
@@ -57,18 +57,17 @@ class Search extends Component {
                             <div className="col-2">
                                 <select onChange={this.handleMessageChanged} defaultValue={SearchParams.newMessage} >
                                     <option value="-1">Visi</option>
-                                    <option value="1">Nauji atsiliepimai</option>
+                                    <option value="1">Nauji</option>
                                 </select>
                             </div>
-                        </FormGroup>
-                        <FormGroup row>
                             <div className="col-2">
-                                <Label htmlFor="label">Progamos būsena </Label>
+                                <Label htmlFor="label">Progamų būsenos</Label>
                             </div>
                             <div className="col-2">
-                                <select onChange={this.handleMessageChanged} defaultValue={SearchParams.newMessage} >
-                                    <option value="false">Visi</option>
-                                    <option value="true">Nauji atsiliepimai</option>
+                                <select onChange={this.handleProgramStatusChanged} defaultValue={SearchParams.programStatus} >
+                                    <option value="">Visos</option>
+                                    <option value="Aktyvi">Aktyvios</option>
+                                    <option value="Baigta">Baigtos</option>
                                 </select>
                             </div>
                         </FormGroup>

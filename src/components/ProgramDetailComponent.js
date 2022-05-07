@@ -11,22 +11,38 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 
+
+
 function RenderProgram({ program, putProgram, deleteProgram, patients, users }) {
     return (
         <div className="col-12 m-1">
-            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users} />
-            <div className="d-none d-sm-block">
-                <span className="badge badge-info">{program.programStatus}</span>
-            </div>
-
-            {/* <h4>Paciento informacija:</h4>
-            <p>Asmens Kodas: {program.personalCode}</p> */}
-            {/* <div className="row">
-                <div className="col-12 m-1">
-                    <p>PatientID programoje: {program.patient}</p>
-                    <p>{patient.fullName}</p>
+            {(program.programStatus === "Aktyvi") ?
+                    <h4><span className="badge badge-success">Programa aktyvi</span></h4>
+                    :
+                    <h4><span className="badge badge-danger">Programa baigta</span></h4>
+            }
+            <div className="row">
+                <div className="col-12 col-sm-6">
+                    <h3>{program.description}</h3>
                 </div>
-            </div> */}
+                <div className="col-12 col-sm-6">
+                    <h3>Trūkmė {program.duration}</h3>
+                </div>
+                <hr />
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <h4>ID: {program._id}</h4>
+                    <br></br>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <h4>Įrankiai:</h4> <p>{program.requirements}</p>
+                    <br></br>
+                </div>
+            </div>
+            <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users} />
             <hr />
         </div>
     );
@@ -358,7 +374,8 @@ class EditProgramForm extends Component {
             return;
         }
 
-        this.props.putProgram(this.props.program._id, values.description, values.duration, adParams.personalCode, adParams.stampNr);
+        this.props.putProgram(this.props.program._id, values.description, values.duration,
+            values.programStatus, values.requirements, adParams.personalCode, adParams.stampNr);
     }
 
     handleDeleteProgram(event) {
@@ -388,6 +405,15 @@ class EditProgramForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
+                                <Col>
+                                    <Label htmlFor="requirements" md={3}>Įrankiai</Label>
+                                    <Control.textarea model=".requirements" id="requirements" name="requirements"
+                                        rows="3" defaultValue={this.props.program.requirements}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
                                 <Label htmlFor="personalCode" md={4}>Paciento asm. kodas</Label>
                                 <Col md={8}>
                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
@@ -405,23 +431,23 @@ class EditProgramForm extends Component {
                                     />
                                 </Col>
                             </Row>
-                            {/* <Row className="form-group">
-                                <Label htmlFor="programStatus" md={2}>Būsena</Label>
-                                <Col md={6}>
-                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
-                                        className="form-control">
-                                        <option value=""></option>
-                                        <option value="Aktyvi">Aktyvi</option>
-                                        <option value="Baigta">Baigta</option>
-                                    </Control.select>
-                                </Col>
-                            </Row> */}
                             <Row className="form-group">
                                 <Label htmlFor="duration" md={4}>Trukmė</Label>
                                 <Col md={8}>
                                     <Control.text model=".duration" id="duration" name="duration"
                                         className="form-control" defaultValue={this.props.program.duration}
                                     />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="programStatus" md={4}>Būsena</Label>
+                                <Col md={6}>
+                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
+                                        className="form-control" defaultValue={this.props.program.programStatus}>
+                                        <option value=""></option>
+                                        <option value="Aktyvi">Aktyvi</option>
+                                        <option value="Baigta">Baigta</option>
+                                    </Control.select>
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
@@ -464,17 +490,6 @@ const ProgramDetail = (props) => {
                         <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{props.program.description}</BreadcrumbItem>
                     </Breadcrumb>
-                    <div className="col-12">
-                        <div className="row">
-                            <div className="col-12 col-sm-6">
-                                <h3>{props.program.description}</h3>
-                            </div>
-                            <div className="col-12 col-sm-6">
-                                <h3>Trūkmė {props.program.duration}</h3>
-                            </div>
-                        </div>
-                        <hr />
-                    </div>
                 </div>
                 <div className="row">
                     <RenderProgram program={props.program}

@@ -4,7 +4,7 @@ import {
     CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, Media
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import Youtube from 'react-youtube';
 
@@ -102,7 +102,7 @@ class EditExerciseTypeForm extends Component {
 
     handleDeleteExerciseType(event) {
         this.toggleDeleteModal();
-        this.props.handleDeleteExerciseType(this.props.exerciseType._id);
+        this.props.deleteExerciseType(this.props.exerciseType._id);
 
     }
     render() {
@@ -217,8 +217,7 @@ const ExerciseTypeDetail = (props) => {
         );
     else
         return (
-            // <Redirect to='/exercisetypes' />
-            <div></div>
+            <Redirect to='/exercisetypes' />
         );
 }
 
