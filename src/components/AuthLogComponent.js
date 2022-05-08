@@ -18,7 +18,6 @@ class AuthLog extends Component {
             isRedirect: false,
             prograId: ''
         };
-        console.log('redirect?  ' + this.state.isRedirect);
         this.toggleModal = this.toggleModal.bind(this);
         this.togglePatientModal = this.togglePatientModal.bind(this);
         this.toggleRedirect = this.toggleRedirect.bind(this);

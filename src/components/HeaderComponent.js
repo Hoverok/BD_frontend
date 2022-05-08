@@ -50,68 +50,45 @@ class Header extends Component {
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav} />
                         <Collapse isOpen={this.state.isNavOpen} navbar>
-                            <Nav navbar>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/welcome">
-                                        <span className="fa fa-home fa-lg"></span> Home
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/aboutus">
-                                        <span className="fa fa-info fa-lg"></span> About Us
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/menu">
-                                        <span className="fa fa-list fa-lg"></span> Menu
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/favorites">
-                                        <span className="fa fa-heart fa-lg"></span> My Favorites
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/contactus">
-                                        <span className="fa fa-address-card fa-lg"></span> Contact Us
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/programs">
-                                        <span className="fa fa-address-card fa-lg"></span> Programos
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/patients">
-                                        <span className="fa fa-user fa-lg"></span> Pacientai
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/exercisetypes">
-                                        <span className="fa fa-video-camera fa-lg"></span> Pratimai
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
+                            {!this.props.auth.isAuthenticated ?
+                                <Nav navbar>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/welcome">
+                                            <span className="fa fa-home fa-lg"></span> Pradinis
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                                :
+                                <Nav navbar>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/welcome">
+                                            <span className="fa fa-home fa-lg"></span> Home
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/programs">
+                                            <span className="fa fa-address-card fa-lg"></span> Programos
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/patients">
+                                            <span className="fa fa-user fa-lg"></span> Pacientai
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/exercisetypes">
+                                            <span className="fa fa-video-camera fa-lg"></span> Pratimai
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                            }
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     {!this.props.auth.isAuthenticated ?
-                                        <Button outline onClick={this.toggleModal}>
-                                            <span className="fa fa-sign-in fa-lg"></span> Prisijungti
-                                            {this.props.auth.isFetching ?
-                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
-                                                : null
-                                            }
-                                        </Button>
+                                        <div></div>
                                         :
                                         <div>
                                             <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
-                                            <Button outline onClick={this.handleLogout}>
-                                                <span className="fa fa-sign-out fa-lg"></span> Atsijungti
-                                                {this.props.auth.isFetching ?
-                                                    <span className="fa fa-spinner fa-pulse fa-fw"></span>
-                                                    : null
-                                                }
-                                            </Button>
                                         </div>
                                     }
                                 </NavItem>
