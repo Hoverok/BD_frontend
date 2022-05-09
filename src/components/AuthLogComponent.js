@@ -103,7 +103,7 @@ class AuthLog extends Component {
                                 <div className="row">
                                     <div className="col-12 m-1">
                                         <Link to={`/programs`} className='text-link'>
-                                            <button type="button" className="btn btn-info btn-lg btn-block">Pacientų programos</button></Link>
+                                            <button type="button" className="btn btn-info btn-lg btn-block">Programos</button></Link>
                                     </div>
                                 </div>
                                 <div className="row">
