@@ -91,7 +91,7 @@ class MessageForm extends Component {
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
-                                Submit
+                                Pateikti
                             </Button>
                         </LocalForm>
                     </ModalBody>
@@ -160,7 +160,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                                 <CardSubtitle
                                                     className="mb-2 text-muted"
                                                     tag="h6">
-                                                    Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
+                                                    Atnaujino: {exercise.author.fullName} <br></br>
                                                     Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
                                                         .format(new Date(Date.parse(exercise.updatedAt)))}
                                                 </CardSubtitle>

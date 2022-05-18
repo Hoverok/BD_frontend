@@ -100,7 +100,7 @@ class Header extends Component {
                     <div className="container">
                         <div className="row row-header">
                             <div className="col-12 col-sm-6">
-                                <h1 className="jumbotron-text" >Nuotolinių kineziterapijos pratimų sistema</h1>
+                                <h1 className="jumbotron-text" >Nuotolinių kineziterapijos užsiėmimų sistema</h1>
                             </div>
                         </div>
                     </div>

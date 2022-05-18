@@ -26,7 +26,7 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
                     <h3>{program.description}</h3>
                 </div>
                 <div className="col-12 col-sm-6">
-                    <h3>Trūkmė {program.duration}</h3>
+                    <h3>Trukmė {program.duration}</h3>
                 </div>
                 <hr />
             </div>
@@ -156,7 +156,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                             <CardSubtitle
                                                 className="mb-2 text-muted"
                                                 tag="h6">
-                                                Atnaujino: {exercise.author.firstname} {exercise.author.lastname} <br></br>
+                                                Atnaujino: {exercise.author.fullName} <br></br>
                                                 Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA',
                                                     { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
                                                     .format(new Date(Date.parse(exercise.updatedAt)))}
@@ -255,7 +255,7 @@ class EditExerciseForm extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.isDeleteModalOpen} toggle={this.toggleDeleteModal}>
-                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti pratim1</ModalHeader>
+                    <ModalHeader toggle={this.toggleDeleteModal}>Ištrinti pratimą</ModalHeader>
                     <ModalBody>
                         <p>  Ar tikrai norite ištrinti pratimą? </p>
                     </ModalBody>
