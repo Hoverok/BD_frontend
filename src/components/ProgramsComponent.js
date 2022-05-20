@@ -12,31 +12,6 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
 function RenderProgramInList({ program, messages, onClick }) {
-    // if (SearchParams.searchField === '' && Number(SearchParams.newMessage) === -1) {
-    //     return (
-    //         <Media tag="li">
-    //             <Media left middle>
-    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-    //             </Media>
-    //             <Link to={`/programs/${program._id}`} className='text-link' >
-    //                 <Media body className="ml-5">
-    //                     <Media heading>{program.patient.fullName}</Media>
-    //                     {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-    //                         <p></p>
-    //                         :
-    //                         <span className="badge badge-pill badge-warning">Naujas Atsiliepimas</span>
-    //                     }
-    //                     <p>Asmens1111 kodas: {program.patient.personalCode}</p>
-    //                     <p>Gyd.: {program.author.fullName}</p>
-    //                     <p>{new Intl.DateTimeFormat('fr-CA',
-    //                         { year: 'numeric', month: '2-digit', day: '2-digit' })
-    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
-    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-    //                 </Media>
-    //             </Link>
-    //         </Media>
-    //     );
-    // }
     if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
@@ -211,50 +186,6 @@ function RenderProgramInList({ program, messages, onClick }) {
             </Media>
         );
     }
-
-    // else if (((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
-    //     || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-    //     && SearchParams.programStatus === '') {
-    //     return (
-    //         <Media tag="li">
-    //             <Media left middle>
-    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-    //             </Media>
-    //             <Link to={`/programs/${program._id}`} className='text-link' >
-    //                 <Media body className="ml-5">
-    //                     <Media heading>{program.patient.fullName}</Media>
-    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
-    //                     <p>{new Intl.DateTimeFormat('fr-CA',
-    //                         { year: 'numeric', month: '2-digit', day: '2-digit' })
-    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
-    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-    //                 </Media>
-    //             </Link>
-    //         </Media>
-    //     );
-    // }
-
-    // else if (((program.patient.name.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
-    //     || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-    //     && SearchParams.programStatus === program.programStatus) {
-    //     return (
-    //         <Media tag="li">
-    //             <Media left middle>
-    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-    //             </Media>
-    //             <Link to={`/programs/${program._id}`} className='text-link' >
-    //                 <Media body className="ml-5">
-    //                     <Media heading>{program.patient.fullName}</Media>
-    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
-    //                     <p>{new Intl.DateTimeFormat('fr-CA',
-    //                         { year: 'numeric', month: '2-digit', day: '2-digit'})
-    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
-    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-    //                 </Media>
-    //             </Link>
-    //         </Media>
-    //     );
-    // }
     else {
         return (
             <div></div>

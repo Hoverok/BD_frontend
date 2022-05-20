@@ -17,9 +17,9 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
     return (
         <div className="col-12 m-1">
             {(program.programStatus === "Aktyvi") ?
-                    <h4><span className="badge badge-success">Programa aktyvi</span></h4>
-                    :
-                    <h4><span className="badge badge-danger">Programa baigta</span></h4>
+                <h4><span className="badge badge-success">Programa aktyvi</span></h4>
+                :
+                <h4><span className="badge badge-danger">Programa baigta</span></h4>
             }
             <div className="row">
                 <div className="col-12 col-sm-6">
@@ -145,7 +145,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                 <Card color="secondary">
                                     <Card body>
                                         <CardBody>
-                                            <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} />
+                                            <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} exerciseTypes={exerciseTypes} />
                                             <CardTitle tag="h5">
                                                 Pavadinimas: {exercise.exerciseType.title}
                                             </CardTitle>
@@ -171,7 +171,7 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                         );
                     })}
                 </Stagger>
-                <ExerciseForm programId={programId} postExercise={postExercise} />
+                <ExerciseForm programId={programId} postExercise={postExercise} exerciseTypes={exerciseTypes} />
             </div>
         );
     else
@@ -292,7 +292,7 @@ class ExerciseForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postExercise(this.props.programId, values.exerciseTypeId, values.instuructions);
+        this.props.postExercise(this.props.programId, values.exerciseTypeSelect, values.instuructions);
     }
 
     render() {
@@ -305,12 +305,17 @@ class ExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="exerciseTypeId" md={3}>Pratimo tipo ID</Label>
+                                <Label htmlFor="exerciseTypeSelect" md={3}>Select</Label>
                                 <Col md={9}>
-                                    <Control.text model=".exerciseTypeId" id="exerciseTypeId" name="exerciseTypeId"
-                                        placeholder=""
-                                        className="form-control"
-                                    />
+                                    <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect" name="exerciseTypeSelect">
+
+                                        {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
+                                            <option key={exerciseType._id} value={exerciseType._id}>
+                                                {exerciseType.title}
+                                            </option>
+                                        ))}
+                                    </Control.select>
+
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -326,7 +331,7 @@ class ExerciseForm extends Component {
                         </LocalForm>
                     </ModalBody>
                 </Modal>
-            </div>
+            </div >
         );
     }
 

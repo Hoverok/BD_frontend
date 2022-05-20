@@ -85,9 +85,9 @@ class PostExerciseTypeForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimas</Button>
+                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimų tipas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Naujos pratimo įvedimas</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>Naujos pratimų tipo įvedimas</ModalHeader>
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
@@ -173,7 +173,7 @@ const ExerciseTypes = (props) => {
                 </div>
                 <div className="row row-content">
                     <div className="col-12">
-                        <h2>Pratimai</h2>
+                        <h2>Pratimų tipai</h2>
                     </div>
                     <div className="row">
                         <div className="col-12">
