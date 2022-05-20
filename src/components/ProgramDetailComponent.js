@@ -207,7 +207,7 @@ class EditExerciseForm extends Component {
 
     handleUpdateExercise(values) {
         this.toggleModal();
-        this.props.putExercise(this.props.exercise._id, values.exerciseTypeId, values.instuructions);
+        this.props.putExercise(this.props.exercise._id, values.exerciseTypeSelect, values.instuructions);
 
         // this.forceUpdate();
     }
@@ -231,17 +231,22 @@ class EditExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateExercise(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="exerciseTypeId" md={3}>Pratimo tipo ID</Label>
+                                <Label htmlFor="exerciseTypeSelect" md={3}>Pratimų tipai</Label>
                                 <Col md={9}>
-                                    <Control.text model=".exerciseTypeId" id="exerciseTypeId" name="exerciseTypeId"
-                                        placeholder="" defaultValue={this.props.exercise.exerciseType._id}
-                                        className="form-control"
-                                    />
+                                    <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect"
+                                        name="exerciseTypeSelect" className="form-control">
+                                        <option value={this.props.exercise.exerciseType._id}>{this.props.exercise.exerciseType.title}</option>                                     
+                                        {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
+                                            <option key={exerciseType._id} value={exerciseType._id}>
+                                                {exerciseType.title}
+                                            </option>
+                                        ))}
+                                    </Control.select>
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="instuructions">Specialisto komentaras</Label>
+                                    <Label htmlFor="instuructions">Pratimo instrukcijos</Label>
                                     <Control.textarea model=".instuructions" id="instuructions" name="instuructions"
                                         rows="8" defaultValue={this.props.exercise.instuructions}
                                         className="form-control" />
@@ -308,14 +313,12 @@ class ExerciseForm extends Component {
                                 <Label htmlFor="exerciseTypeSelect" md={3}>Select</Label>
                                 <Col md={9}>
                                     <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect" name="exerciseTypeSelect">
-
                                         {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
                                             <option key={exerciseType._id} value={exerciseType._id}>
                                                 {exerciseType.title}
                                             </option>
                                         ))}
                                     </Control.select>
-
                                 </Col>
                             </Row>
                             <Row className="form-group">
