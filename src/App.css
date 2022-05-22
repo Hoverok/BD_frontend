@@ -67,6 +67,10 @@ address{
     text-decoration: inherit;
 }
 
+.exerciseTypes-title {
+    color: #5cb85c;
+}
+
 .jumbotron-text {
     color: #021cd8
 }

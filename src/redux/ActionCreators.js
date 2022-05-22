@@ -574,10 +574,11 @@ export const fetchExerciseTypes = () => (dispatch) => {
         .catch(error => dispatch(exerciseTypesFailed(error.message)));
 }
 
-export const postExerciseType = (ytLink, title, intensity, inventory) => (dispatch) => {
+export const postExerciseType = (ytLink, bodyPart, title, intensity, inventory) => (dispatch) => {
 
     const newExerciseType = {
         ytLink: ytLink,
+        bodyPart: bodyPart,
         title: title,
         intensity: intensity,
         inventory: inventory
@@ -617,9 +618,10 @@ export const postExerciseType = (ytLink, title, intensity, inventory) => (dispat
         })
 }
 
-export const putExerciseType = (exerciseTypeId, ytLink, title, intensity, inventory) => (dispatch) => {
+export const putExerciseType = (exerciseTypeId, ytLink, bodyPart, title, intensity, inventory) => (dispatch) => {
     const updatedExerciseType = {
         ytLink: ytLink,
+        bodyPart: bodyPart,
         title: title,
         intensity: intensity,
         inventory: inventory

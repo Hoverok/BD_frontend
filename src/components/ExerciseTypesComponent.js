@@ -1,52 +1,93 @@
 import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem, Label,
-    Modal, ModalHeader, ModalBody, Button, Row, Col, Media
+    CardTitle, Breadcrumb, CardGroup, Label,
+    Modal, ModalHeader, ModalBody, Button, Row, Col, Media, CardSubtitle
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { baseUrl } from '../shared/baseUrl';
 import { Fade } from 'react-animation-components';
 import { SearchExerciseTypesParams } from '../shared/searchExerciseTypesParams';
+import Youtube from 'react-youtube';
 
 
-function RenderExerciseTypeList({ exerciseType, onClick }) {
-    if (SearchExerciseTypesParams.searchField === '') {
+class ReactYoutube extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    videoOnReady(event) {
+        event.target.pauseVideo();
+    }
+
+    render() {
+        const i = (this.props.ytLink).indexOf("=");
+        let vidId = (this.props.ytLink).substring(i + 1, i + 12);
+
+        if (i === -1 || vidId.length !== 11) {
+            vidId = "jpF_cfyA2Dc";
+        }
+        const opts = {
+            height: '200',
+            width: '300',
+            playerVars: {
+                autoplay: 0
+            }
+        }
         return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/exercise.png"} alt={exerciseType.name} />
-                </Media>
-                <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{exerciseType.title}</Media>
-                        <p>{exerciseType.ytLink}</p>
-                        <p>{exerciseType._id}</p>
-                        <p> Atnaujinta: {new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                            .format(new Date(Date.parse(exerciseType.updatedAt)))}</p>
-                    </Media>
-                </Link>
-            </Media>
+            <Youtube
+                videoId={vidId}
+                opts={opts}
+                onReady={this.videoOnReady} />
         );
     }
-    else if ((exerciseType.title.toLowerCase()).includes(SearchExerciseTypesParams.searchField.toLowerCase())) {
+}
+
+
+
+function RenderExerciseTypeList({ exerciseType }) {
+    if (((exerciseType.title.toLowerCase()).includes(SearchExerciseTypesParams.searchField.toLowerCase())) &&
+    ((exerciseType.bodyPart).includes(SearchExerciseTypesParams.bodyPart))) {
         return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/exercise.png"} alt={exerciseType.name} />
-                </Media>
-                <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{exerciseType.title}</Media>
-                        <p>{exerciseType.ytLink}</p>
-                        <p> Atnaujinta: {new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                            .format(new Date(Date.parse(exerciseType.updatedAt)))}</p>
-                    </Media>
-                </Link>
-            </Media>
+            <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
+                <Card color="success" inverse>
+                    <CardBody>
+                        <CardTitle tag="h5">
+                            <ReactYoutube ytLink={exerciseType.ytLink} />
+                            {exerciseType.bodyPart} <hr></hr>
+                        </CardTitle>
+                        <CardText>
+                            <b>&nbsp; &nbsp;{exerciseType.title}<br></br>
+                                &nbsp; &nbsp;{exerciseType.intensity}/5 <br></br>
+                                &nbsp; &nbsp;{exerciseType.inventory}</b>
+                        </CardText>
+                    </CardBody>
+                </Card>
+
+            </Link>
+        );
+    }
+    else if (((exerciseType.title.toLowerCase()).includes(SearchExerciseTypesParams.searchField.toLowerCase())) &&
+    (exerciseType.bodyPart === '')) {
+        return (
+            <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
+
+                <Card color="success">
+                    <CardBody>
+                        <CardTitle tag="h5">
+                            <ReactYoutube ytLink={exerciseType.ytLink} />
+                            {exerciseType.bodyPart}
+                        </CardTitle>
+                        <CardText>
+                            <b>&nbsp; &nbsp;{exerciseType.title}<br></br>
+                                &nbsp; &nbsp;{exerciseType.intensity}/5 <br></br>
+                                &nbsp; &nbsp;{exerciseType.inventory}</b>
+                        </CardText>
+                    </CardBody>
+                </Card>
+
+            </Link>
         );
     }
     else {
@@ -55,6 +96,7 @@ function RenderExerciseTypeList({ exerciseType, onClick }) {
         );
     }
 }
+
 
 
 class PostExerciseTypeForm extends Component {
@@ -79,13 +121,13 @@ class PostExerciseTypeForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.postExerciseType(values.ytLink, values.title, values.intensity, values.inventory);
+        this.props.postExerciseType(values.ytLink, values.bodyPart, values.title, values.intensity, values.inventory);
     }
 
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimų tipas</Button>
+                <Button color="success" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimų tipas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos pratimų tipo įvedimas</ModalHeader>
                     <ModalBody>
@@ -99,10 +141,25 @@ class PostExerciseTypeForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
+                                <Label htmlFor="bodyPart" md={3}>Kūno dalis</Label>
+                                <Col md={9}>
+                                    <Control.select model=".bodyPart" id="bodyPart" name="bodyPart"
+                                        className="form-control">
+                                        <option value=""></option>
+                                        <option value="alkūnė/dilbis">Alkūnė/Dilbis</option>
+                                        <option value="dubuo/šlaunis">Dubuo/Šlaunis</option>
+                                        <option value="galva/kaklas">Galva/Kaklas</option>
+                                        <option value="kulkšnis/pėda">Kulkšnis/Pėda</option>
+                                        <option value="liemuo/nugara">Liemuo/Nugara</option>
+                                        <option value="petys/žastas">Petys/Žastas</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
                                 <Label htmlFor="title" md={3}>Pavadinimas</Label>
                                 <Col md={9}>
                                     <Control.text model=".title" id="title" name="title"
-                                        placeholder="Pavadinimas"
+                                        placeholder=""
                                         className="form-control"
                                     />
                                 </Col>
@@ -144,13 +201,8 @@ class PostExerciseTypeForm extends Component {
 
 const ExerciseTypes = (props) => {
     const exerciseTypes = props.exerciseTypes.exerciseTypes.map((exerciseType) => {
-        console.log("exerciseType._id " + exerciseType._id)
         return (
-            <Fade in key={exerciseType._id}>
-                <div className="col-12 mt-2">
-                    <RenderExerciseTypeList exerciseType={exerciseType} />
-                </div>
-            </Fade>
+            <RenderExerciseTypeList exerciseType={exerciseType} />
         );
     });
 
@@ -167,18 +219,21 @@ const ExerciseTypes = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                </div>
-                <div className="row">
-                    <PostExerciseTypeForm postExerciseType={props.postExerciseType} exerciseTypes={props.exerciseTypes} />
+                    <div className="col-12">
+                        <PostExerciseTypeForm postExerciseType={props.postExerciseType} exerciseTypes={props.exerciseTypes} />
+                    </div>
                 </div>
                 <div className="row row-content">
                     <div className="col-12">
-                        <h2>Pratimų tipai</h2>
+                        <h2 className="exerciseTypes-title">Pratimų tipai</h2>
+                        <hr></hr>
                     </div>
                     <div className="row">
-                        <div className="col-12">
+
+                        <CardGroup>
                             {exerciseTypes}
-                        </div>
+                        </CardGroup>
+
                     </div>
                 </div>
             </div>

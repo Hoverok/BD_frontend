@@ -18,14 +18,14 @@ function RenderExerciseType({ exerciseType, putExerciseType, deleteExerciseType 
             <br></br>
             <div className='row'>
                 <div className="col-12 col-sm-2">
-                    <p>Pratimo ID:</p>
+                    <p>Kuno dalis:</p>
                     <p>Pavadinimas:</p>
                     <p>Intensyvumas:</p>
                     <p>Įrankiai:</p>
                     <p>Vaizdo įrašas</p>
                 </div>
                 <div className="col-12 col-sm-6">
-                    <p><b>{exerciseType._id}</b></p>
+                    <p><b>{exerciseType.bodyPart}</b></p>
                     <p><b>{exerciseType.title}</b></p>
                     <p><b>{exerciseType.intensity}/5</b></p>
                     <p><b>{exerciseType.inventory}</b></p>
@@ -97,7 +97,7 @@ class EditExerciseTypeForm extends Component {
 
     handleUpdateExerciseType(values) {
         this.toggleModal();
-        this.props.putExerciseType(this.props.exerciseType._id, values.ytLink, values.title, values.intensity, values.inventory);
+        this.props.putExerciseType(this.props.exerciseType._id, values.ytLink, values.bodyPart, values.title, values.intensity, values.inventory);
     }
 
     handleDeleteExerciseType(event) {
@@ -125,6 +125,22 @@ class EditExerciseTypeForm extends Component {
                                         className="form-control"
                                         defaultValue={this.props.exerciseType.ytLink}
                                     />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="bodyPart" md={3}>Kūno dalis</Label>
+                                <Col md={9}>
+                                    <Control.select model=".bodyPart" id="bodyPart" name="bodyPart"
+                                        className="form-control"
+                                        defaultValue={this.props.exerciseType.bodyPart}>
+                                        <option value=""></option>
+                                        <option value="alkūnė/dilbis">Alkūnė/Dilbis</option>
+                                        <option value="dubuo/šlaunis">Dubuo/Šlaunis</option>
+                                        <option value="galva/kaklas">Galva/Kaklas</option>
+                                        <option value="kulkšnis/pėda">Kulkšnis/Pėda</option>
+                                        <option value="liemuo/nugara">Liemuo/Nugara</option>
+                                        <option value="petys/žastas">Petys/Žastas</option>
+                                    </Control.select>
                                 </Col>
                             </Row>
                             <Row className="form-group">

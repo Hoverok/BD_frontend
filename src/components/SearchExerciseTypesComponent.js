@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { Component } from 'react';
-import { SearchExerciseTypesParams} from '../shared/searchExerciseTypesParams';
+import { SearchExerciseTypesParams } from '../shared/searchExerciseTypesParams';
 import ExerciseTypes from './ExerciseTypesComponent';
 
 
@@ -14,6 +14,11 @@ class SearchExerciseTypes extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNameChanged = this.handleNameChanged.bind(this);
+        this.handleBodyPartChanged = this.handleBodyPartChanged.bind(this);
+    }
+
+    handleBodyPartChanged(event) {
+        SearchExerciseTypesParams.bodyPart = event.target.value;
     }
 
     handleNameChanged(event) {
@@ -40,6 +45,22 @@ class SearchExerciseTypes extends Component {
                                 <Button type="submit" className="btn btn-primary">
                                     <span className="fa fa-search fa-lg"></span>
                                 </Button>
+                            </div>
+                        </FormGroup>
+                        <FormGroup row>
+                            <div className="col-2">
+                                <Label htmlFor="label">Kuno dalis </Label>
+                            </div>
+                            <div className="col-2">
+                                <select onChange={this.handleBodyPartChanged} defaultValue={SearchExerciseTypesParams.bodyPart} >
+                                    <option value=""></option>
+                                    <option value="alkūnė/dilbis">Alkūnė/Dilbis</option>
+                                    <option value="dubuo/šlaunis">Dubuo/Šlaunis</option>
+                                    <option value="galva/kaklas">Galva/Kaklas</option>
+                                    <option value="kulkšnis/pėda">Kulkšnis/Pėda</option>
+                                    <option value="liemuo/nugara">Liemuo/Nugara</option>
+                                    <option value="petys/žastas">Petys/Žastas</option>
+                                </select>
                             </div>
                         </FormGroup>
                     </Form>
