@@ -48,15 +48,21 @@ class ReactYoutube extends Component {
 
 function RenderExerciseTypeList({ exerciseType }) {
     if (((exerciseType.title.toLowerCase()).includes(SearchExerciseTypesParams.searchField.toLowerCase())) &&
-    ((exerciseType.bodyPart).includes(SearchExerciseTypesParams.bodyPart))) {
+        ((exerciseType.bodyPart).includes(SearchExerciseTypesParams.bodyPart))) {
         return (
             <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
-                <Card color="success" inverse>
+                <Card color="primary" outline>
                     <CardBody>
                         <CardTitle tag="h5">
                             <ReactYoutube ytLink={exerciseType.ytLink} />
-                            {exerciseType.bodyPart} <hr></hr>
+
                         </CardTitle>
+                        <CardSubtitle
+                            className="mb-2 text-muted"
+                            tag="h6"
+                        >
+                            {exerciseType.bodyPart} <hr></hr>
+                        </CardSubtitle>
                         <CardText>
                             <b>&nbsp; &nbsp;{exerciseType.title}<br></br>
                                 &nbsp; &nbsp;{exerciseType.intensity}/5 <br></br>
@@ -64,21 +70,25 @@ function RenderExerciseTypeList({ exerciseType }) {
                         </CardText>
                     </CardBody>
                 </Card>
-
             </Link>
         );
     }
     else if (((exerciseType.title.toLowerCase()).includes(SearchExerciseTypesParams.searchField.toLowerCase())) &&
-    (exerciseType.bodyPart === '')) {
+        (exerciseType.bodyPart === '')) {
         return (
             <Link to={`/exercisetypes/${exerciseType._id}`} className='text-link' >
-
-                <Card color="success">
+                <Card color="primary" outline>
                     <CardBody>
                         <CardTitle tag="h5">
                             <ReactYoutube ytLink={exerciseType.ytLink} />
-                            {exerciseType.bodyPart}
+
                         </CardTitle>
+                        <CardSubtitle
+                            className="mb-2 text-muted"
+                            tag="h6"
+                        >
+                            {exerciseType.bodyPart} <hr></hr>
+                        </CardSubtitle>
                         <CardText>
                             <b>&nbsp; &nbsp;{exerciseType.title}<br></br>
                                 &nbsp; &nbsp;{exerciseType.intensity}/5 <br></br>
@@ -86,7 +96,6 @@ function RenderExerciseTypeList({ exerciseType }) {
                         </CardText>
                     </CardBody>
                 </Card>
-
             </Link>
         );
     }
@@ -127,7 +136,7 @@ class PostExerciseTypeForm extends Component {
     render() {
         return (
             <div>
-                <Button color="success" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimų tipas</Button>
+                <Button color="primary" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pratimų tipas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos pratimų tipo įvedimas</ModalHeader>
                     <ModalBody>
