@@ -25,7 +25,7 @@ export const Programs = (state = {
                             : program
                 )
             };
-        case ActionTypes.REMOVE_PROGRAM: 
+        case ActionTypes.REMOVE_PROGRAM:
             return {
                 ...state,
                 programs: state.programs.filter(
@@ -33,6 +33,7 @@ export const Programs = (state = {
                         program._id !== action.payload._id
                 )
             };
+
         default:
             return state;
     }

@@ -10,21 +10,19 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
+import currDate from '../shared/currDate';
 
 
 
 function RenderProgram({ program, putProgram, deleteProgram, patients, users }) {
     return (
         <div className="col-12 m-1">
-            {(program.programStatus === "Aktyvi") ?
-                <h4><span className="badge badge-success">Programa aktyvi</span></h4>
-                :
-                <h4><span className="badge badge-danger">Programa baigta</span></h4>
-            }
             <div className="row">
                 <div className="col-12">
                     <h5>Pradžia {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                        .format(new Date(Date.parse(program.startDate)))}</h5>
+                        .format(new Date(Date.parse(program.startDate)))}
+                        Pabaiga {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.endDate)))}</h5>
                 </div>
             </div>
             <div className="row">
@@ -432,8 +430,9 @@ class EditProgramForm extends Component {
             return;
         }
 
-        this.props.putProgram(this.props.program._id, values.description, values.duration,
-            values.programStatus, values.requirements, adParams.personalCode, adParams.stampNr, adParams.startDate, adParams.endDate);
+        adParams.duration = (adParams.endDate - adParams.startDate) / 1000 / 60 / 60 / 24;
+        this.props.putProgram(this.props.program._id, values.description, adParams.duration,
+            values.requirements, adParams.personalCode, adParams.stampNr, adParams.startDate, adParams.endDate);
     }
 
     handleDeleteProgram(event) {
@@ -507,17 +506,6 @@ class EditProgramForm extends Component {
                                         defaultValue={new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
                                             .format(new Date(Date.parse(this.props.program.endDate)))}
                                     />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="programStatus" md={4}>Būsena</Label>
-                                <Col md={6}>
-                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
-                                        className="form-control" defaultValue={this.props.program.programStatus}>
-                                        <option value=""></option>
-                                        <option value="Aktyvi">Aktyvi</option>
-                                        <option value="Baigta">Baigta</option>
-                                    </Control.select>
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">

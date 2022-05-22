@@ -11,15 +11,14 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import currDate from '../shared/currDate';
+
 
 function RenderProgramInList({ program, messages, onClick }) {
     if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))
-        && SearchParams.programStatus === program.programStatus)) {
+        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1))))) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -27,15 +26,14 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        {(program.programStatus === "Aktyvi") ?
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
-                            </Media>
-                            :
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
-                            </Media>
-                        }
+                        <Media heading>
+                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
+                            {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.endDate)))}
+                        </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
@@ -57,8 +55,7 @@ function RenderProgramInList({ program, messages, onClick }) {
     else if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1)))
-        && SearchParams.programStatus === "")) {
+        && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1))))) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -66,15 +63,14 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        {(program.programStatus === "Aktyvi") ?
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
-                            </Media>
-                            :
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
-                            </Media>
-                        }
+                        <Media heading>
+                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp; 
+                            {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.endDate)))}
+                        </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
@@ -96,8 +92,7 @@ function RenderProgramInList({ program, messages, onClick }) {
     else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && Number(SearchParams.newMessage) === -1)
-        && SearchParams.programStatus === "") {
+        && Number(SearchParams.newMessage) === -1)) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -105,15 +100,14 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        {(program.programStatus === "Aktyvi") ?
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
-                            </Media>
-                            :
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
-                            </Media>
-                        }
+                        <Media heading>
+                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
+                            {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.endDate)))}
+                        </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
@@ -134,8 +128,7 @@ function RenderProgramInList({ program, messages, onClick }) {
     else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
-        && Number(SearchParams.newMessage) === -1)
-        && SearchParams.programStatus === program.programStatus) {
+        && Number(SearchParams.newMessage) === -1)) {
         return (
             <Media tag="li">
                 <Media left middle>
@@ -143,15 +136,14 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                        {(program.programStatus === "Aktyvi") ?
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-success">Programa aktyvi</span>
-                            </Media>
-                            :
-                            <Media heading>
-                                {program.patient.fullName} <span className="badge badge-danger">Programa baigta</span>
-                            </Media>
-                        }
+                    <Media heading>
+                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp; 
+                            {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.endDate)))}
+                        </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
                             :
@@ -176,18 +168,7 @@ function RenderProgramInList({ program, messages, onClick }) {
     }
 }
 
-// export const FieldDatePicker = ({ input, placeholder, minDate, maxDate }) => (
-//     <DatePicker
-//         className="plus-icon"
-//         dateFormat="yyyy/MM/dd"
-//         selected={input.value || null}
-//         onChange={input.onChange}
-//         minDate={minDate}
-//         maxDate={maxDate}
-//         disabledKeyboardNavigation
-//         placeholderText={placeholder}
-//     />
-// );
+
 
 class PostProgramForm extends Component {
 
@@ -203,8 +184,6 @@ class PostProgramForm extends Component {
             isNavOpen: false,
             isModalOpen: false
         };
-        // console.log("PATIENTS: " + JSON.stringify(this.props.patients))
-        // console.log("PATIENT ID: " + JSON.stringify((this.props.patients.patients[0])))
     }
 
     toggleModal() {
@@ -216,6 +195,8 @@ class PostProgramForm extends Component {
         adParams.startDate = new Date(event.target.value);
         console.log(`start date ${adParams.startDate}`);
         console.log(typeof adParams.startDate);
+        console.log((adParams.startDate).toString());
+        console.log(typeof ((adParams.startDate).toString()));
     }
 
     handleEndDateChanged(event) {
@@ -228,7 +209,6 @@ class PostProgramForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        //use searchParams to store personalCode and filter patient_.id out of it
         try {
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
         }
@@ -236,10 +216,10 @@ class PostProgramForm extends Component {
             alert("Pacientas su " + values.personalCode + " asmens kodo nerastas");
             return;
         }
-        adParams.duration = (adParams.endDate - adParams.startDate)/1000/60/60/24;
+        adParams.duration = (adParams.endDate - adParams.startDate) / 1000 / 60 / 60 / 24;
         console.log(`end date ${adParams.duration}`);
         console.log(typeof adParams.duration);
-        this.props.postProgram(values.description, adParams.duration, "Aktyvi", adParams.personalCode, adParams.startDate, adParams.endDate);
+        this.props.postProgram(values.description, adParams.duration, adParams.personalCode, adParams.startDate, adParams.endDate);
     }
 
     render() {
@@ -271,16 +251,16 @@ class PostProgramForm extends Component {
                             <Row>
                                 <Label htmlFor="startDate" md={2}>Pradžia</Label>
                                 <Col md={10}>
-                                    <input type="date" className="form-control" id="startDate" name="startDate"                                           
-                                            min="2022-01-01" onChange={this.handleStartDateChanged}
+                                    <input type="date" className="form-control" id="startDate" name="startDate"
+                                        min="2022-01-01" onChange={this.handleStartDateChanged}
                                     />
                                 </Col>
                             </Row>
                             <Row>
                                 <Label htmlFor="endDate" md={2}>Pabaiga</Label>
                                 <Col md={10}>
-                                    <input type="date" className="form-control" id="endDate" name="endDate"                                           
-                                            min="2022-01-01" onChange={this.handleEndDateChanged}
+                                    <input type="date" className="form-control" id="endDate" name="endDate"
+                                        min="2022-01-01" onChange={this.handleEndDateChanged}
                                     />
                                 </Col>
                             </Row>

@@ -7,8 +7,8 @@ import { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { SearchParams } from '../shared/searchParams';
 import Programs from './ProgramsComponent';
+import currDate from '../shared/currDate';
 
-//tie search parameters to props like in conctacComponent
 
 class Search extends Component {
     constructor(props) {
@@ -31,6 +31,9 @@ class Search extends Component {
     }
 
     handleSubmit(values) {
+        currDate.date = new Date ();
+        
+        console.log (`calling new date ${currDate.date}`)
         this.forceUpdate();
     }
 
@@ -58,16 +61,6 @@ class Search extends Component {
                                 <select onChange={this.handleMessageChanged} defaultValue={SearchParams.newMessage} >
                                     <option value="-1">Visi</option>
                                     <option value="1">Nauji</option>
-                                </select>
-                            </div>
-                            <div className="col-2">
-                                <Label htmlFor="label">Progamų būsenos</Label>
-                            </div>
-                            <div className="col-2">
-                                <select onChange={this.handleProgramStatusChanged} defaultValue={SearchParams.programStatus} >
-                                    <option value="">Visos</option>
-                                    <option value="Aktyvi">Aktyvios</option>
-                                    <option value="Baigta">Baigtos</option>
                                 </select>
                             </div>
                         </FormGroup>
