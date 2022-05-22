@@ -12,43 +12,19 @@ import { SearchPatientsParams } from '../shared/searchPatientsParams';
 
 
 function RenderPatientList({ patient, onClick }) {
-
-
-    if (SearchPatientsParams.searchField === '') {
-        return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/patient.png"} alt={patient.name} />
-                </Media>
-                <Link to={`/patients/${patient._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{patient.fullName}</Media>
-                        <p>{patient.personalCode}</p>
-                        <p> Atnaujinta: {new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                            .format(new Date(Date.parse(patient.updatedAt)))}</p>
-                    </Media>
-                </Link>
-            </Media>
-        );
-    }
-    else if ((patient.fullName.toLowerCase()).includes(SearchPatientsParams.searchField.toLowerCase())
+    if ((patient.fullName.toLowerCase()).includes(SearchPatientsParams.searchField.toLowerCase())
         || (patient.personalCode.toLowerCase()).includes(SearchPatientsParams.searchField.toLowerCase())) {
         return (
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/patient.png"} alt={patient.name} />
-                </Media>
-                <Link to={`/patients/${patient._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>{patient.fullName}</Media>
-                        <p>{patient.personalCode}</p>
-                        <p> Atnaujinta: {new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                            .format(new Date(Date.parse(patient.updatedAt)))}</p>
-                    </Media>
-                </Link>
-            </Media>
+            <Link to={`/patients/${patient._id}`} className='text-link' >
+                <div className='row patient-border'>
+                    <div className="col-12 col-sm-8">
+                        <h4>{patient.fullName}</h4>
+                    </div>
+                    <div className="col-12 col-sm-3">
+                        <h4>{patient.personalCode}</h4>
+                    </div>
+                </div>
+            </Link>
         );
     }
     else {
@@ -89,7 +65,7 @@ class PostPatientForm extends Component {
     render() {
         return (
             <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pacientas</Button>
+                <Button color="primary" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pacientas</Button>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Naujos paciento registracija</ModalHeader>
                     <ModalBody>
@@ -155,7 +131,7 @@ const Patients = (props) => {
     const patients = props.patients.patients.map((patient) => {
         return (
             <Fade in key={patient._id}>
-                <div className="col-12 mt-2">
+                <div className="mt-2">
                     <RenderPatientList patient={patient} />
                 </div>
             </Fade>

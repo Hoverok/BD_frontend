@@ -74,3 +74,9 @@ address{
 .jumbotron-text {
     color: #021cd8
 }
+
+.patient-border {
+    border-top-style: solid;
+    border-color: #0275d8;;
+    padding: 10px 100px; 
+  }

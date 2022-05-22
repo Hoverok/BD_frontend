@@ -18,24 +18,14 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
     return (
         <div className="col-12 m-1">
             <div className="row">
-                <div className="col-12">
-                    <h5>Pradžia {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                        .format(new Date(Date.parse(program.startDate)))}
-                        Pabaiga {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.endDate)))}</h5>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12">
-                    <h5>Pabaiga {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                        .format(new Date(Date.parse(program.endDate)))}</h5>
-                </div>
-            </div>
-            <div className="row">
                 <div className="col-12 col-sm-6">
                     <h3>{program.description}</h3>
                 </div>
                 <div className="col-12 col-sm-6">
+                    <h3>{new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                        .format(new Date(Date.parse(program.startDate)))}</h3>
+                    <h3>{new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                        .format(new Date(Date.parse(program.endDate)))}</h3>
                     <h3>Trukmė - {program.duration} d.</h3>
                 </div>
                 <hr />
@@ -393,6 +383,10 @@ class EditProgramForm extends Component {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         });
+        adParams.startDate = new Date (this.props.program.startDate);
+        console.log(`starting the date ${adParams.startDate}`);
+        console.log(typeof adParams.startDate);
+        adParams.endDate = new Date (this.props.program.endDate);
     }
 
     toggleDeleteModal() {

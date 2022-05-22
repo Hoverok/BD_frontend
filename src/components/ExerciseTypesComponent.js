@@ -55,7 +55,6 @@ function RenderExerciseTypeList({ exerciseType }) {
                     <CardBody>
                         <CardTitle tag="h5">
                             <ReactYoutube ytLink={exerciseType.ytLink} />
-
                         </CardTitle>
                         <CardSubtitle
                             className="mb-2 text-muted"
