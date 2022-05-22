@@ -94,14 +94,17 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (description, duration, programStatus, patientId) => (dispatch) => {
+export const postProgram = (description, duration, programStatus, patientId, startDate, endDate) => (dispatch) => {
 
     const newProgram = {
         description: description,
         duration: duration,
         programStatus: programStatus,
-        patient: patientId
+        patient: patientId,
+        startDate: startDate,
+        endDate: endDate
     }
+    console.log('Date ' + startDate);
     console.log('Program ', newProgram);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -137,7 +140,7 @@ export const postProgram = (description, duration, programStatus, patientId) => 
         })
 }
 
-export const putProgram = (programId, description, duration, programStatus, requirements, patientId, doctorId) => (dispatch) => {
+export const putProgram = (programId, description, duration, programStatus, requirements, patientId, doctorId, startDate, endDate) => (dispatch) => {
     const updatedProgram = {
         programId: programId,
         description: description,
@@ -145,7 +148,9 @@ export const putProgram = (programId, description, duration, programStatus, requ
         programStatus: programStatus,
         requirements: requirements,
         patient: patientId,
-        author: doctorId
+        author: doctorId,
+        startDate: startDate,
+        endDate: endDate
     };
     //console.log('Program ', updatedProgram);
     const bearer = 'Bearer ' + localStorage.getItem('token');

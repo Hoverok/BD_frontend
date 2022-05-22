@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardHeader, CardText, CardBody, CardSubtitle,
-    CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label,
+    CardTitle, CardFooter, Breadcrumb, BreadcrumbItem, Label, CardGroup,
     Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Form, Media
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
@@ -22,11 +22,23 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
                 <h4><span className="badge badge-danger">Programa baigta</span></h4>
             }
             <div className="row">
+                <div className="col-12">
+                    <h5>Pradžia {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                        .format(new Date(Date.parse(program.startDate)))}</h5>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-12">
+                    <h5>Pabaiga {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                        .format(new Date(Date.parse(program.endDate)))}</h5>
+                </div>
+            </div>
+            <div className="row">
                 <div className="col-12 col-sm-6">
                     <h3>{program.description}</h3>
                 </div>
                 <div className="col-12 col-sm-6">
-                    <h3>Trukmė {program.duration}</h3>
+                    <h3>Trukmė - {program.duration} d.</h3>
                 </div>
                 <hr />
             </div>
@@ -139,37 +151,38 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
             <div className="col-12 m-1">
                 <h4>Pratimai</h4>
                 <Stagger in>
-                    {exercises.map((exercise) => {
-                        return (
-                            <Fade in key={exercise._id}>
-                                <Card color="secondary">
-                                    <Card body>
-                                        <CardBody>
-                                            <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} exerciseTypes={exerciseTypes} />
-                                            <CardTitle tag="h5">
-                                                Pavadinimas: {exercise.exerciseType.title}
-                                            </CardTitle>
-                                            <CardText>
-                                                Intensyvumas: {exercise.exerciseType.intensity}/5 <br></br>
-                                                Instrukijos: {exercise.instuructions}
-                                            </CardText>
-                                            <CardSubtitle
-                                                className="mb-2 text-muted"
-                                                tag="h6">
-                                                Atnaujino: {exercise.author.fullName} <br></br>
-                                                Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA',
-                                                    { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                                                    .format(new Date(Date.parse(exercise.updatedAt)))}
-                                            </CardSubtitle>
-                                            <CardFooter>
-                                                <a href={exercise.exerciseType.ytLink} target="blank">Pratimo vaizdo įrašo nuoroda</a>
-                                            </CardFooter>
-                                        </CardBody>
-                                    </Card>
-                                </Card>
-                            </Fade>
-                        );
-                    })}
+                    <CardGroup>
+                        {exercises.map((exercise) => {
+                            return (
+                                <div className="col-4">
+                                    <Fade in key={exercise._id}>
+                                        <Card color="secondary">
+                                            <Card>
+                                                <CardBody>
+                                                    <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} exerciseTypes={exerciseTypes} />
+                                                    <CardTitle tag="h5">
+                                                        {exercise.exerciseType.title} {" "}  {exercise.exerciseType.intensity}/5
+                                                    </CardTitle>
+                                                    <CardText>
+                                                        Instrukijos: {exercise.instuructions}
+                                                    </CardText>
+                                                    <CardSubtitle
+                                                        className="mb-2 text-muted"
+                                                        tag="h6">
+
+                                                        Paskutinio atnaujinimo data: {new Intl.DateTimeFormat('fr-CA',
+                                                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                                            .format(new Date(Date.parse(exercise.updatedAt)))}<br></br>
+                                                        {exercise.author.fullName}
+                                                    </CardSubtitle>
+                                                </CardBody>
+                                            </Card>
+                                        </Card>
+                                    </Fade>
+                                </div>
+                            );
+                        })}
+                    </CardGroup>
                 </Stagger>
                 <ExerciseForm programId={programId} postExercise={postExercise} exerciseTypes={exerciseTypes} />
             </div>
@@ -206,8 +219,16 @@ class EditExerciseForm extends Component {
     }
 
     handleUpdateExercise(values) {
+        try {
+            adParams.exerciseTypeId = ((this.props.exerciseTypes.exerciseTypes.filter((exerciseType) => exerciseType._id === values.exerciseTypeSelect)[0])._id);
+        }
+        catch (err) {
+            alert("Pasirinkite pratimų tipą");
+            return;
+        }
+
         this.toggleModal();
-        this.props.putExercise(this.props.exercise._id, values.exerciseTypeSelect, values.instuructions);
+        this.props.putExercise(this.props.exercise._id, adParams.exerciseTypeId, values.instuructions);
 
         // this.forceUpdate();
     }
@@ -220,12 +241,17 @@ class EditExerciseForm extends Component {
     render() {
         return (
             <div>
-                <Button className="mb-3" color="info" onClick={this.toggleModal}>
-                    <span className="fa fa-pencil fa-lg"></span> Redaguoti pratimą
+                <Button className="mb-3 ml-1" color="info" onClick={this.toggleModal}>
+                    <span className="fa fa-pencil fa-lg"></span>
                 </Button>
                 <Button className="mb-3 ml-1" color="danger" onClick={this.toggleDeleteModal}>
-                    <span className="fa fa-trash fa-lg"></span> Ištrinti
+                    <span className="fa fa-trash fa-lg"></span>
                 </Button>
+                <Link to={`/exerciseTypes/${this.props.exercise.exerciseType._id}`} className='text-link' >
+                    <Button className="mb-3 ml-1" color="primary">
+                        <span className="fa fa-arrow-right fa-lg"></span>
+                    </Button>
+                </Link>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Redaguoti pratimo duomenis</ModalHeader>
                     <ModalBody>
@@ -235,7 +261,7 @@ class EditExerciseForm extends Component {
                                 <Col md={9}>
                                     <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect"
                                         name="exerciseTypeSelect" className="form-control">
-                                        <option value={this.props.exercise.exerciseType._id}>{this.props.exercise.exerciseType.title}</option>                                     
+                                        <option value=""></option>
                                         {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
                                             <option key={exerciseType._id} value={exerciseType._id}>
                                                 {exerciseType.title}
@@ -296,8 +322,15 @@ class ExerciseForm extends Component {
     }
 
     handleSubmit(values) {
+        try {
+            adParams.exerciseTypeId = ((this.props.exerciseTypes.exerciseTypes.filter((exerciseType) => exerciseType._id === values.exerciseTypeSelect)[0])._id);
+        }
+        catch (err) {
+            alert("Pasirinkite pratimų tipą");
+            return;
+        }
         this.toggleModal();
-        this.props.postExercise(this.props.programId, values.exerciseTypeSelect, values.instuructions);
+        this.props.postExercise(this.props.programId, adParams.exerciseTypeId, values.instuructions);
     }
 
     render() {
@@ -313,6 +346,9 @@ class ExerciseForm extends Component {
                                 <Label htmlFor="exerciseTypeSelect" md={3}>Select</Label>
                                 <Col md={9}>
                                     <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect" name="exerciseTypeSelect">
+                                        <option value="">
+
+                                        </option>
                                         {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
                                             <option key={exerciseType._id} value={exerciseType._id}>
                                                 {exerciseType.title}
@@ -323,7 +359,7 @@ class ExerciseForm extends Component {
                             </Row>
                             <Row className="form-group">
                                 <Col>
-                                    <Label htmlFor="instuructions">Specialisto komentaras</Label>
+                                    <Label htmlFor="instuructions">Instrukcijos</Label>
                                     <Control.textarea model=".instuructions" id="instuructions" name="instuructions"
                                         rows="8" className="form-control" />
                                 </Col>
@@ -351,6 +387,8 @@ class EditProgramForm extends Component {
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
         this.handleUpdateProgram = this.handleUpdateProgram.bind(this);
         this.handleDeleteProgram = this.handleDeleteProgram.bind(this);
+        this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
+        this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
     }
 
     toggleModal() {
@@ -363,6 +401,18 @@ class EditProgramForm extends Component {
         this.setState({
             isDeleteModalOpen: !this.state.isDeleteModalOpen
         });
+    }
+
+    handleStartDateChanged(event) {
+        adParams.startDate = new Date(event.target.value);
+        console.log(`start date ${adParams.startDate}`);
+        console.log(typeof adParams.startDate);
+    }
+
+    handleEndDateChanged(event) {
+        adParams.endDate = new Date(event.target.value);
+        console.log(`end date ${adParams.endDate}`);
+        console.log(typeof adParams.endDate);
     }
 
     handleUpdateProgram(values) {
@@ -383,7 +433,7 @@ class EditProgramForm extends Component {
         }
 
         this.props.putProgram(this.props.program._id, values.description, values.duration,
-            values.programStatus, values.requirements, adParams.personalCode, adParams.stampNr);
+            values.programStatus, values.requirements, adParams.personalCode, adParams.stampNr, adParams.startDate, adParams.endDate);
     }
 
     handleDeleteProgram(event) {
@@ -439,11 +489,23 @@ class EditProgramForm extends Component {
                                     />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="duration" md={4}>Trukmė</Label>
+                            <Row>
+                                <Label htmlFor="startDate" md={4}>Pradžia</Label>
                                 <Col md={8}>
-                                    <Control.text model=".duration" id="duration" name="duration"
-                                        className="form-control" defaultValue={this.props.program.duration}
+                                    <input type="date" className="form-control" id="startDate" name="startDate"
+                                        min="2022-01-01" onChange={this.handleStartDateChanged}
+                                        defaultValue={new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                            .format(new Date(Date.parse(this.props.program.startDate)))}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Label htmlFor="endDate" md={4}>Pabaiga</Label>
+                                <Col md={8}>
+                                    <input type="date" className="form-control" id="endDate" name="endDate"
+                                        min="2022-01-01" onChange={this.handleEndDateChanged}
+                                        defaultValue={new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                            .format(new Date(Date.parse(this.props.program.endDate)))}
                                     />
                                 </Col>
                             </Row>

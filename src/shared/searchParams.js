@@ -3,5 +3,6 @@ export const SearchParams = {
     personalCode: '',
     programStatus: '',
     patientProgram: '',
-    newMessage: '-1'
+    newMessage: '-1',
+    date : ''
 };

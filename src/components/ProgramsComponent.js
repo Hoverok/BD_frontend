@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem, Label,
+    CardTitle, Breadcrumb, Input, Label,
     Modal, ModalHeader, ModalBody, Button, Row, Col, Media
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,9 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { SearchParams } from '../shared/searchParams';
 import adParams from '../shared/adParams';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 function RenderProgramInList({ program, messages, onClick }) {
     if ((((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
@@ -83,7 +86,6 @@ function RenderProgramInList({ program, messages, onClick }) {
                         <p>{new Intl.DateTimeFormat('fr-CA',
                             { year: 'numeric', month: '2-digit', day: '2-digit' })
                             .format(new Date(Date.parse(program.updatedAt)))}</p>
-                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
                 </Link>
             </Media>
@@ -91,25 +93,6 @@ function RenderProgramInList({ program, messages, onClick }) {
         );
     }
 
-    // else if (SearchParams.searchField === '' && SearchParams.programStatus === program.programStatus) {
-    //     return (
-    //         <Media tag="li">
-    //             <Media left middle>
-    //                 <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-    //             </Media>
-    //             <Link to={`/programs/${program._id}`} className='text-link' >
-    //                 <Media body className="ml-5">
-    //                     <Media heading>{program.patient.fullName}</Media>
-    //                     <p>Asmens kodas: {program.patient.personalCode}</p>
-    //                     <p>{new Intl.DateTimeFormat('fr-CA',
-    //                         { year: 'numeric', month: '2-digit', day: '2-digit'})
-    //                         .format(new Date(Date.parse(program.updatedAt)))}</p>
-    //                     {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-    //                 </Media>
-    //             </Link>
-    //         </Media>
-    //     );
-    // }
     else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.patient.personalCode.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
         || (program.author.stampNr.toLowerCase()).includes(SearchParams.searchField.toLowerCase()))
@@ -193,6 +176,18 @@ function RenderProgramInList({ program, messages, onClick }) {
     }
 }
 
+// export const FieldDatePicker = ({ input, placeholder, minDate, maxDate }) => (
+//     <DatePicker
+//         className="plus-icon"
+//         dateFormat="yyyy/MM/dd"
+//         selected={input.value || null}
+//         onChange={input.onChange}
+//         minDate={minDate}
+//         maxDate={maxDate}
+//         disabledKeyboardNavigation
+//         placeholderText={placeholder}
+//     />
+// );
 
 class PostProgramForm extends Component {
 
@@ -201,6 +196,8 @@ class PostProgramForm extends Component {
 
         this.toggleModal = this.toggleModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
+        this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
 
         this.state = {
             isNavOpen: false,
@@ -215,19 +212,34 @@ class PostProgramForm extends Component {
             isModalOpen: !this.state.isModalOpen
         });
     }
+    handleStartDateChanged(event) {
+        adParams.startDate = new Date(event.target.value);
+        console.log(`start date ${adParams.startDate}`);
+        console.log(typeof adParams.startDate);
+    }
+
+    handleEndDateChanged(event) {
+        adParams.endDate = new Date(event.target.value);
+        console.log(`duration ${adParams.endDate}`);
+        console.log(typeof adParams.endDate);
+    }
+
+
 
     handleSubmit(values) {
         this.toggleModal();
         //use searchParams to store personalCode and filter patient_.id out of it
         try {
-            console.log("hi");
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
-            // <p>{this.props.patients.filter((patient) => patient._id === this.props.program.patient)[0].fullName}</p>
-            this.props.postProgram(values.description, values.duration, "Aktyvi", adParams.personalCode);
         }
         catch (err) {
             alert("Pacientas su " + values.personalCode + " asmens kodo nerastas");
+            return;
         }
+        adParams.duration = (adParams.endDate - adParams.startDate)/1000/60/60/24;
+        console.log(`end date ${adParams.duration}`);
+        console.log(typeof adParams.duration);
+        this.props.postProgram(values.description, adParams.duration, "Aktyvi", adParams.personalCode, adParams.startDate, adParams.endDate);
     }
 
     render() {
@@ -256,27 +268,24 @@ class PostProgramForm extends Component {
                                     />
                                 </Col>
                             </Row>
-                            {/* <Row className="form-group">
-                                <Label htmlFor="programStatus" md={2}>Būsena</Label>
-                                <Col md={6}>
-                                    <Control.select model=".programStatus" id="programStatus" name="programStatus"
-                                        className="form-control">
-                                        <option value=""></option>
-                                        <option value="Aktyvi">Aktyvi</option>
-                                        <option value="Baigta">Baigta</option>
-                                    </Control.select>
-                                </Col>
-                            </Row> */}
-                            <Row className="form-group">
-                                <Label htmlFor="duration" md={2}>Trukmė</Label>
+                            <Row>
+                                <Label htmlFor="startDate" md={2}>Pradžia</Label>
                                 <Col md={10}>
-                                    <Control.text model=".duration" id="duration" name="duration"
-                                        className="form-control"
+                                    <input type="date" className="form-control" id="startDate" name="startDate"                                           
+                                            min="2022-01-01" onChange={this.handleStartDateChanged}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Label htmlFor="endDate" md={2}>Pabaiga</Label>
+                                <Col md={10}>
+                                    <input type="date" className="form-control" id="endDate" name="endDate"                                           
+                                            min="2022-01-01" onChange={this.handleEndDateChanged}
                                     />
                                 </Col>
                             </Row>
                             <Button type="submit" className="bg-primary">
-                                Registruoti
+                                Sukurti
                             </Button>
                         </LocalForm>
                     </ModalBody>

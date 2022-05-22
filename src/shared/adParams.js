@@ -4,7 +4,10 @@ export const adParams = {
     programStatus: '',
     patientId: '',
     stampNr: '',
-    exerciseTypeId: ''
+    exerciseTypeId: '',
+    startDate: '',
+    endDate: new Date(),
+    duration: ''
 };
 
 export default adParams;
