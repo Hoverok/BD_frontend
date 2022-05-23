@@ -618,7 +618,7 @@ const ProgramDetail = (props) => {
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/programs'>Pacientų programos</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.program.description}</BreadcrumbItem>
+                        <BreadcrumbItem active>{props.program.programCode}</BreadcrumbItem>
                     </Breadcrumb>
                 </div>
                 <div className="row">

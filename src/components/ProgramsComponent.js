@@ -27,12 +27,7 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>
-                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
-                            {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.endDate)))}
+                            {program.patient.fullName} 
                         </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
@@ -43,8 +38,11 @@ function RenderProgramInList({ program, messages, onClick }) {
                         <p>Gyd.: {program.author.fullName}</p>
                         <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
                         <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.updatedAt)))}</p>
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
+                            {new Intl.DateTimeFormat('fr-CA',
+                                { year: 'numeric', month: '2-digit', day: '2-digit' })
+                                .format(new Date(Date.parse(program.endDate)))}</p>
                         {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
                     </Media>
                 </Link>
@@ -58,33 +56,32 @@ function RenderProgramInList({ program, messages, onClick }) {
         && ((Number(SearchParams.newMessage) === 1) && (((messages.map(message => message.messageSeen).indexOf(false))) > -1))))) {
         return (
             <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>
-                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
-                            {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.endDate)))}
-                        </Media>
-                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p></p>
-                            :
-                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
-                        }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
-                        <p>Gyd.: {program.author.fullName}</p>
-                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
-                        <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.updatedAt)))}</p>
-                    </Media>
-                </Link>
+            <Media left middle>
+                <Media object src={baseUrl + "images/program.png"} alt={program.name} />
             </Media>
+            <Link to={`/programs/${program._id}`} className='text-link' >
+                <Media body className="ml-5">
+                    <Media heading>
+                        {program.patient.fullName}
+                    </Media>
+                    {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                        <p></p>
+                        :
+                        <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                    }
+                    <p>Asmens kodas: {program.patient.personalCode}</p>
+                    <p>Gyd.: {program.author.fullName}</p>
+                    <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
+                    <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.startDate)))} &nbsp;
+                        {new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.endDate)))}</p>
+                    {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                </Media>
+            </Link>
+        </Media>
 
         );
     }
@@ -95,34 +92,31 @@ function RenderProgramInList({ program, messages, onClick }) {
         && Number(SearchParams.newMessage) === -1)) {
         return (
             <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>
-                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
-                            {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.endDate)))}
-                        </Media>
-                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p></p>
-                            :
-                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
-                        }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
-                        <p>Gyd.: {program.author.fullName}</p>
-                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
-                        <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.updatedAt)))}</p>
-                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-                    </Media>
-                </Link>
+            <Media left middle>
+                <Media object src={baseUrl + "images/program.png"} alt={program.name} />
             </Media>
+            <Link to={`/programs/${program._id}`} className='text-link' >
+                <Media body className="ml-5">
+                    <Media heading>
+                        {program.patient.fullName}, {program.patient.personalCode}
+                    </Media>
+                    {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                        <p></p>
+                        :
+                        <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                    }
+                    <p>Programa: <b>{program.description}</b></p>
+                    <p>Gyd.Rašto Nr.:  <b>{program.author.stampNr}</b></p>
+                    <p>Nuo <b>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.startDate)))}</b> iki<b>&nbsp;
+                        {new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.endDate)))}</b></p><hr></hr>
+                    {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                </Media>
+            </Link>
+        </Media>
         );
     }
     else if ((((program.patient.fullName.toLowerCase()).includes(SearchParams.searchField.toLowerCase())
@@ -131,34 +125,32 @@ function RenderProgramInList({ program, messages, onClick }) {
         && Number(SearchParams.newMessage) === -1)) {
         return (
             <Media tag="li">
-                <Media left middle>
-                    <Media object src={baseUrl + "images/program.png"} alt={program.name} />
-                </Media>
-                <Link to={`/programs/${program._id}`} className='text-link' >
-                    <Media body className="ml-5">
-                        <Media heading>
-                            {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
-                            {new Intl.DateTimeFormat('fr-CA',
-                                { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.endDate)))}
-                        </Media>
-                        {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
-                            <p></p>
-                            :
-                            <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
-                        }
-                        <p>Asmens kodas: {program.patient.personalCode}</p>
-                        <p>Gyd.: {program.author.fullName}</p>
-                        <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
-                        <p>{new Intl.DateTimeFormat('fr-CA',
-                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                            .format(new Date(Date.parse(program.updatedAt)))}</p>
-                        {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
-                    </Media>
-                </Link>
+            <Media left middle>
+                <Media object src={baseUrl + "images/program.png"} alt={program.name} />
             </Media>
+            <Link to={`/programs/${program._id}`} className='text-link' >
+                <Media body className="ml-5">
+                    <Media heading>
+                        {program.patient.fullName} 
+                    </Media>
+                    {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
+                        <p></p>
+                        :
+                        <span className="badge badge-pill badge-warning">Naujas atsiliepimas</span>
+                    }
+                    <p>Asmens kodas: {program.patient.personalCode}</p>
+                    <p>Gyd.: {program.author.fullName}</p>
+                    <p>Gyd.Rašto Nr.: {program.author.stampNr}</p>
+                    <p>{new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.startDate)))} &nbsp;
+                        {new Intl.DateTimeFormat('fr-CA',
+                            { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.endDate)))}</p>
+                    {/* <p>SearchParams.searchField is empty {SearchParams.searchField}</p> */}
+                </Media>
+            </Link>
+        </Media>
         );
     }
     else {
