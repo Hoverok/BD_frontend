@@ -136,12 +136,12 @@ class ReactYoutube extends Component {
 }
 
 
-function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise }) {
+function RenderExercises({ exercises }) {
     if (exercises != null)
         return (
             <div className="row">
                 <div className="col-12 m-1">
-                    <h4>Pratimai</h4>
+                    <h2>Pratimai</h2>
                     <Stagger in>
                         {exercises.map((exercise) => {
                             return (
@@ -151,17 +151,18 @@ function RenderExercises({ exercises, programId, postExercise, putExercise, dele
                                             <CardBody>
                                                 <CardTitle>
                                                     <h3>{exercise.exerciseType.title}<br></br></h3>
-                                                    <h5>Intensyvumas: {exercise.exerciseType.intensity}/5</h5>
                                                 </CardTitle>
                                                 <CardText>
-                                                    <p><b>Instrukijos:</b>{exercise.instuructions}</p>
+                                                    <b>Instrukijos:</b>&nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} pertrauka<hr></hr>
+                                                    <h4>{exercise.instuructions}</h4>
                                                     <p><b>Įrankiai:</b> {exercise.exerciseType.inventory}</p>
+                                                    <p><b>Intensyvumas:</b> {exercise.exerciseType.intensity}/5</p>
                                                 </CardText>
                                                 <CardSubtitle
                                                     className="mb-2 text-muted"
                                                     tag="h6">
                                                     Atnaujino: {exercise.author.fullName} <br></br>
-                                                    Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                                                    Paskutinio atnaujinimo data ir laikas: {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
                                                         .format(new Date(Date.parse(exercise.updatedAt)))}
                                                 </CardSubtitle>
                                                 <CardFooter className="d-flex justify-content-center">
@@ -198,16 +199,21 @@ const PatientProgramDetail = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-12">
-                        {(props.program.programStatus === "Aktyvi") ?
-                            <h4><span className="badge badge-success">Programa aktyvi</span></h4>
-                            :
-                            <h4><span className="badge badge-danger">Programa baigta</span></h4>
-                        }
+                    <div className="col-12 col-sm-6">
                         <h2>{props.program.patient.fullName}</h2>
-                        <h5>Įrankiai: {props.program.requirements}</h5>
-                        <h5>{props.program.description}</h5>
-                        <hr />
+                        <h2>Trukmė - {props.program.duration} d.</h2><hr></hr>
+                    </div>
+                    <div className="col-12 col-sm-6">
+                        <h2>Nuo {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(props.program.startDate)))} iki&nbsp; 
+                        {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(props.program.endDate)))} </h2>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <h3>{props.program.description}</h3><hr></hr>
+                        <h5>Įrankiai: {props.program.requirements}</h5><hr></hr>
                     </div>
                 </div>
                 <div className="row">

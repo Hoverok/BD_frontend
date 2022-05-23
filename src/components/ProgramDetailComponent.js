@@ -307,8 +307,8 @@ class EditExerciseForm extends Component {
                             <Row className="form-group">
                                 <Label htmlFor="restBreak" md={4}>Pertrauka sek.</Label>
                                 <Col md={8}>
-                                    <Control.text model=".repsrestBreak" id="restBreak" name="restBreak"
-                                        defaultValue={this.props.exercise.reps}
+                                    <Control.text model=".restBreak" id="restBreak" name="restBreak"
+                                        defaultValue={this.props.exercise.restBreak}
                                         className="form-control"
                                     />
                                 </Col>
