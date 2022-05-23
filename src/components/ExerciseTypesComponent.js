@@ -63,9 +63,9 @@ function RenderExerciseTypeList({ exerciseType }) {
                             {exerciseType.bodyPart} <hr></hr>
                         </CardSubtitle>
                         <CardText>
-                            <b>&nbsp; &nbsp;{exerciseType.title}<br></br>
-                                &nbsp; &nbsp;{exerciseType.intensity}/5 <br></br>
-                                &nbsp; &nbsp;{exerciseType.inventory}</b>
+                            <b>&nbsp; &nbsp;{exerciseType.title}<br></br></b> <hr></hr>
+                            &nbsp; &nbsp;{exerciseType.inventory}<br></br>
+                            &nbsp; &nbsp;Intensyvumas {exerciseType.intensity}/5
                         </CardText>
                     </CardBody>
                 </Card>

@@ -66,7 +66,7 @@ function RenderProgramInList({ program, messages, onClick }) {
                         <Media heading>
                             {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
                                 { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp; 
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
                             {new Intl.DateTimeFormat('fr-CA',
                                 { year: 'numeric', month: '2-digit', day: '2-digit' })
                                 .format(new Date(Date.parse(program.endDate)))}
@@ -136,10 +136,10 @@ function RenderProgramInList({ program, messages, onClick }) {
                 </Media>
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
-                    <Media heading>
+                        <Media heading>
                             {program.patient.fullName} {new Intl.DateTimeFormat('fr-CA',
                                 { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                .format(new Date(Date.parse(program.startDate)))} &nbsp; 
+                                .format(new Date(Date.parse(program.startDate)))} &nbsp;
                             {new Intl.DateTimeFormat('fr-CA',
                                 { year: 'numeric', month: '2-digit', day: '2-digit' })
                                 .format(new Date(Date.parse(program.endDate)))}
@@ -193,16 +193,11 @@ class PostProgramForm extends Component {
     }
     handleStartDateChanged(event) {
         adParams.startDate = new Date(event.target.value);
-        console.log(`start date ${adParams.startDate}`);
-        console.log(typeof adParams.startDate);
-        console.log((adParams.startDate).toString());
-        console.log(typeof ((adParams.startDate).toString()));
     }
 
     handleEndDateChanged(event) {
         adParams.endDate = new Date(event.target.value);
-        console.log(`duration ${adParams.endDate}`);
-        console.log(typeof adParams.endDate);
+
     }
 
 
@@ -211,15 +206,14 @@ class PostProgramForm extends Component {
         this.toggleModal();
         try {
             adParams.personalCode = ((this.props.patients.patients.filter((patient) => patient.personalCode === values.personalCode)[0])._id);
+            adParams.programCode = values.personalCode + (((this.props.programs.programs.filter((program) => program.patient.personalCode === values.personalCode))).length + 1);
         }
         catch (err) {
             alert("Pacientas su " + values.personalCode + " asmens kodo nerastas");
             return;
         }
         adParams.duration = (adParams.endDate - adParams.startDate) / 1000 / 60 / 60 / 24;
-        console.log(`end date ${adParams.duration}`);
-        console.log(typeof adParams.duration);
-        this.props.postProgram(values.description, adParams.duration, adParams.personalCode, adParams.startDate, adParams.endDate);
+        this.props.postProgram(values.description, adParams.duration, adParams.personalCode, adParams.startDate, adParams.endDate, adParams.programCode);
     }
 
     render() {

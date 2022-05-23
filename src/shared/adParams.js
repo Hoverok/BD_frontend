@@ -7,7 +7,8 @@ export const adParams = {
     exerciseTypeId: '',
     startDate: '',
     endDate: new Date(),
-    duration: ''
+    duration: '',
+    programCode: ''
 };
 
 export default adParams;

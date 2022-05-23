@@ -94,14 +94,15 @@ export const fetchPrograms = () => (dispatch) => {
         .catch(error => dispatch(programsFailed(error.message)));
 }
 
-export const postProgram = (description, duration, patientId, startDate, endDate) => (dispatch) => {
+export const postProgram = (description, duration, patientId, startDate, endDate, programCode) => (dispatch) => {
 
     const newProgram = {
         description: description,
         duration: duration,
         patient: patientId,
         startDate: startDate,
-        endDate: endDate
+        endDate: endDate,
+        programCode: programCode
     }
     console.log('Date ' + startDate);
     console.log('Program ', newProgram);
@@ -258,12 +259,15 @@ export const fetchExercises = () => (dispatch) => {
         .catch(error => dispatch(exercisesFailed(error.message)));
 }
 
-export const postExercise = (programId, exerciseTypeId, instuructions) => (dispatch) => {
+export const postExercise = (programId, exerciseTypeId, instuructions, sets, reps, restBreak) => (dispatch) => {
 
     const newExercise = {
         program: programId,
         exerciseType: exerciseTypeId,
-        instuructions: instuructions
+        instuructions: instuructions,
+        sets: sets,
+        reps: reps,
+        restBreak: restBreak
     }
     console.log('Exercise ', newExercise);
 
@@ -300,11 +304,14 @@ export const postExercise = (programId, exerciseTypeId, instuructions) => (dispa
         })
 }
 
-export const putExercise = (exerciseId, exerciseTypeId, instuructions) => (dispatch) => {
+export const putExercise = (exerciseId, exerciseTypeId, instuructions, sets, reps, restBreak) => (dispatch) => {
     const updatedExercise = {
         exerciseId: exerciseId,
         exerciseType: exerciseTypeId,
-        instuructions: instuructions
+        instuructions: instuructions,
+        sets: sets,
+        reps: reps,
+        restBreak: restBreak
     };
     //console.log('Exercise ', updatedExercise);
     const bearer = 'Bearer ' + localStorage.getItem('token');

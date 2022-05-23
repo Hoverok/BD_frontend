@@ -11,7 +11,7 @@ import { baseUrl } from '../shared/baseUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import adParams from '../shared/adParams';
 import currDate from '../shared/currDate';
-
+import Youtube from 'react-youtube';
 
 
 function RenderProgram({ program, putProgram, deleteProgram, patients, users }) {
@@ -32,7 +32,7 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
             </div>
             <div className="row">
                 <div className="col-12">
-                    <h4>ID: {program._id}</h4>
+                    <h4>Programos kodas {program.programCode}</h4>
                     <br></br>
                 </div>
             </div>
@@ -52,7 +52,7 @@ function RenderMessages({ messages, putMessage }) {
     if (messages != null)
         return (
             <div className="col-12 col-md-5 m-1">
-                <h3>Paciento atsiliepimai:</h3>
+                <h3>Paciento atsiliepimai</h3>
                 <ul className="list-unstyled">
                     <Stagger in>
                         {messages.map((message) => {
@@ -84,8 +84,6 @@ function RenderMessages({ messages, putMessage }) {
             <div className="col-12 col-md-5 m-1"><h3>Paciento atsiliepimų nėra</h3> <br></br></div>
         );
 }
-
-
 class RenderPatient extends Component {
     constructor(props) {
         super(props);
@@ -130,56 +128,86 @@ class RenderPatient extends Component {
 }
 
 
+class ReactYoutube extends Component {
+    constructor(props) {
+        super(props);
+    }
 
+    videoOnReady(event) {
+        event.target.pauseVideo();
+    }
 
+    render() {
+        const i = (this.props.ytLink).indexOf("=");
+        let vidId = (this.props.ytLink).substring(i + 1, i + 12);
 
-function RenderExercises({ exercises, programId, postExercise, putExercise, deleteExercise, exerciseTypes }) {
-    if (exercises != null)
+        if (i === -1 || vidId.length !== 11) {
+            vidId = "jpF_cfyA2Dc";
+        }
+        const opts = {
+            height: '200',
+            width: '300',
+            playerVars: {
+                autoplay: 0
+            }
+        }
         return (
-            <div className="col-12 m-1">
+            <Youtube
+                videoId={vidId}
+                opts={opts}
+                onReady={this.videoOnReady} />
+        );
+    }
+}
+function RenderExerciseList({ exercises, programId, postExercise, putExercise, deleteExercise, exerciseTypes }) {
+    if (exercises != null) {
+        return (
+            <div className="col-12">
                 <h4>Pratimai</h4>
-                <Stagger in>
-                    <CardGroup>
-                        {exercises.map((exercise) => {
-                            return (
-                                <div className="col-4">
-                                    <Fade in key={exercise._id}>
-                                        <Card color="secondary">
-                                            <Card>
-                                                <CardBody>
-                                                    <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} exerciseTypes={exerciseTypes} />
-                                                    <CardTitle tag="h5">
-                                                        {exercise.exerciseType.title} {" "}  {exercise.exerciseType.intensity}/5
-                                                    </CardTitle>
-                                                    <CardText>
-                                                        Instrukijos: {exercise.instuructions}
-                                                    </CardText>
-                                                    <CardSubtitle
-                                                        className="mb-2 text-muted"
-                                                        tag="h6">
-
-                                                        Paskutinio atnaujinimo data: {new Intl.DateTimeFormat('fr-CA',
-                                                            { year: 'numeric', month: '2-digit', day: '2-digit' })
-                                                            .format(new Date(Date.parse(exercise.updatedAt)))}<br></br>
-                                                        {exercise.author.fullName}
-                                                    </CardSubtitle>
-                                                </CardBody>
-                                            </Card>
-                                        </Card>
-                                    </Fade>
-                                </div>
-                            );
-                        })}
-                    </CardGroup>
-                </Stagger>
+                <hr></hr>
+                <CardGroup>
+                    {exercises.map((exercise) => {
+                        return (
+                            <div className="col-4">
+                                <Fade in key={exercise._id}>
+                                    <Card color="success" outline>
+                                        <CardBody>
+                                            <EditExerciseForm exercise={exercise} putExercise={putExercise} deleteExercise={deleteExercise} exerciseTypes={exerciseTypes} />
+                                            <CardTitle tag="h5">
+                                                <ReactYoutube ytLink={exercise.exerciseType.ytLink} />
+                                            </CardTitle>
+                                            <CardSubtitle
+                                                className="mb-2 text-muted"
+                                                tag="h6"
+                                            >
+                                                {exercise.exerciseType.bodyPart} <hr></hr>
+                                            </CardSubtitle>
+                                            <CardText>
+                                                <b>&nbsp; &nbsp;{exercise.exerciseType.title}<br></br></b>
+                                                &nbsp; &nbsp;{exercise.instuructions}<hr></hr>
+                                                &nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} pertrauka<hr></hr>
+                                                &nbsp; &nbsp;{exercise.exerciseType.inventory}<br></br>
+                                                &nbsp; &nbsp;Intensyvumas {exercise.exerciseType.intensity}/5
+                                            </CardText>
+                                        </CardBody>
+                                    </Card>
+                                </Fade>
+                            </div>
+                        );
+                    })}
+                </CardGroup>
                 <ExerciseForm programId={programId} postExercise={postExercise} exerciseTypes={exerciseTypes} />
             </div>
         );
-    else
+    }
+    else {
         return (
             <div></div>
         );
+    }
 }
+
+
 
 class EditExerciseForm extends Component {
     constructor(props) {
@@ -216,7 +244,7 @@ class EditExerciseForm extends Component {
         }
 
         this.toggleModal();
-        this.props.putExercise(this.props.exercise._id, adParams.exerciseTypeId, values.instuructions);
+        this.props.putExercise(this.props.exercise._id, adParams.exerciseTypeId, values.instuructions, values.sets, values.reps, values.restBreak);
 
         // this.forceUpdate();
     }
@@ -245,17 +273,44 @@ class EditExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleUpdateExercise(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="exerciseTypeSelect" md={3}>Pratimų tipai</Label>
-                                <Col md={9}>
+                                <Label htmlFor="exerciseTypeSelect" md={6}>Pratimų tipo pasirinkimas</Label>
+                                <Col md={12}>
                                     <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect"
-                                        name="exerciseTypeSelect" className="form-control">
-                                        <option value=""></option>
+                                        name="exerciseTypeSelect" className="form-control"
+                                        defaultValue={this.props.exercise.exerciseType._id}>
                                         {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
                                             <option key={exerciseType._id} value={exerciseType._id}>
-                                                {exerciseType.title}
+                                                {exerciseType.bodyPart} --{exerciseType.title}
                                             </option>
                                         ))}
                                     </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="sets" md={4}>Serijos</Label>
+                                <Col md={8}>
+                                    <Control.text model=".sets" id="sets" name="sets"
+                                        defaultValue={this.props.exercise.sets}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="reps" md={4}>Pakartojimai</Label>
+                                <Col md={8}>
+                                    <Control.text model=".reps" id="reps" name="reps"
+                                        defaultValue={this.props.exercise.reps}
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="restBreak" md={4}>Pertrauka sek.</Label>
+                                <Col md={8}>
+                                    <Control.text model=".repsrestBreak" id="restBreak" name="restBreak"
+                                        defaultValue={this.props.exercise.reps}
+                                        className="form-control"
+                                    />
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -318,7 +373,7 @@ class ExerciseForm extends Component {
             return;
         }
         this.toggleModal();
-        this.props.postExercise(this.props.programId, adParams.exerciseTypeId, values.instuructions);
+        this.props.postExercise(this.props.programId, adParams.exerciseTypeId, values.instuructions, values.sets, values.reps, values.restBreak);
     }
 
     render() {
@@ -331,18 +386,41 @@ class ExerciseForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="exerciseTypeSelect" md={3}>Select</Label>
-                                <Col md={9}>
+                                <Label htmlFor="exerciseTypeSelect" md={6}>Pratimų tipo pasirinkimas</Label>
+                                <Col md={12}>
                                     <Control.select model=".exerciseTypeSelect" id="exerciseTypeSelect" name="exerciseTypeSelect">
                                         <option value="">
-
                                         </option>
                                         {this.props.exerciseTypes.exerciseTypes.map((exerciseType) => (
                                             <option key={exerciseType._id} value={exerciseType._id}>
-                                                {exerciseType.title}
+                                                {exerciseType.bodyPart} --{exerciseType.title}
                                             </option>
                                         ))}
                                     </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="sets" md={4}>Serijos</Label>
+                                <Col md={8}>
+                                    <Control.text model=".sets" id="sets" name="sets"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="reps" md={4}>Pakartojimai</Label>
+                                <Col md={8}>
+                                    <Control.text model=".reps" id="reps" name="reps"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="restBreak" md={4}>Pertrauka sek.</Label>
+                                <Col md={8}>
+                                    <Control.text model=".restBreak" id="restBreak" name="restBreak"
+                                        className="form-control"
+                                    />
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -377,16 +455,15 @@ class EditProgramForm extends Component {
         this.handleDeleteProgram = this.handleDeleteProgram.bind(this);
         this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
         this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
+        adParams.startDate = new Date(this.props.program.startDate);
+        adParams.endDate = new Date(this.props.program.endDate);
     }
 
     toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         });
-        adParams.startDate = new Date (this.props.program.startDate);
-        console.log(`starting the date ${adParams.startDate}`);
-        console.log(typeof adParams.startDate);
-        adParams.endDate = new Date (this.props.program.endDate);
+
     }
 
     toggleDeleteModal() {
@@ -425,6 +502,7 @@ class EditProgramForm extends Component {
         }
 
         adParams.duration = (adParams.endDate - adParams.startDate) / 1000 / 60 / 60 / 24;
+
         this.props.putProgram(this.props.program._id, values.description, adParams.duration,
             values.requirements, adParams.personalCode, adParams.stampNr, adParams.startDate, adParams.endDate);
     }
@@ -562,7 +640,7 @@ const ProgramDetail = (props) => {
                     <RenderPatient program={props.program} />
                 </div>
                 <div className="row">
-                    <RenderExercises exercises={props.exercises}
+                    <RenderExerciseList exercises={props.exercises}
                         exerciseTypes={props.exerciseTypes}
                         postExercise={props.postExercise}
                         putExercise={props.putExercise}

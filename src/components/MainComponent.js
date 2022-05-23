@@ -49,13 +49,13 @@ const mapStateToProps = state => { //maps redux store state to props that become
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   fetchUsers: () => { dispatch(fetchUsers()) },
   fetchPrograms: () => { dispatch(fetchPrograms()) },
-  postProgram: (description, duration,  patientId, startDate, endDate) => dispatch(postProgram(description, duration,  patientId, startDate, endDate)),
-  putProgram: (programId, description, duration,  requirements, patientId, doctorId, startDate, endDate) =>
-   dispatch(putProgram(programId, description, duration, requirements, patientId, doctorId, startDate, endDate)),
+  postProgram: (description, duration, patientId, startDate, endDate, programCode) => dispatch(postProgram(description, duration, patientId, startDate, endDate, programCode)),
+  putProgram: (programId, description, duration, requirements, patientId, doctorId, startDate, endDate) =>
+    dispatch(putProgram(programId, description, duration, requirements, patientId, doctorId, startDate, endDate)),
   deleteProgram: (programId) => dispatch(deleteProgram(programId)),
   fetchExercises: () => { dispatch(fetchExercises()) },
-  postExercise: (programId, exerciseTypeId, instuructions) => dispatch(postExercise(programId, exerciseTypeId, instuructions)),
-  putExercise: (exerciseId, exerciseTypeId, instuructions) => dispatch(putExercise(exerciseId, exerciseTypeId, instuructions)),
+  postExercise: (programId, exerciseTypeId, instuructions, sets, reps, restBreak) => dispatch(postExercise(programId, exerciseTypeId, instuructions, sets, reps, restBreak)),
+  putExercise: (exerciseId, exerciseTypeId, instuructions, sets, reps, restBreak) => dispatch(putExercise(exerciseId, exerciseTypeId, instuructions, sets, reps, restBreak)),
   deleteExercise: (exerciseId) => dispatch(deleteExercise(exerciseId)),
   fetchPatients: () => { dispatch(fetchPatients()) },
   postPatient: (fullName, personalCode, address, telNum, email) => dispatch(postPatient(fullName, personalCode, address, telNum, email)),
@@ -232,7 +232,8 @@ class Main extends Component {
         />
         <TransitionGroup>
           <Switch>
-            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser} />} />
+            <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser}
+             programs={this.props.programs}/>} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
               programsErrMess={this.props.programs.errMess} patients={this.props.patients} messages={this.props.messages} />} />

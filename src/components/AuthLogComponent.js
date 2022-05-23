@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
-import { SearchParams } from '../shared/searchParams';
+import { adParams } from '../shared/adParams';
 import { programsFailed } from '../redux/ActionCreators';
 
 class AuthLog extends Component {
@@ -45,7 +45,6 @@ class AuthLog extends Component {
         this.setState({
             isRedirect: !this.state.isRedirect
         });
-        console.log("this is getting called?" + this.state.isRedirect)
     }
 
     handleLogin(event) {
@@ -56,12 +55,17 @@ class AuthLog extends Component {
 
     handleToPatientProgram(values) {
         this.togglePatientModal();
-        SearchParams.patientCode = values.patientCode;
+        console.log(values.patientCode);
+        try {
+            adParams.programCode = ((this.props.programs.programs.filter((program) => program.programCode === values.patientCode)[0])._id);
+        }
+        catch (err) {
+            alert("Programa su kodu" + values.patientCode + " nerasta");
+            return;
+        }
+
         this.toggleRedirect();
-        console.log('redirect?  ' + this.state.isRedirect)
         this.forceUpdate();
-        console.log('patient code: ' + SearchParams.patientCode)
-        console.log('redirect?  ' + this.state.isRedirect)
     }
 
     handleLogout() {
@@ -118,7 +122,7 @@ class AuthLog extends Component {
                     </div>
                     :
                     <div>
-                        <Redirect to={`/welcome/${SearchParams.patientCode}`} />
+                        <Redirect to={`/welcome/${adParams.programCode}`} />
                     </div>
                 }
 
