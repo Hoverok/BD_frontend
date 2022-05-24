@@ -34,7 +34,7 @@ class SearchUsers extends Component {
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup row>
                             <div className="col-10 mt-2" >
-                                <Input type="text" className="form-control" id="name" name="name"
+                                <Input type="text" className="form-control" id="searcName" name="searcName"
                                     placeholder="Įveskite paieškos parametrus" defaultValue={SearchUsersParams.searchField} onChange={this.handleNameChanged} />
                             </div>
                             <div className="col-2 mt-2">

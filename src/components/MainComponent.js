@@ -3,6 +3,7 @@ import ProgramDetail from './ProgramDetailComponent';
 import PatientDetail from './PatientDetailComponent';
 import ExerciseTypeDetail from './ExerciseTypeDetail';
 import PatientProgramDetail from './PatientProgramComponent';
+import UserDetail from './UserDetailComponent';
 import Search from './SearchComponent';
 import SearchPatients from './SearchPatientsComponent';
 import SearchExerciseTypes from './SearchExerciseTypesComponent';
@@ -153,6 +154,16 @@ class Main extends Component {
       );
     }
 
+    const UserWithId = ({ match }) => {
+      return (
+        <UserDetail user={this.props.users.users.filter((user) => user._id === match.params.userId)[0]}
+        // putPatient={this.props.putPatient}
+        // deletePatient={this.props.deletePatient}
+        // errMess={this.props.patients.errMess}
+        />
+      );
+    }
+
     const PatientProgramWithId = ({ match }) => {
       return (
         <PatientProgramDetail program={this.props.programs.programs.filter((program) => program._id === match.params.programId)[0]}
@@ -237,6 +248,7 @@ class Main extends Component {
               exerciseTypesErrMess={this.props.exerciseTypes.errMess} />} />
             <Route path="/exercisetypes/:exerciseTypeId" component={ExerciseTypeWithId} />
             <Route exact path="/users" component={() => <SearchUsers users={this.props.users} postUser={this.props.postUser} />} />
+            <Route path="/users/:userId" component={UserWithId} />
 
 
 
