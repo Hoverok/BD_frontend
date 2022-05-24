@@ -80,6 +80,11 @@ class Header extends Component {
                                             <span className="fa fa-video-camera fa-lg"></span> Pratimai
                                         </NavLink>
                                     </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to="/users">
+                                            <span className="fa fa-video-camera fa-lg"></span> Gytytojai
+                                        </NavLink>
+                                    </NavItem>
                                 </Nav>
                             }
                             <Nav className="ml-auto" navbar>

@@ -16,9 +16,6 @@ export const usersFailed = (errmess) => ({
 });
 
 export const fetchUsers = () => (dispatch) => {
-
-
-
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'users', {
         method: 'GET',

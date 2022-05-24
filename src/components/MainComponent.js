@@ -7,6 +7,7 @@ import Search from './SearchComponent';
 import SearchPatients from './SearchPatientsComponent';
 import SearchExerciseTypes from './SearchExerciseTypesComponent';
 import AuthLog from './AuthLogComponent';
+import SearchUsers from './SearchUsersComponent';
 import Home from './HomeComponent';
 import About from './AboutComponent';
 import Menu from './MenuComponent';
@@ -173,16 +174,6 @@ class Main extends Component {
       );
     }
 
-    // const ExerciseTypeWithId = ({ match }) => {
-    //   return (
-    //     <ExerciseTypeDetail exerciseType={this.props.exerciseTypes.exerciseTypes.filter((exerciseType) => exerciseType._id === match.params.exerciseTypeId)[0]}
-    //       putExerciseType={this.props.putExerciseType}
-    //       deleteExerciseType={this.props.deleteExerciseType}
-    //       errMess={this.props.exerciseTypes.errMess}
-    //     />
-    //   );
-    // }
-
     const DishWithId = ({ match }) => {
       if (this.props.favorites.favorites != null) {
         if (Array.isArray(this.props.favorites.favorites))
@@ -233,7 +224,7 @@ class Main extends Component {
         <TransitionGroup>
           <Switch>
             <Route exact path="/welcome" component={() => <AuthLog auth={this.props.auth} loginUser={this.props.loginUser} logoutUser={this.props.logoutUser}
-             programs={this.props.programs}/>} />
+              programs={this.props.programs} />} />
             <Route path="/welcome/:programId" component={PatientProgramWithId} />
             <Route exact path="/programs" component={() => <Search programs={this.props.programs} postProgram={this.props.postProgram}
               programsErrMess={this.props.programs.errMess} patients={this.props.patients} messages={this.props.messages} />} />
@@ -244,6 +235,7 @@ class Main extends Component {
             <Route exact path="/exercisetypes" component={() => <SearchExerciseTypes exerciseTypes={this.props.exerciseTypes} postExerciseType={this.props.postExerciseType}
               exerciseTypesErrMess={this.props.exerciseTypes.errMess} />} />
             <Route path="/exercisetypes/:exerciseTypeId" component={ExerciseTypeWithId} />
+            <Route exact path="/users" component={() => <SearchUsers users={this.props.users} />} />
 
 
 
