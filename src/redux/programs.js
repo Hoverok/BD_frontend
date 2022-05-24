@@ -6,14 +6,14 @@ export const Programs = (state = {
 }, action) => {
     switch (action.type) {
         case ActionTypes.ADD_PROGRAMS:
-            return { ...state, isLoading: false, errMess: null, programs: action.payload };
+            return { ...state, isLoading: false, errMess: null, programs: (action.payload).reverse() };
 
         case ActionTypes.PROGRAMS_FAILED:
             return { ...state, isLoading: false, errMess: action.payload, programs: [] };
 
         case ActionTypes.ADD_PROGRAM:
             var program = action.payload;
-            return { ...state, programs: state.programs.concat(program) };
+            return { ...state, programs: state.programs.reverse().concat(program).reverse() };
 
         case ActionTypes.UPDATE_PROGRAM:
             return {

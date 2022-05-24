@@ -6,14 +6,14 @@ export const Patients = (state = {
 }, action) => {
     switch (action.type) {
         case ActionTypes.ADD_PATIENTS:
-            return { ...state, isLoading: false, errMess: null, patients: action.payload };
+            return { ...state, isLoading: false, errMess: null, patients: action.payload.reverse() };
 
         case ActionTypes.PATIENTS_FAILED:
             return { ...state, isLoading: false, errMess: action.payload, patients: [] };
 
         case ActionTypes.ADD_PATIENT:
             var patient = action.payload;
-            return { ...state, patients: state.patients.concat(patient) };
+            return { ...state, patients: state.patients.reverse().concat(patient).reverse() };
         case ActionTypes.UPDATE_PATIENT:
             return {
                 ...state,

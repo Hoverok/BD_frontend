@@ -6,14 +6,14 @@ export const ExerciseTypes = (state = {
 }, action) => {
     switch (action.type) {
         case ActionTypes.ADD_EXERCISETYPES:
-            return { ...state, isLoading: false, errMess: null, exerciseTypes: action.payload };
+            return { ...state, isLoading: false, errMess: null, exerciseTypes: action.payload.reverse() };
 
         case ActionTypes.EXERCISETYPES_FAILED:
             return { ...state, isLoading: false, errMess: action.payload, exerciseTypes: [] };
 
         case ActionTypes.ADD_EXERCISETYPE:
             var exerciseType = action.payload;
-            return { ...state, exerciseTypes: state.exerciseTypes.concat(exerciseType) };
+            return { ...state, exerciseTypes: state.exerciseTypes.reverse().concat(exerciseType).reverse() };
         case ActionTypes.UPDATE_EXERCISETYPE:
             return {
                 ...state,

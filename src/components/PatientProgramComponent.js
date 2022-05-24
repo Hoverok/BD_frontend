@@ -153,7 +153,7 @@ function RenderExercises({ exercises }) {
                                                     <h3>{exercise.exerciseType.title}<br></br></h3>
                                                 </CardTitle>
                                                 <CardText>
-                                                    <b>Instrukijos:</b>&nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} pertrauka<hr></hr>
+                                                    <b>Instrukijos:</b>&nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} sek. pertrauka<hr></hr>
                                                     <h4>{exercise.instuructions}</h4>
                                                     <p><b>Įrankiai:</b> {exercise.exerciseType.inventory}</p>
                                                     <p><b>Intensyvumas:</b> {exercise.exerciseType.intensity}/5</p>

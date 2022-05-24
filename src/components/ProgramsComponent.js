@@ -27,7 +27,9 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>
-                            {program.patient.fullName}, {program.patient.personalCode}
+                        {program.patient.fullName}, {program.patient.personalCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
@@ -61,7 +63,9 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>
-                            {program.patient.fullName}, {program.patient.personalCode}
+                        {program.patient.fullName}, {program.patient.personalCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
@@ -96,7 +100,9 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>
-                            {program.patient.fullName}, {program.patient.personalCode}
+                            {program.patient.fullName}, {program.patient.personalCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
@@ -129,7 +135,9 @@ function RenderProgramInList({ program, messages, onClick }) {
                 <Link to={`/programs/${program._id}`} className='text-link' >
                     <Media body className="ml-5">
                         <Media heading>
-                            {program.patient.fullName}, {program.patient.personalCode}
+                        {program.patient.fullName}, {program.patient.personalCode} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </Media>
                         {(((messages.map(message => message.messageSeen).indexOf(false)) === -1)) ?
                             <p></p>
@@ -264,7 +272,7 @@ const Programs = (props) => {
     const programs = props.programs.programs.map((program) => {
         return (
             <Fade in key={program._id}>
-                <div className="col-12 mt-2">
+                <div className="col-12 mt-2 round-borders">
                     <RenderProgramInList program={program} messages={props.messages.messages.filter((message) => message.program === program._id)} />
                 </div>
             </Fade>

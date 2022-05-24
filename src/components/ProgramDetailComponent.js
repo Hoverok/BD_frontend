@@ -18,28 +18,28 @@ function RenderProgram({ program, putProgram, deleteProgram, patients, users }) 
     return (
         <div className="col-12 m-1">
             <div className="row">
-                <div className="col-12 col-sm-6">
-                    <h3>{program.description}</h3>
+                <div className="col-12">
+                    <h4>Programos kodas {program.programCode}</h4>
+                    <hr></hr>
                 </div>
-                <div className="col-12 col-sm-6">
-                    <h3>{new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                        .format(new Date(Date.parse(program.startDate)))}</h3>
-                    <h3>{new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
-                        .format(new Date(Date.parse(program.endDate)))}</h3>
+            </div>
+            <div className="row">
+                <div className="col-12 col-sm-6 round-borders">
+                    <h5>{program.description}</h5>
+                </div>
+                <div className="col-12 col-sm-6 round-borders">
+                    <h3>Nuo {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                        .format(new Date(Date.parse(program.startDate)))}
+                        &nbsp;iki {new Intl.DateTimeFormat('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                            .format(new Date(Date.parse(program.endDate)))}</h3>
                     <h3>Trukmė - {program.duration} d.</h3>
                 </div>
                 <hr />
             </div>
             <div className="row">
                 <div className="col-12">
-                    <h4>Programos kodas {program.programCode}</h4>
-                    <br></br>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12">
-                    <h4>Įrankiai:</h4> <p>{program.requirements}</p>
-                    <br></br>
+                    <br></br><h4>Įrankiai:</h4> <p>{program.requirements}</p>
+                    <hr></hr>
                 </div>
             </div>
             <EditProgramForm program={program} putProgram={putProgram} deleteProgram={deleteProgram} patients={patients} users={users} />
@@ -93,7 +93,7 @@ class RenderPatient extends Component {
     render() {
         return (
             <div className="col-12">
-                <div className='row'>
+                <div className='row round-borders'>
                     <div className="col-12 col-sm-2">
                         <h3>Pacientas:</h3>
                         <p>Pacientas:</p>
@@ -185,7 +185,7 @@ function RenderExerciseList({ exercises, programId, postExercise, putExercise, d
                                             <CardText>
                                                 <b>&nbsp; &nbsp;{exercise.exerciseType.title}<br></br></b>
                                                 &nbsp; &nbsp;{exercise.instuructions}<hr></hr>
-                                                &nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} pertrauka<hr></hr>
+                                                &nbsp; {exercise.sets} serijos po {exercise.reps} pakartojimų, {exercise.restBreak} sek. pertrauka<hr></hr>
                                                 &nbsp; &nbsp;{exercise.exerciseType.inventory}<br></br>
                                                 &nbsp; &nbsp;Intensyvumas {exercise.exerciseType.intensity}/5
                                             </CardText>
@@ -220,6 +220,14 @@ class EditExerciseForm extends Component {
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
         this.handleUpdateExercise = this.handleUpdateExercise.bind(this);
         this.handleDeleteExercise = this.handleDeleteExercise.bind(this);
+        adParams.excerciseTypeObject = this.props.exerciseTypes.exerciseTypes.sort((a, b) => {
+            let x = a.bodyPart.toLowerCase();
+            let y = b.bodyPart.toLowerCase();
+            if (x < y) { return -1; }
+            if (x > y) { return 1; }
+            return 0;
+        });
+        console.table(adParams.excerciseTypeObject)
     }
 
     toggleModal() {
@@ -457,6 +465,7 @@ class EditProgramForm extends Component {
         this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
         adParams.startDate = new Date(this.props.program.startDate);
         adParams.endDate = new Date(this.props.program.endDate);
+        console.table(adParams.excerciseTypeObject)
     }
 
     toggleModal() {
