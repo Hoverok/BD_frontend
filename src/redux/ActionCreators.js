@@ -5,6 +5,11 @@ import { baseUrl } from '../shared/baseUrl';
 //reducers take action as one of the parameters, the current state of the application as another parameter and generates(returns) the next state
 //these actions supply information to reducers
 
+export const addUser = (user) => ({
+    type: ActionTypes.ADD_USER,
+    payload: user
+});
+
 export const addUsers = (users) => ({
     type: ActionTypes.ADD_USERS,
     payload: users
@@ -42,6 +47,51 @@ export const fetchUsers = () => (dispatch) => {
         .then(response => response.json())
         .then(users => dispatch(addUsers(users)))
         .catch(error => dispatch(usersFailed(error.message)));
+}
+
+export const postUser = (username, password, stampNr, fullName, email) => (dispatch) => {
+
+    const newUser = {
+        username: username,
+        password: password,
+        stampNr: stampNr,
+        fullName: fullName,
+        email: email,
+
+    }
+    console.log('User ', newUser);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'users/signup', {
+        method: 'POST',
+        body: JSON.stringify(newUser),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addUser(response.reUser)))
+        .catch(error => {
+            console.log('Post users ', error.message);
+            alert('User could not be posted\nError: ' + error.message);
+        })
 }
 
 export const addProgram = (program) => ({

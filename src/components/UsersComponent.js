@@ -35,97 +35,92 @@ function RenderUserList({ user, onClick }) {
 }
 
 
-// class PostPatientForm extends Component {
+class PostUserForm extends Component {
 
-//     constructor(props) {
-//         super(props);
+    constructor(props) {
+        super(props);
 
-//         this.toggleModal = this.toggleModal.bind(this);
-//         this.handleSubmit = this.handleSubmit.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
-//         this.state = {
-//             isNavOpen: false,
-//             isModalOpen: false
-//         };
-//         // console.log("PATIENTS: " + JSON.stringify(this.props.patients))
-//         // console.log("PATIENT ID: " + JSON.stringify((this.props.patients.patients[0])))
-//     }
+        this.state = {
+            isNavOpen: false,
+            isModalOpen: false
+        };
+    }
 
-//     toggleModal() {
-//         this.setState({
-//             isModalOpen: !this.state.isModalOpen
-//         });
-//     }
+    toggleModal() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
 
-//     handleSubmit(values) {
-//         this.toggleModal();
-//         this.props.postPatient(values.name, values.personalCode, values.address, values.telNum, values.email);
-//     }
+    handleSubmit(values) {
+        this.toggleModal();
+        this.props.postUser(values.userName, values.password, values.stampNr, values.name, values.email);
+    }
 
-//     render() {
-//         return (
-//             <div>
-//                 <Button color="primary" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas pacientas</Button>
-//                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-//                     <ModalHeader toggle={this.toggleModal}>Naujos paciento registracija</ModalHeader>
-//                     <ModalBody>
-//                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-//                             <Row className="form-group">
-//                                 <Label htmlFor="name" md={2}>Vardas Pavardė</Label>
-//                                 <Col md={10}>
-//                                     <Control.text model=".name" id="name" name="name"
-//                                         placeholder="Vardas Pavardė"
-//                                         className="form-control"
-//                                     />
-//                                 </Col>
-//                             </Row>
-//                             <Row className="form-group">
-//                                 <Label htmlFor="personalCode" md={2}>Asmens kodas</Label>
-//                                 <Col md={10}>
-//                                     <Control.text model=".personalCode" id="personalCode" name="personalCode"
-//                                         placeholder="Asmens Kodas"
-//                                         className="form-control"
-//                                     />
-//                                 </Col>
-//                             </Row>
-//                             <Row className="form-group">
-//                                 <Label htmlFor="address" md={2}>Adresas</Label>
-//                                 <Col md={10}>
-//                                     <Control.text model=".address" id="address" name="address"
-//                                         placeholder="Gatvė Namo Nr.-Būto Nr."
-//                                         className="form-control"
-//                                     />
-//                                 </Col>
-//                             </Row>
-//                             <Row className="form-group">
-//                                 <Label htmlFor="telNum" md={2}>Telefono Numeris</Label>
-//                                 <Col md={10}>
-//                                     <Control.text model=".telNum" id="telNum" name="telNum"
-//                                         placeholder="+370XXXXXXXX"
-//                                         className="form-control"
-//                                     />
-//                                 </Col>
-//                             </Row>
-//                             <Row className="form-group">
-//                                 <Label htmlFor="email" md={2}>El. Paštas</Label>
-//                                 <Col md={10}>
-//                                     <Control.text model=".email" id="email" name="email"
-//                                         placeholder="pavyzdys@email.com"
-//                                         className="form-control"
-//                                     />
-//                                 </Col>
-//                             </Row>
-//                             <Button type="submit" className="bg-primary">
-//                                 Registruoti
-//                             </Button>
-//                         </LocalForm>
-//                     </ModalBody>
-//                 </Modal>
-//             </div>
-//         );
-//     }
+    render() {
+        return (
+            <div>
+                <Button color="primary" size="lg" onClick={this.toggleModal}><span className="fa fa-plus fa-lg"></span> Naujas kineziterapeutas</Button>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal}>Naujos paciento registracija</ModalHeader>
+                    <ModalBody>
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                            <Row className="form-group">
+                                <Label htmlFor="userName" md={3}>Prisijungimo vardas</Label>
+                                <Col md={9}>
+                                    <Control.text model=".userName" id="userName" name="userName"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="password" md={3}>Slaptažodis</Label>
+                                <Col md={9}>
+                                    <Control.password model=".password" id="password" name="password"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="name" md={3}>Vardas Pavardė</Label>
+                                <Col md={9}>
+                                    <Control.text model=".name" id="name" name="name"
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="stampNr" md={3}>Rašto Nr.</Label>
+                                <Col md={9}>
+                                    <Control.text model=".stampNr" id="stampNr" name="stampNr"
 
-// }
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="email" md={3}>El. Paštas</Label>
+                                <Col md={9}>
+                                    <Control.text model=".email" id="email" name="email"
+
+                                        className="form-control"
+                                    />
+                                </Col>
+                            </Row>
+                            <Button type="submit" className="bg-primary">
+                                Registruoti
+                            </Button>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+            </div>
+        );
+    }
+
+}
 
 const Users = (props) => {
     const users = props.users.users.map((user) => {
@@ -152,7 +147,7 @@ const Users = (props) => {
             <div className="row">
             </div>
             <div className="row">
-                {/* <PostPatientForm postPatient={props.postPatient} patients={props.patients} /> */}
+                <PostUserForm postUser={props.postUser}/>
             </div>
             <div className="row row-content">
                 <div className="col-12">

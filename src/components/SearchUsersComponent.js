@@ -49,7 +49,7 @@ class SearchUsers extends Component {
 
                 <div className="row col-12 justify-content-center">
                     <Users
-                        //postPatient={this.props.postPatient}
+                        postUser={this.props.postUser}
                         users={this.props.users}
                         //patientsErrMess={this.props.patients.patientsErrMess}
                          />
