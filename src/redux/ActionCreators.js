@@ -15,6 +15,11 @@ export const addUsers = (users) => ({
     payload: users
 });
 
+export const removeUser = (user) => ({
+    type: ActionTypes.REMOVE_USER,
+    payload: user
+});
+
 export const usersFailed = (errmess) => ({
     type: ActionTypes.USERS_FAILED,
     payload: errmess
@@ -93,6 +98,34 @@ export const postUser = (username, password, stampNr, fullName, email) => (dispa
             alert('User could not be posted\nError: ' + error.message);
         })
 }
+export const deleteUser = (userId) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'users/' + userId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': bearer
+        },
+        credentials: "same-origin"
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => { console.log('User Deleted', response); dispatch(removeUser(response)); }) //this doesnt get called
+        .catch(error => dispatch(usersFailed(error.message)));
+};
+
 
 export const addProgram = (program) => ({
     type: ActionTypes.ADD_PROGRAM,
@@ -787,7 +820,7 @@ export const fetchMessages = () => (dispatch) => {
 
 export const postMessage = (programId, message) => (dispatch) => {
 
-    const newMessage= {
+    const newMessage = {
         program: programId,
         message: message
     }

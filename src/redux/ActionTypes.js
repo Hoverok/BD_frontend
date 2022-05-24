@@ -42,6 +42,7 @@ export const ADD_EXERCISETYPES = 'ADD_EXERCISETYPES';
 export const EXERCISETYPES_FAILED = 'EXERCISETYPES_FAILED';
 export const ADD_USER = 'ADD_USER';
 export const ADD_USERS = 'ADD_USERS';
+export const REMOVE_USER = 'REMOVE_USER';
 export const USERS_FAILED = 'USERS_FAILED';
 export const ADD_MESSAGE= 'ADD_MESSAGE';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';

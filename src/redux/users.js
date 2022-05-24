@@ -15,6 +15,15 @@ export const Users = (state = {
             var user = action.payload;
             return { ...state, users: state.users.reverse().concat(user).reverse() };
 
+        case ActionTypes.REMOVE_USER:
+            return {
+                ...state,
+                users: state.users.filter(
+                    user =>
+                        user._id !== action.payload._id
+                )
+            };
+
         default:
             return state;
     }

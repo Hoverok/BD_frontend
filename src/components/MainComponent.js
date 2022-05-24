@@ -20,7 +20,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  fetchUsers, postUser,
+  fetchUsers, postUser, deleteUser,
   fetchPrograms, postProgram, putProgram, deleteProgram, fetchExercises, postExercise, putExercise, deleteExercise,
   fetchPatients, postPatient, putPatient, deletePatient, fetchExerciseTypes, postExerciseType, putExerciseType, deleteExerciseType,
   fetchMessages, postMessage, putMessage, deleteMessage,
@@ -51,6 +51,7 @@ const mapStateToProps = state => { //maps redux store state to props that become
 const mapDispatchToProps = (dispatch) => ({ //obtain action object and dispatching it to store
   fetchUsers: () => { dispatch(fetchUsers()) },
   postUser: (username, password, stampNr, fullName, email) => dispatch(postUser(username, password, stampNr, fullName, email)),
+  deleteUser: (userId) => dispatch(deleteUser(userId)),
   fetchPrograms: () => { dispatch(fetchPrograms()) },
   postProgram: (description, duration, patientId, startDate, endDate, programCode) => dispatch(postProgram(description, duration, patientId, startDate, endDate, programCode)),
   putProgram: (programId, description, duration, requirements, patientId, doctorId, startDate, endDate) =>
@@ -157,8 +158,8 @@ class Main extends Component {
     const UserWithId = ({ match }) => {
       return (
         <UserDetail user={this.props.users.users.filter((user) => user._id === match.params.userId)[0]}
-        // putPatient={this.props.putPatient}
-        // deletePatient={this.props.deletePatient}
+          // putPatient={this.props.putPatient}
+          deleteUser={this.props.deleteUser}
         // errMess={this.props.patients.errMess}
         />
       );
